@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>K Ladies Clinic Shinjuku — Online Gynecology in English</title>
+<meta name="description" content="See a gynecologist in English, entirely online. Video consultations, simple invoices, and prescriptions delivered in plain packaging to your home or hotel — anywhere in Japan. Residents and travelers welcome." />
+<meta property="og:title" content="K Ladies Clinic Shinjuku — Online Gynecology in English" />
+<meta property="og:description" content="Video consultation → invoice on your phone → medication by mail to your home or hotel. Women's healthcare in English for residents and travelers, anywhere in Japan." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6766'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #FBF7F4;
+    --ink: #2B2124;
+    --soft: #7A6A66;
+    --faint: #A8968F;
+    --line: #E9DDD6;
+    --accent: #F25C5B;       /* deepened from logo coral #FF6766 for text contrast */
+    --accent-light: #FFB1B0;
+    --logo-coral: #FF6766;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', 'Helvetica Neue', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  .wrap { max-width: 1024px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+  }
+  .display { font-family: var(--serif); font-weight: 300; line-height: 1.1; letter-spacing: -0.015em; }
+  .display em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    padding: 16px 28px; border-radius: 999px;
+    background: var(--ink); color: var(--paper);
+    transition: opacity .2s ease;
+  }
+  .btn:hover { opacity: .85; }
+  .btn svg { width: 15px; height: 15px; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(251,247,244,0.92);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
+  .brand { display: flex; align-items: center; }
+  .brand-logo { height: 34px; width: auto; display: block; }
+  @media (min-width: 640px) { .brand-logo { height: 40px; } }
+  .header-actions { display: none; align-items: center; gap: 10px; }
+  .header-cta {
+    font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 999px;
+    background: var(--ink); color: var(--paper); white-space: nowrap;
+  }
+  .header-cta.secondary {
+    background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+  }
+  @media (min-width: 640px) { .header-actions { display: flex; } }
+
+  /* ---------- mobile action bar (always visible) ---------- */
+  .action-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    display: flex; gap: 10px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(251,247,244,0.94);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid var(--line);
+  }
+  .action-bar a {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    font-size: 13.5px; font-weight: 600; padding: 14px 8px; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .action-bar a svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .action-bar .primary { background: var(--ink); color: var(--paper); }
+  .action-bar .secondary { background: #FFFFFF; color: var(--ink); border: 1.5px solid var(--ink); }
+  body { padding-bottom: 76px; }
+  @media (min-width: 640px) {
+    .action-bar { display: none; }
+    body { padding-bottom: 0; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: clamp(48px, 8vw, 96px); padding-bottom: 40px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 8.5vw, 76px); max-width: 820px; }
+  .hero-photo {
+    width: 100%; max-width: 340px; aspect-ratio: 4 / 5; object-fit: cover;
+    border-radius: 999px 999px 24px 24px; display: block; margin: 0 auto;
+  }
+  .hero-photo-wrap { position: relative; width: fit-content; margin: 0 auto; }
+  .hero-photo-badge {
+    position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+    background: rgba(251,247,244,0.94); backdrop-filter: blur(6px);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--ink);
+    white-space: nowrap; display: flex; align-items: center; gap: 6px;
+  }
+  .hero-photo-badge i {
+    width: 7px; height: 7px; border-radius: 50%; background: #3EBD6E; display: inline-block;
+  }
+  @media (min-width: 820px) {
+    .hero-grid { grid-template-columns: 1.5fr 1fr; gap: 48px; }
+    .hero-photo { max-width: 380px; }
+  }
+  .hero-lower {
+    display: flex; flex-direction: column; gap: 32px; margin-top: 36px;
+  }
+  .hero-lede { font-size: 16px; line-height: 1.75; color: var(--soft); max-width: 440px; }
+  .hero-scroll-hint {
+    display: flex; align-items: center; gap: 8px; margin-top: 56px;
+    color: var(--faint); font-size: 12px;
+  }
+  @media (min-width: 640px) {
+    .hero-lower { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    overflow: hidden; padding: 14px 0;
+  }
+  .ticker-track {
+    display: flex; align-items: center; gap: 32px; width: max-content;
+    animation: ticker 36s linear infinite;
+  }
+  .ticker-item { display: flex; align-items: center; gap: 32px; flex-shrink: 0; }
+  .ticker-item span {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    color: var(--soft); white-space: nowrap;
+  }
+  .ticker-item i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- flow ---------- */
+  .flow { padding-top: 80px; padding-bottom: 80px; }
+  .flow h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 560px; margin-bottom: 56px; }
+  .step {
+    display: grid; grid-template-columns: auto 1fr; gap: 8px 32px;
+    align-items: start; border-top: 1px solid var(--line);
+    padding: 40px 0;
+  }
+  .step-num {
+    font-family: var(--serif); font-weight: 300; font-style: italic;
+    font-size: clamp(52px, 10vw, 96px); line-height: 0.9;
+    color: var(--line); -webkit-text-stroke: 1px var(--faint); min-width: 1.6em;
+  }
+  .step-num.accent { color: var(--accent); -webkit-text-stroke: 0; }
+  .step-body { max-width: 520px; padding-top: 6px; }
+  .step-title { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-title svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+  .step-title h3 { font-family: var(--serif); font-size: clamp(22px, 4vw, 28px); font-weight: 400; }
+  .step-body p { font-size: 15px; line-height: 1.75; color: var(--soft); }
+  .flow-end { border-top: 1px solid var(--line); }
+  @media (min-width: 768px) { .step { padding: 48px 0; } }
+
+  /* ---------- about (dark) ---------- */
+  .about { background: var(--ink); color: var(--paper); }
+  .about-inner { padding-top: 88px; padding-bottom: 88px; }
+  .about .eyebrow { color: var(--accent-light); }
+  .about h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 640px; }
+  .about h2 em { color: var(--accent-light); }
+  .about-lede { font-size: 15.5px; line-height: 1.8; color: #C9BCB6; max-width: 540px; margin-top: 24px; }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr; gap: 1px;
+    background: #4A3E40; margin-top: 64px;
+  }
+  .about-card { background: var(--ink); padding: 28px 0; }
+  .about-card svg { width: 20px; height: 20px; color: var(--accent-light); }
+  .about-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 400; margin: 14px 0 8px; }
+  .about-card p { font-size: 13.5px; line-height: 1.7; color: var(--faint); }
+  @media (min-width: 640px) {
+    .about-grid { grid-template-columns: repeat(3, 1fr); }
+    .about-card { padding-right: 24px; }
+  }
+
+  /* ---------- team ---------- */
+  .team { padding-top: 88px; padding-bottom: 8px; }
+  .team h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 620px; }
+  .team-lede { font-size: 15.5px; line-height: 1.8; color: var(--soft); max-width: 540px; margin-top: 20px; }
+  .team-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 44px; }
+  .team-card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 20px;
+    padding: 26px 24px;
+  }
+  .team-flag {
+    width: 52px; height: 52px; border-radius: 50%; background: #FDEEEA;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.06em;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .team-card h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin-bottom: 6px; }
+  .team-card .team-langs {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .team-card p { font-size: 14px; line-height: 1.7; color: var(--soft); }
+  @media (min-width: 700px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ---------- reviews ---------- */
+  .reviews { padding-top: 88px; padding-bottom: 8px; }
+  .reviews-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+  .reviews h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 560px; }
+  .rating-badge { display: flex; align-items: center; gap: 10px; }
+  .rating-stars { color: #E8A33D; font-size: 17px; letter-spacing: 2px; }
+  .rating-badge span { font-size: 13.5px; color: var(--soft); }
+  .rating-badge a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .reviews-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .review-card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 20px;
+    padding: 26px 24px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .review-card .review-quote {
+    font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink);
+  }
+  .review-card .review-quote::before { content: "\201C"; color: var(--accent); }
+  .review-card .review-quote::after { content: "\201D"; color: var(--accent); }
+  .review-meta { margin-top: auto; font-size: 12.5px; color: var(--faint); }
+  .review-meta b { color: var(--soft); font-weight: 600; }
+  .review-tag {
+    display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); background: #FDEEEA;
+    border-radius: 999px; padding: 4px 10px; width: fit-content;
+  }
+  @media (min-width: 700px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ---------- instagram ---------- */
+  .insta { padding-top: 8px; padding-bottom: 88px; }
+  .insta-inner {
+    display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center;
+    border-top: 1px solid var(--line); padding-top: 64px; margin-top: 80px;
+  }
+  .insta h2 { font-size: clamp(30px, 5.5vw, 44px); }
+  .insta p { font-size: 15px; line-height: 1.75; color: var(--soft); max-width: 380px; margin-top: 16px; margin-bottom: 24px; }
+  .insta-embed {
+    width: 100%; max-width: 400px; height: 480px; border: 1px solid var(--line);
+    border-radius: 24px; display: block; margin: 0 auto; background: #FFFFFF;
+  }
+  @media (min-width: 820px) { .insta-inner { grid-template-columns: 1fr 1fr; } }
+
+  /* ---------- faq ---------- */
+  .faq { padding-top: 88px; padding-bottom: 72px; }
+  .faq-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+  .faq h2 { font-size: clamp(30px, 5.5vw, 44px); }
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; text-align: left; padding: 22px 0;
+    background: none; border: none; cursor: pointer; font-family: inherit; color: inherit;
+  }
+  .faq-q span:first-child { font-family: var(--serif); font-size: 19px; font-weight: 400; line-height: 1.35; }
+  .faq-toggle {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: transform .25s ease; color: var(--soft);
+  }
+  .faq-item.open .faq-toggle { transform: rotate(180deg); }
+  .faq-toggle svg { width: 14px; height: 14px; }
+  .faq-toggle .minus { display: none; }
+  .faq-item.open .faq-toggle .minus { display: block; }
+  .faq-item.open .faq-toggle .plus { display: none; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+  .faq-item.open .faq-a { max-height: 240px; }
+  .faq-a p { font-size: 15px; line-height: 1.7; color: var(--soft); padding-bottom: 24px; max-width: 560px; }
+  @media (min-width: 768px) { .faq-grid { grid-template-columns: 1fr 1.6fr; } }
+
+  /* ---------- final cta ---------- */
+  .final { padding-bottom: 96px; }
+  .final-inner {
+    border-top: 1px solid var(--ink); padding-top: 48px;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .final h2 { font-size: clamp(36px, 7vw, 64px); max-width: 520px; }
+  .final-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; flex-shrink: 0; }
+  .final-note { font-size: 12.5px; color: var(--faint); }
+  .inline-link { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .inline-link:hover { opacity: .75; }
+  .avatar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .avatars { display: flex; }
+  .avatars img {
+    width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+    border: 2.5px solid var(--paper); display: block;
+  }
+  .avatars img + img { margin-left: -12px; }
+  .avatar-row span { font-size: 13px; color: var(--soft); }
+
+  /* ---------- access / map ---------- */
+  .access { padding-bottom: 88px; }
+  .access-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+  .access h2 { font-size: clamp(30px, 5.5vw, 44px); margin-bottom: 20px; }
+  .access-info p { font-size: 15px; line-height: 1.75; color: var(--soft); max-width: 380px; }
+  .access-address {
+    margin: 20px 0 24px; padding: 18px 20px; border: 1px solid var(--line);
+    border-radius: 16px; font-size: 14px; line-height: 1.7; color: var(--ink);
+    background: #FFFFFF;
+  }
+  .access-map {
+    width: 100%; height: 320px; border: 0; border-radius: 24px; display: block;
+    filter: saturate(0.85);
+  }
+  @media (min-width: 820px) {
+    .access-grid { grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: center; }
+    .access-map { height: 380px; }
+  }
+  @media (min-width: 768px) {
+    .final-inner { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); }
+  .footer-inner {
+    padding-top: 40px; padding-bottom: 24px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .footer-logo { height: 32px; width: auto; display: block; margin-bottom: 12px; }
+  .footer-desc { font-size: 12px; color: var(--faint); max-width: 380px; line-height: 1.7; }
+  .footer-links { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--soft); }
+  .footer-links a:hover { opacity: .7; }
+  .footer-legal { padding-bottom: 32px; font-size: 11px; color: var(--faint); line-height: 1.7; }
+  @media (min-width: 768px) {
+    .footer-inner { flex-direction: row; justify-content: space-between; }
+  }
+
+  /* ---------- contact ---------- */
+  .contact { padding-bottom: 96px; }
+  .contact-inner {
+    border-top: 1px solid var(--line); padding-top: 64px;
+    display: grid; grid-template-columns: 1fr; gap: 36px;
+  }
+  .contact h2 { font-size: clamp(30px, 5.5vw, 44px); }
+  .contact-lede { font-size: 15px; line-height: 1.75; color: var(--soft); max-width: 380px; margin-top: 16px; }
+  .contact-note { font-size: 12.5px; color: var(--faint); margin-top: 20px; }
+  .contact-form { display: flex; flex-direction: column; gap: 14px; }
+  .contact-form label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--soft); display: block; margin-bottom: 6px;
+  }
+  .contact-form input, .contact-form textarea {
+    width: 100%; font-family: var(--sans); font-size: 16px; color: var(--ink);
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; outline: none; transition: border-color .2s ease;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
+  .contact-form textarea { min-height: 130px; resize: vertical; }
+  .contact-form button {
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    padding: 16px 28px; border-radius: 999px; border: none; cursor: pointer;
+    background: var(--ink); color: var(--paper); width: fit-content;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .contact-form button:disabled { opacity: .6; cursor: default; }
+  .form-status { font-size: 14px; line-height: 1.6; display: none; }
+  .form-status.ok { display: block; color: #2E7D4F; }
+  .form-status.err { display: block; color: var(--accent); }
+  .hp-field { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+  @media (min-width: 820px) { .contact-inner { grid-template-columns: 1fr 1.3fr; gap: 48px; } }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= Header ================= -->
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#" aria-label="K Ladies Clinic Shinjuku">
+      <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku — Gynecology Office" class="brand-logo" />
+    </a>
+    <div class="header-actions">
+      <a class="header-cta secondary" data-visit href="#" target="_blank" rel="noopener">In-person visit</a>
+      <a class="header-cta" data-cta href="#">Online consultation</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= Hero ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Women's health &middot; Tokyo &middot; 100% online</div>
+      <h1 class="display">See a gynecologist <em>in English,</em> without leaving home.</h1>
+      <div class="hero-lower">
+        <p class="hero-lede">
+          K Ladies Clinic Shinjuku brings the gynecologist to you — video consultations,
+          simple invoices, and prescriptions delivered in plain packaging to your home,
+          hotel, or wherever you're staying in Japan.
+        </p>
+        <a class="btn" data-cta href="#">
+          Book your visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+      <div class="hero-scroll-hint">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        How it works
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <img
+        class="hero-photo"
+        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=760&auto=format&fit=crop"
+        alt="A smiling woman relaxing at home"
+        loading="eager"
+      />
+      <div class="hero-photo-badge"><i></i>Doctors online today</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Ticker ================= -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="ticker-track"></div>
+</div>
+
+<!-- ================= Flow ================= -->
+<section class="flow">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">From consultation to delivery</div>
+      <h2 class="display">Three steps. Zero waiting rooms.</h2>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num accent">01</div>
+      <div class="step-body">
+        <div class="step-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+          <h3>See a doctor online</h3>
+        </div>
+        <p>Book a time that works for you and meet a gynecologist over video — in English,
+        from wherever you are. No waiting rooms, no paperwork at a front desk.</p>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <div class="step-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          <h3>Receive your invoice</h3>
+        </div>
+        <p>After your consultation, your invoice arrives in the app. Review it and pay from
+        your phone — clear pricing, no surprises at a register.</p>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <div class="step-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="m7.5 4.27 9 5.15"/></svg>
+          <h3>Medication arrives by mail</h3>
+        </div>
+        <p>Your prescription ships as soon as next day, in plain, unmarked packaging —
+        to your home, your hotel, or wherever you're staying. Nothing on the box says
+        what's inside — or where it came from.</p>
+      </div>
+    </div>
+
+    <div class="flow-end"></div>
+  </div>
+</section>
+
+<!-- ================= About ================= -->
+<section class="about">
+  <div class="wrap about-inner">
+    <div class="reveal">
+      <div class="eyebrow">The clinic behind the screen</div>
+      <h2 class="display">A real Shinjuku clinic — <em>not an app pretending to be one.</em></h2>
+      <p class="about-lede">
+        K Ladies Clinic Shinjuku is a women's health clinic in central Tokyo with
+        three native English-speaking staff on the team. We built our online service
+        so that being in Japan — with or without fluent Japanese — never gets between
+        you and the care you'd ask for back home, whether you live here or you're
+        just visiting.
+      </p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3>Care in English</h3>
+        <p>Consultations, invoices and follow-ups — all in English.</p>
+      </div>
+      <div class="about-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h3>Native English staff</h3>
+        <p>Three team members are native English speakers — no translation apps needed.</p>
+      </div>
+      <div class="about-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h3>Private by default</h3>
+        <p>Plain packaging, discreet billing, your data stays yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Team ================= -->
+<section class="team">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Your English-speaking team</div>
+      <h2 class="display">Three native speakers, <em>zero language barriers.</em></h2>
+      <p class="team-lede">
+        No interpreters, no translation apps. Three of our patient-support staff are
+        native English speakers who have each spent years navigating life — and
+        healthcare — in Japan, so they know exactly what you're dealing with.
+      </p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-flag">SE</div>
+        <h3>From Sweden</h3>
+        <div class="team-langs">English · Swedish · Japanese</div>
+        <p>Has called Tokyo home for around 10 years. Happy to help Scandinavian
+        patients in Swedish, too.</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-flag">US</div>
+        <h3>From the U.S.</h3>
+        <div class="team-langs">English · Japanese</div>
+        <p>Japanese-American, born and raised in the United States — equally at
+        home in both languages and cultures.</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-flag">PY</div>
+        <h3>From Paraguay</h3>
+        <div class="team-langs">English · Spanish · Portuguese · Italian</div>
+        <p>Over 15 years in Japan. Also supports patients in Spanish, Portuguese
+        and Italian.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Reviews ================= -->
+<section class="reviews">
+  <div class="wrap">
+    <div class="reviews-head reveal">
+      <div>
+        <div class="eyebrow">From our Google reviews</div>
+        <h2 class="display">Don't take <em>our word</em> for it.</h2>
+      </div>
+      <div class="rating-badge">
+        <span class="rating-stars" aria-hidden="true">★★★★½</span>
+        <span><b>4.5</b> from 1,300+ reviews on
+          <a data-maps href="#" target="_blank" rel="noopener">Google</a></span>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <span class="review-tag">In-person visit</span>
+        <p class="review-quote">First time to a gynecologist in Japan. The nurses were
+        all very nice and prepared and I was able to fully explain myself to the
+        English speaking ones: extremely helpful and clear!</p>
+        <div class="review-meta"><b>Camilla</b> · Google review</div>
+      </div>
+      <div class="review-card reveal">
+        <span class="review-tag">In-person visit</span>
+        <p class="review-quote">I went to this clinic needing help for PCOS symptoms.
+        This was the only place that took me seriously and gave me medicine to
+        help it.</p>
+        <div class="review-meta"><b>Kelsey</b> · Google review</div>
+      </div>
+      <div class="review-card reveal">
+        <span class="review-tag">Online &amp; delivery</span>
+        <p class="review-quote">Online service is convenient and fast, highly
+        recommend.</p>
+        <div class="review-meta">Google review</div>
+      </div>
+      <div class="review-card reveal">
+        <span class="review-tag">English support</span>
+        <p class="review-quote">Services are provided in English, including the
+        paperwork!</p>
+        <div class="review-meta">Google review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq">
+  <div class="wrap faq-grid">
+    <div class="reveal">
+      <div class="eyebrow">Questions, answered</div>
+      <h2 class="display">The things you'd <em>rather ask first.</em></h2>
+    </div>
+    <div class="faq-list reveal" id="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" aria-expanded="true">
+          <span>Is the consultation really in English?</span>
+          <span class="faq-toggle">
+            <svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><p>Yes. Three of our staff are native English speakers, and the app,
+        invoices and delivery updates are in English too — so nothing gets lost
+        in translation.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Do I ever need to visit the clinic?</span>
+          <span class="faq-toggle">
+            <svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><p>Most concerns are handled entirely online, including first visits. If an
+        in-person examination is ever medically necessary, we'll guide you to a partner clinic.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>How fast does medication arrive?</span>
+          <span class="faq-toggle">
+            <svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><p>Once your prescription is confirmed and paid, it ships as soon as the next
+        day. You can track delivery from your account at any time.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>I'm visiting Japan — can you deliver to my hotel?</span>
+          <span class="faq-toggle">
+            <svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><p>Yes. We ship to hotels and other accommodations anywhere in Japan —
+        just enter your hotel's address and your name as the recipient. With next-day
+        shipping, your medication can reach you before you move on to your next stop.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Will anyone know what I ordered?</span>
+          <span class="faq-toggle">
+            <svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><p>Deliveries arrive in plain packaging with no clinic name visible, and
+        billing appears under an individual's name. Your care stays your business.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Final CTA ================= -->
+<section class="final">
+  <div class="wrap">
+    <div class="final-inner reveal">
+      <div>
+        <div class="avatar-row">
+          <div class="avatars">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=160&auto=format&fit=crop" alt="" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=160&auto=format&fit=crop" alt="" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=160&auto=format&fit=crop" alt="" loading="lazy" />
+          </div>
+          <span>Caring for English-speaking women across Japan</span>
+        </div>
+        <h2 class="display">Your health, <em>finally in your language.</em></h2>
+      </div>
+      <div class="final-cta">
+        <a class="btn" data-cta href="#">
+          Book your online visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <span class="final-note">Sign-up takes about a minute. Cancel anytime.</span>
+        <span class="final-note">
+          Prefer an in-person visit?
+          <a data-visit href="#" target="_blank" rel="noopener" class="inline-link">Book a clinic appointment</a>
+          <a data-maps href="#" target="_blank" rel="noopener" class="inline-link">&middot; Google Maps</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Access / Map ================= -->
+<section class="access" id="access">
+  <div class="wrap access-grid">
+    <div class="access-info reveal">
+      <div class="eyebrow">Visiting us in person</div>
+      <h2 class="display">Right by Shinjuku Station.</h2>
+      <p>
+        Prefer to be seen at the clinic? We're on the 5th floor of the Shinjuku
+        Center Building, a short walk from Shinjuku and Tochomae stations.
+      </p>
+      <div class="access-address">
+        <strong>K Ladies Clinic Shinjuku</strong><br />
+        Shinjuku Center Building 5F<br />
+        1-25-1 Nishi-Shinjuku, Shinjuku-ku, Tokyo
+      </div>
+      <a class="btn" data-visit href="#" target="_blank" rel="noopener">
+        Book an in-person visit
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+    <div class="reveal">
+      <iframe
+        class="access-map"
+        src="https://maps.google.com/maps?q=%E3%82%B1%E3%82%A4%E3%83%BB%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%8B%E3%83%83%E3%82%AF%E6%96%B0%E5%AE%BF&hl=en&z=16&output=embed"
+        title="Map to K Ladies Clinic Shinjuku"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Instagram ================= -->
+<section class="insta">
+  <div class="wrap insta-inner">
+    <div class="reveal">
+      <div class="eyebrow">@k_ladies_clinic</div>
+      <h2 class="display">Get to know us <em>on Instagram.</em></h2>
+      <p>
+        A look at the clinic, the team, and everyday tips on women's health —
+        follow along before your first visit.
+      </p>
+      <a class="btn" href="https://www.instagram.com/k_ladies_clinic/" target="_blank" rel="noopener">
+        Follow @k_ladies_clinic
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+      </a>
+    </div>
+    <div class="reveal">
+      <iframe
+        class="insta-embed"
+        src="https://www.instagram.com/k_ladies_clinic/embed"
+        title="K Ladies Clinic Shinjuku on Instagram"
+        loading="lazy"
+        allowtransparency="true"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Contact ================= -->
+<section class="contact" id="contact">
+  <div class="wrap contact-inner">
+    <div class="reveal">
+      <div class="eyebrow">Questions?</div>
+      <h2 class="display">Ask us <em>anything.</em></h2>
+      <p class="contact-lede">
+        Not sure if we can help with your concern, or whether delivery works for
+        your address? Send us a message in English — a member of our native
+        English-speaking team will get back to you.
+      </p>
+      <p class="contact-note">
+        For urgent medical concerns, please book a consultation directly or
+        contact emergency services.
+      </p>
+    </div>
+    <form class="contact-form reveal" id="contact-form" novalidate>
+      <div>
+        <label for="cf-name">Your name</label>
+        <input id="cf-name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div>
+        <label for="cf-email">Email address</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div>
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required></textarea>
+      </div>
+      <div class="hp-field" aria-hidden="true">
+        <label for="cf-company">Company</label>
+        <input id="cf-company" name="botcheck" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <button type="submit" id="cf-submit">
+        Send message
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
+      <p class="form-status" id="cf-status" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= Footer ================= -->
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku — Gynecology Office" class="footer-logo" />
+      <p class="footer-desc">Shinjuku Center Building 5F, 1-25-1 Nishi-Shinjuku,
+      Shinjuku-ku, Tokyo &middot; Online gynecology for English-speaking patients across Japan.</p>
+    </div>
+    <div class="footer-links">
+      <a data-visit href="#" target="_blank" rel="noopener">Book an in-person visit</a>
+      <a data-maps href="#" target="_blank" rel="noopener">Google Maps</a>
+      <a href="#contact">Contact us</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    &copy; 2026 K Ladies Clinic Shinjuku &middot; Oral contraceptives and emergency
+    contraception for birth-control purposes are self-paid (not covered by national insurance).
+  </div>
+</footer>
+
+<!-- ================= Mobile action bar ================= -->
+<div class="action-bar">
+  <a class="secondary" data-visit href="#" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+    In-person visit
+  </a>
+  <a class="primary" data-cta href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+    Online consultation
+  </a>
+</div>
+
+<script>
+  // CTA destination — online consultation booking calendar.
+  // The date param is generated at load time (tomorrow) so the link never goes stale.
+  var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  var ymd =
+    tomorrow.getFullYear() +
+    String(tomorrow.getMonth() + 1).padStart(2, "0") +
+    String(tomorrow.getDate()).padStart(2, "0");
+  var APP_URL = "https://pillorder.info/consultation/calendar?date=" + ymd;
+  document.querySelectorAll("[data-cta]").forEach(function (a) { a.href = APP_URL; });
+
+  // In-person visit booking (Square Appointments).
+  var VISIT_URL = "https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services";
+  var MAPS_URL =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("ケイ・レディースクリニック新宿 新宿センタービル");
+  document.querySelectorAll("[data-visit]").forEach(function (a) {
+    if (VISIT_URL) { a.href = VISIT_URL; } else { a.style.display = "none"; }
+  });
+  document.querySelectorAll("[data-maps]").forEach(function (a) { a.href = MAPS_URL; });
+
+  // Service ticker (duplicated once for a seamless loop)
+  var TICKER_ITEMS = [
+    "Birth control", "Morning-after pill", "PMS & mood", "Irregular periods",
+    "Menopause", "Hormonal acne", "Heavy periods", "English-speaking care",
+    "Hotel delivery for travelers",
+  ];
+  var track = document.getElementById("ticker-track");
+  TICKER_ITEMS.concat(TICKER_ITEMS).forEach(function (label) {
+    var item = document.createElement("span");
+    item.className = "ticker-item";
+    var text = document.createElement("span");
+    text.textContent = label;
+    var dot = document.createElement("i");
+    item.appendChild(text);
+    item.appendChild(dot);
+    track.appendChild(item);
+  });
+
+  // FAQ accordion — one item open at a time
+  document.querySelectorAll(".faq-q").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var item = btn.parentElement;
+      var wasOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item").forEach(function (el) {
+        el.classList.remove("open");
+        el.querySelector(".faq-q").setAttribute("aria-expanded", "false");
+      });
+      if (!wasOpen) {
+        item.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+
+  // Contact form → staff@klcs.jp via FormSubmit (no account needed).
+  // The first submission triggers a one-time activation email to CONTACT_EMAIL;
+  // click the link in it once and all later messages are delivered normally.
+  var CONTACT_EMAIL = "staff@klcs.jp";
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+  var form = document.getElementById("contact-form");
+  var statusEl = document.getElementById("cf-status");
+  var submitBtn = document.getElementById("cf-submit");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.className = "form-status";
+    if (!form.reportValidity()) return;
+    var name = document.getElementById("cf-name").value.trim();
+    var email = document.getElementById("cf-email").value.trim();
+    var message = document.getElementById("cf-message").value.trim();
+    if (document.getElementById("cf-company").value) return; // honeypot
+
+    submitBtn.disabled = true;
+    submitBtn.firstChild.textContent = "Sending… ";
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        _subject: "Website inquiry from " + name,
+        _template: "table",
+        _captcha: "false",
+        name: name,
+        email: email,
+        message: message,
+      }),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success === "true" || data.success === true) {
+          form.reset();
+          statusEl.textContent = "Thank you — your message has been sent. We'll reply to your email soon.";
+          statusEl.className = "form-status ok";
+        } else {
+          throw new Error(data.message || "Submission failed");
+        }
+      })
+      .catch(function () {
+        // Fall back to the visitor's own mail app so no message is ever lost.
+        var subject = "Website inquiry from " + name;
+        var body = message + "\n\n— " + name + " (" + email + ")";
+        window.location.href =
+          "mailto:" + CONTACT_EMAIL +
+          "?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
+        statusEl.textContent = "We couldn't send the form directly — your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
+        statusEl.className = "form-status err";
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.firstChild.textContent = "Send message ";
+      });
+  });
+
+  // Scroll reveal
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(function (el) { obs.observe(el); });
+</script>
+
+</body>
+</html>
