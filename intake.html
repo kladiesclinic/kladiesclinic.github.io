@@ -23,6 +23,56 @@
     margin: 34px 0 16px; color: var(--ink);
   }
   .section-label:first-child { margin-top: 0; }
+
+  .print-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
+    background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+    cursor: pointer; font-family: var(--sans); margin: 8px 0 0 12px;
+  }
+  .print-header { display: none; }
+
+  /* ---------- print / save as PDF ---------- */
+  @media print {
+    @page { size: A4; margin: 14mm 12mm; }
+    body { background: #FFFFFF; color: #000000; font-size: 10.5px; }
+    header, footer, .page-head, .note-box, .submit-btn, .print-btn,
+    .form-status, .hp-field, .hint { display: none !important; }
+    .wrap { max-width: none; padding: 0; }
+    .print-header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 14px;
+    }
+    .print-header img { height: 30px; }
+    .print-header .ph-title { text-align: right; }
+    .print-header .ph-title strong { font-size: 13px; display: block; }
+    .print-header .ph-title span { font-size: 9.5px; color: #444444; }
+    .card { border: none; border-radius: 0; padding: 0; margin-top: 0; background: #FFFFFF; }
+    .section-label {
+      font-size: 12.5px; font-weight: 600; margin: 12px 0 6px;
+      border-bottom: 1px solid #999999; padding-bottom: 2px;
+      break-after: avoid;
+    }
+    form .field { margin-bottom: 7px; break-inside: avoid; }
+    form label { font-size: 8.5px; letter-spacing: 0.04em; color: #333333; margin-bottom: 2px; }
+    form input[type="text"], form input[type="email"], form input[type="date"], form textarea {
+      font-size: 10.5px; padding: 4px 7px; border: 1px solid #AAAAAA; border-radius: 4px;
+      background: #FFFFFF; min-height: 0;
+    }
+    form textarea { min-height: 44px; }
+    .field-row { grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+    .field-row + .field, .field-row + .field-row { margin-top: 7px; }
+    .q-block { border-top: none; padding-top: 0; margin-top: 0; }
+    .choice-group { gap: 3px; }
+    .yn-row { gap: 6px; }
+    .choice {
+      padding: 3px 7px; border: 1px solid #BBBBBB; border-radius: 4px;
+      background: #FFFFFF; font-size: 9.5px; gap: 5px;
+    }
+    .choice small { font-size: 8px; }
+    .choice input { margin-top: 1px; transform: scale(0.85); }
+    .cond-grid { grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+  }
 </style>
 </head>
 <body>
@@ -44,6 +94,14 @@
       every patient receives in Japanese. The doctor reviews your answers before
       your consultation, and everything is kept confidential.
     </p>
+  </div>
+
+  <div class="print-header">
+    <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
+    <div class="ph-title">
+      <strong>Pre-Consultation Intake Form (OC / LEP)</strong>
+      <span>Based on the JSOG first-prescription checklist ver. 2020 &middot; K Ladies Clinic Shinjuku</span>
+    </div>
   </div>
 
   <div class="card">
@@ -303,6 +361,10 @@
         Submit my intake form
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
+      <button type="button" class="print-btn" id="if-print">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+        Print / save as PDF
+      </button>
       <p class="form-status" id="if-status" role="status"></p>
     </form>
   </div>
@@ -329,6 +391,10 @@
   var form = document.getElementById("intake-form");
   var statusEl = document.getElementById("if-status");
   var submitBtn = document.getElementById("if-submit");
+
+  document.getElementById("if-print").addEventListener("click", function () {
+    window.print();
+  });
 
   function radioVal(name) {
     var el = document.querySelector('input[name="' + name + '"]:checked');
