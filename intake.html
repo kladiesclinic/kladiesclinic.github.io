@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pre-Consultation Intake Form — K Ladies Clinic Shinjuku</title>
+<meta name="description" content="Fill in your medical intake form in English before your online consultation with K Ladies Clinic Shinjuku." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6766'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/sub.css" />
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="./"><img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku — Gynecology Office" class="brand-logo" /></a>
+    <a class="header-back" href="./">&larr; Back to top</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Before your consultation</div>
+    <h1 class="display">Your intake form, <em>in English.</em></h1>
+    <p class="lede">
+      Answering these questions before your appointment helps the doctor make the
+      most of your consultation time. Our staff review your answers in advance —
+      everything is kept confidential.
+    </p>
+  </div>
+
+  <div class="card">
+    <form id="intake-form" novalidate>
+      <div class="field-row">
+        <div class="field">
+          <label for="if-name">Full name</label>
+          <input id="if-name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="if-dob">Date of birth</label>
+          <input id="if-dob" type="date" required />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="if-email">Email address</label>
+          <input id="if-email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="if-topic">Main concern</label>
+          <select id="if-topic" required>
+            <option value="">Please choose&hellip;</option>
+            <option>Birth control (starting or continuing)</option>
+            <option>Morning-after pill</option>
+            <option>PMS / mood</option>
+            <option>Irregular or heavy periods</option>
+            <option>Hormonal acne / skin</option>
+            <option>Menopause</option>
+            <option>Something else</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="if-symptoms">Tell us about your symptoms or request</label>
+        <textarea id="if-symptoms" required placeholder="What's been going on, and for how long?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="if-meds">Current medications &amp; supplements</label>
+        <input id="if-meds" type="text" placeholder="Write &quot;none&quot; if none" required />
+      </div>
+
+      <div class="field">
+        <label for="if-allergies">Allergies (medications, foods)</label>
+        <input id="if-allergies" type="text" placeholder="Write &quot;none&quot; if none" required />
+      </div>
+
+      <div class="field">
+        <label>Do you smoke?</label>
+        <div class="choice-group">
+          <label class="choice"><input type="radio" name="smoke" value="No" required /> No</label>
+          <label class="choice"><input type="radio" name="smoke" value="Yes" /> Yes<small>If yes, roughly how many per day? You can add this below.</small></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do any of these apply to you? (check all that apply)</label>
+        <div class="choice-group">
+          <label class="choice"><input type="checkbox" name="history" value="History of blood clots (DVT/PE)" /> History of blood clots (DVT / pulmonary embolism)</label>
+          <label class="choice"><input type="checkbox" name="history" value="Migraine with aura" /> Migraines with aura</label>
+          <label class="choice"><input type="checkbox" name="history" value="High blood pressure" /> High blood pressure</label>
+          <label class="choice"><input type="checkbox" name="history" value="Breast cancer (self or close family)" /> Breast cancer (yourself or a close family member)</label>
+          <label class="choice"><input type="checkbox" name="history" value="Currently pregnant or possibly pregnant" /> Currently pregnant, or possibly pregnant</label>
+          <label class="choice"><input type="checkbox" name="history" value="Breastfeeding" /> Currently breastfeeding</label>
+          <label class="choice"><input type="checkbox" name="history" value="None of the above" /> None of the above</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="if-pillhistory">Have you taken birth control pills before?</label>
+        <select id="if-pillhistory" required>
+          <option value="">Please choose&hellip;</option>
+          <option>No, never</option>
+          <option>Yes, currently taking them</option>
+          <option>Yes, in the past</option>
+          <option>Not applicable</option>
+        </select>
+        <div class="hint">If yes, feel free to add the pill name in the notes below.</div>
+      </div>
+
+      <div class="field">
+        <label for="if-notes">Anything else the doctor should know? (optional)</label>
+        <textarea id="if-notes"></textarea>
+      </div>
+
+      <div class="hp-field" aria-hidden="true">
+        <label for="if-company">Company</label>
+        <input id="if-company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button type="submit" class="submit-btn" id="if-submit">
+        Submit my intake form
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <p class="form-status" id="if-status" role="status"></p>
+    </form>
+  </div>
+
+  <div class="note-box">
+    This form is reviewed by clinic staff before your consultation and treated as
+    confidential medical information. It is not for emergencies — if you need urgent
+    care, call <strong>119</strong> (ambulance) or visit the nearest emergency department.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>&copy; 2026 K Ladies Clinic Shinjuku</span>
+    <span><a href="./">Home</a> &middot; <a href="book.html">Book a consultation</a> &middot; <a href="zoom.html">How Zoom visits work</a></span>
+  </div>
+</footer>
+
+<script>
+  var CONTACT_EMAIL = "staff@klcs.jp";
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+  var form = document.getElementById("intake-form");
+  var statusEl = document.getElementById("if-status");
+  var submitBtn = document.getElementById("if-submit");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.className = "form-status";
+    if (!form.reportValidity()) return;
+    if (document.getElementById("if-company").value) return; // honeypot
+
+    var history = [].map.call(document.querySelectorAll('input[name="history"]:checked'), function (c) { return c.value; }).join("; ") || "None checked";
+    var smoke = (document.querySelector('input[name="smoke"]:checked') || {}).value || "";
+    var payload = {
+      name: document.getElementById("if-name").value.trim(),
+      date_of_birth: document.getElementById("if-dob").value,
+      email: document.getElementById("if-email").value.trim(),
+      main_concern: document.getElementById("if-topic").value,
+      symptoms: document.getElementById("if-symptoms").value.trim(),
+      medications: document.getElementById("if-meds").value.trim(),
+      allergies: document.getElementById("if-allergies").value.trim(),
+      smoking: smoke,
+      medical_history: history,
+      pill_history: document.getElementById("if-pillhistory").value,
+      notes: document.getElementById("if-notes").value.trim(),
+    };
+
+    submitBtn.disabled = true;
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(Object.assign({
+        _subject: "[Intake form] " + payload.name + " — " + payload.main_concern,
+        _template: "table",
+        _captcha: "false",
+      }, payload)),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success === "true" || data.success === true) {
+          form.reset();
+          statusEl.textContent = "Thank you — your intake form has been sent. The doctor will review it before your consultation.";
+          statusEl.className = "form-status ok";
+        } else { throw new Error(); }
+      })
+      .catch(function () {
+        var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
+        window.location.href = "mailto:" + CONTACT_EMAIL +
+          "?subject=" + encodeURIComponent("Intake form from " + payload.name) +
+          "&body=" + encodeURIComponent(body);
+        statusEl.textContent = "We couldn't send the form directly — your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
+        statusEl.className = "form-status err";
+      })
+      .finally(function () { submitBtn.disabled = false; });
+  });
+</script>
+
+</body>
+</html>

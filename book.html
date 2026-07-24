@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book an Online Consultation — K Ladies Clinic Shinjuku</title>
+<meta name="description" content="Request an online gynecology consultation in English. Choose your preferred times and we'll confirm by email with your Zoom link." />
+<meta name="robots" content="index, follow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6766'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/sub.css" />
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="./"><img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku — Gynecology Office" class="brand-logo" /></a>
+    <a class="header-back" href="./">&larr; Back to top</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Online consultation &middot; In English</div>
+    <h1 class="display">Book your <em>online visit.</em></h1>
+    <p class="lede">
+      Tell us when works for you, and our English-speaking staff will confirm your
+      appointment by email — along with your Zoom link and a short intake form.
+      Not sure how it works? <a href="zoom.html">See how a Zoom consultation goes</a>.
+    </p>
+  </div>
+
+  <div class="card">
+    <form id="booking-form" novalidate>
+      <div class="field-row">
+        <div class="field">
+          <label for="bf-name">Full name</label>
+          <input id="bf-name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="bf-email">Email address</label>
+          <input id="bf-email" type="email" autocomplete="email" required />
+          <div class="hint">We'll confirm your appointment at this address.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bf-phone">Phone (optional)</label>
+          <input id="bf-phone" type="tel" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="bf-topic">What would you like to discuss?</label>
+          <select id="bf-topic" required>
+            <option value="">Please choose&hellip;</option>
+            <option>Birth control (starting or continuing)</option>
+            <option>Morning-after pill</option>
+            <option>PMS / mood</option>
+            <option>Irregular or heavy periods</option>
+            <option>Hormonal acne / skin</option>
+            <option>Menopause</option>
+            <option>Something else</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bf-date1">First choice — date &amp; time</label>
+          <input id="bf-date1" type="text" placeholder="e.g. Fri July 24, afternoon" required />
+        </div>
+        <div class="field">
+          <label for="bf-date2">Second choice (optional)</label>
+          <input id="bf-date2" type="text" placeholder="e.g. Sat July 25, morning" />
+        </div>
+      </div>
+      <div class="hint" style="margin-top:-8px; margin-bottom:18px;">All times are Japan Standard Time (JST).</div>
+
+      <div class="field">
+        <label for="bf-msg">Anything you'd like us to know? (optional)</label>
+        <textarea id="bf-msg"></textarea>
+      </div>
+
+      <div class="hp-field" aria-hidden="true">
+        <label for="bf-company">Company</label>
+        <input id="bf-company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button type="submit" class="submit-btn" id="bf-submit">
+        Request my appointment
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <p class="form-status" id="bf-status" role="status"></p>
+    </form>
+  </div>
+
+  <div class="note-box">
+    <strong>What happens next:</strong> our staff will reply by email during clinic
+    hours to confirm your time. You'll receive your Zoom link and an
+    <a class="inline-link" href="intake.html">English intake form</a> to fill in before
+    your appointment. Prefer to be seen in person? You can also
+    <a class="inline-link" href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">book a clinic visit</a> in Shinjuku.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>&copy; 2026 K Ladies Clinic Shinjuku</span>
+    <span><a href="./">Home</a> &middot; <a href="zoom.html">How Zoom visits work</a> &middot; <a href="intake.html">Intake form</a></span>
+  </div>
+</footer>
+
+<script>
+  var CONTACT_EMAIL = "staff@klcs.jp";
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+  var form = document.getElementById("booking-form");
+  var statusEl = document.getElementById("bf-status");
+  var submitBtn = document.getElementById("bf-submit");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.className = "form-status";
+    if (!form.reportValidity()) return;
+    if (document.getElementById("bf-company").value) return; // honeypot
+
+    var payload = {
+      name: document.getElementById("bf-name").value.trim(),
+      email: document.getElementById("bf-email").value.trim(),
+      phone: document.getElementById("bf-phone").value.trim(),
+      topic: document.getElementById("bf-topic").value,
+      first_choice: document.getElementById("bf-date1").value.trim(),
+      second_choice: document.getElementById("bf-date2").value.trim(),
+      message: document.getElementById("bf-msg").value.trim(),
+    };
+
+    submitBtn.disabled = true;
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(Object.assign({
+        _subject: "[Booking request] " + payload.name + " — " + payload.topic,
+        _template: "table",
+        _captcha: "false",
+      }, payload)),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success === "true" || data.success === true) {
+          form.reset();
+          statusEl.textContent = "Thank you — your request has been sent. We'll email you to confirm your appointment and share your Zoom link.";
+          statusEl.className = "form-status ok";
+        } else { throw new Error(); }
+      })
+      .catch(function () {
+        var body = "Booking request\n\nName: " + payload.name + "\nEmail: " + payload.email +
+          "\nPhone: " + payload.phone + "\nTopic: " + payload.topic +
+          "\nFirst choice: " + payload.first_choice + "\nSecond choice: " + payload.second_choice +
+          "\nMessage: " + payload.message;
+        window.location.href = "mailto:" + CONTACT_EMAIL +
+          "?subject=" + encodeURIComponent("Booking request from " + payload.name) +
+          "&body=" + encodeURIComponent(body);
+        statusEl.textContent = "We couldn't send the form directly — your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
+        statusEl.className = "form-status err";
+      })
+      .finally(function () { submitBtn.disabled = false; });
+  });
+</script>
+
+</body>
+</html>
