@@ -388,6 +388,11 @@
 <script>
   var CONTACT_EMAIL = "staff@klcs.jp";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+  // Optional spreadsheet backup (Google Apps Script web app; see gas/intake-sheet.gs).
+  // When SHEET_API_URL is set, every submission is also appended to the clinic's
+  // private Google Sheet. SHEET_WRITE_KEY only permits appending, not reading.
+  var SHEET_API_URL = "";
+  var SHEET_WRITE_KEY = "";
   var form = document.getElementById("intake-form");
   var statusEl = document.getElementById("if-status");
   var submitBtn = document.getElementById("if-submit");
@@ -450,6 +455,19 @@
     };
 
     submitBtn.disabled = true;
+
+    if (SHEET_API_URL && SHEET_WRITE_KEY) {
+      // Fire-and-forget append to the clinic spreadsheet; text/plain avoids a
+      // CORS preflight that Apps Script can't answer. Email remains the
+      // authoritative delivery below.
+      fetch(SHEET_API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(Object.assign({ key: SHEET_WRITE_KEY }, payload)),
+      }).catch(function () {});
+    }
+
     fetch(FORM_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },

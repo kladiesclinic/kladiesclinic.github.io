@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Staff Dashboard — K Ladies Clinic Shinjuku</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232B2124'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/sub.css" />
+<style>
+  .wrap { max-width: 900px; }
+  .tool-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
+  @media (min-width: 640px) { .tool-grid { grid-template-columns: 1fr 1fr; } }
+  .tool-card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px; display: block;
+  }
+  .tool-card h3 { font-family: var(--serif); font-size: 19px; font-weight: 400; margin-bottom: 6px; }
+  .tool-card p { font-size: 13px; line-height: 1.6; color: var(--soft); }
+  .tool-card .go { color: var(--accent); font-size: 13px; font-weight: 600; margin-top: 10px; display: inline-block; }
+
+  .key-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .key-row input {
+    flex: 1; min-width: 220px; font-family: var(--sans); font-size: 15px;
+    padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+    background: #FFFFFF; outline: none;
+  }
+  .key-row input:focus { border-color: var(--accent); }
+  .key-row button {
+    font-family: var(--sans); font-size: 14px; font-weight: 600; cursor: pointer;
+    padding: 12px 22px; border-radius: 999px; border: none;
+    background: var(--ink); color: var(--paper);
+  }
+  .status-line { font-size: 13px; color: var(--faint); margin-top: 10px; }
+  .status-line.err { color: var(--accent); }
+
+  table.records { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13.5px; background: #FFFFFF; border-radius: 12px; overflow: hidden; }
+  .records th, .records td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .records th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--soft); background: #FFF; }
+  .records tbody tr { cursor: pointer; }
+  .records tbody tr:hover { background: var(--paper); }
+  .records-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+
+  #detail { margin-top: 28px; display: none; }
+  #detail.open { display: block; }
+  .detail-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+  .detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .detail-head h2 { font-family: var(--serif); font-size: 24px; font-weight: 400; }
+  .detail-head .meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
+  .detail-actions { display: flex; gap: 10px; }
+  .detail-actions button {
+    font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer;
+    padding: 10px 18px; border-radius: 999px;
+  }
+  .btn-print { background: var(--ink); color: var(--paper); border: none; }
+  .btn-close { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+  dl.answers { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .answers .pair { display: grid; grid-template-columns: 220px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid #F3EAE4; }
+  .answers dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); padding-top: 2px; }
+  .answers dd { font-size: 14px; color: var(--ink); word-break: break-word; }
+  .answers dd:empty::after { content: "—"; color: var(--faint); }
+  .flag { color: #B03A44; font-weight: 600; }
+
+  .print-header { display: none; }
+  @media print {
+    @page { size: A4; margin: 14mm 12mm; }
+    body { background: #FFF; font-size: 11px; }
+    header, .page-head, .tool-grid, .section-block, .key-row, .status-line,
+    .records-scroll, .detail-actions, footer { display: none !important; }
+    #detail { display: block !important; margin-top: 0; }
+    .detail-card { border: none; padding: 0; }
+    .print-header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px;
+    }
+    .print-header img { height: 30px; }
+    .print-header span { font-size: 12px; font-weight: 600; }
+    .answers .pair { grid-template-columns: 200px 1fr; padding: 4px 0; break-inside: avoid; }
+    .answers dt { font-size: 8.5px; }
+    .answers dd { font-size: 10.5px; }
+  }
+  .section-title { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-top: 48px; }
+  .section-title em { font-style: italic; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="./"><img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" class="brand-logo" /></a>
+    <span style="font-size:12px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#A8968F;">Staff only</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Internal &middot; Not linked from the public site</div>
+    <h1 class="display">Staff <em>dashboard.</em></h1>
+    <p class="lede">
+      Everything for running English online consultations: today's bookings and
+      Zoom links live in Calendly; patient intake forms are collected below.
+    </p>
+  </div>
+
+  <h2 class="section-title">Appointments &amp; <em>Zoom links</em></h2>
+  <div class="tool-grid">
+    <a class="tool-card" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
+      <h3>Upcoming bookings</h3>
+      <p>Calendly's Meetings page lists every booking with the patient's name,
+      email, and the <strong>Join Zoom</strong> link for each appointment.
+      Cancel or reschedule from there too.</p>
+      <span class="go">Open Calendly &rarr;</span>
+    </a>
+    <a class="tool-card" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
+      <h3>Availability settings</h3>
+      <p>Change bookable hours, block days off, or pause online bookings
+      entirely (toggle the event off).</p>
+      <span class="go">Manage availability &rarr;</span>
+    </a>
+  </div>
+
+  <h2 class="section-title">Intake form <em>records</em></h2>
+  <div class="section-block">
+    <div class="key-row">
+      <input id="read-key" type="password" placeholder="Staff access key" autocomplete="off" />
+      <button id="load-btn" type="button">Load records</button>
+    </div>
+    <p class="status-line" id="rec-status">Enter the staff access key to load submitted intake forms.</p>
+  </div>
+
+  <div class="records-scroll" id="records-wrap" style="display:none;">
+    <table class="records">
+      <thead>
+        <tr><th>Submitted</th><th>Name</th><th>Date of birth</th><th>Email</th></tr>
+      </thead>
+      <tbody id="records-body"></tbody>
+    </table>
+  </div>
+
+  <div id="detail">
+    <div class="detail-card">
+      <div class="print-header">
+        <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
+        <span>Pre-Consultation Intake Form (OC / LEP) &middot; ver. 2020</span>
+      </div>
+      <div class="detail-head">
+        <div>
+          <h2 id="d-name"></h2>
+          <div class="meta" id="d-meta"></div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn-print" type="button" onclick="window.print()">Print / save as PDF</button>
+          <button class="btn-close" type="button" onclick="document.getElementById('detail').classList.remove('open')">Close</button>
+        </div>
+      </div>
+      <dl class="answers" id="d-body"></dl>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>&copy; 2026 K Ladies Clinic Shinjuku &middot; Internal use only</span>
+    <span><a href="./">Public site</a></span>
+  </div>
+</footer>
+
+<script>
+  // Paste the Apps Script Web app URL here once it's deployed (ends in /exec).
+  var SHEET_API_URL = "";
+
+  var LABELS = {
+    timestamp: "Submitted at",
+    name: "Full name", email: "Email", date_of_birth: "Date of birth",
+    height_cm: "Height (cm)", weight_kg: "Weight (kg)", bmi: "BMI",
+    blood_pressure: "Blood pressure",
+    last_period_start: "Last period started", last_period_days: "Period length (days)",
+    abnormal_bleeding: "Unusual vaginal bleeding",
+    pregnant_or_possibly: "Pregnant / possibly pregnant",
+    breastfeeding: "Breastfeeding",
+    smoking: "Smokes", cigarettes_per_day: "Cigarettes per day",
+    migraine_or_blurred_vision: "Migraine / blurred vision",
+    current_acute_symptoms: "Acute symptoms now (ACHES)",
+    currently_in_treatment: "Currently in treatment", treatment_detail: "Treatment details",
+    past_hospitalization_or_surgery: "Past hospitalization / surgery",
+    hospitalization_detail: "Hospitalization details",
+    diagnosed_conditions: "Diagnosed conditions",
+    repeated_miscarriage_stillbirth: "Repeated miscarriage / stillbirth",
+    hypertensive_disorder_of_pregnancy: "Hypertensive disorder of pregnancy",
+    taking_medications: "Taking medications / supplements", medications_detail: "Medication details",
+    previous_oc_lep_use: "Previous OC / LEP use", previous_pill_name: "Previous pill name",
+    medication_allergy: "Medication allergy", allergy_detail: "Allergy details",
+    recent_or_planned_surgery: "Surgery within 2 wks / planned 4 wks",
+    family_history_thrombosis: "Family history: thrombosis",
+    family_history_breast_cancer: "Family history: breast cancer",
+    notes: "Patient notes",
+  };
+  var FLAG_IF_YES = [
+    "abnormal_bleeding", "pregnant_or_possibly", "breastfeeding", "smoking",
+    "current_acute_symptoms", "repeated_miscarriage_stillbirth",
+    "hypertensive_disorder_of_pregnancy", "medication_allergy",
+    "recent_or_planned_surgery", "family_history_thrombosis",
+    "family_history_breast_cancer",
+  ];
+
+  var keyInput = document.getElementById("read-key");
+  var statusEl = document.getElementById("rec-status");
+  var records = [];
+  keyInput.value = localStorage.getItem("klcs_read_key") || "";
+
+  document.getElementById("load-btn").addEventListener("click", loadRecords);
+
+  function loadRecords() {
+    if (!SHEET_API_URL) {
+      statusEl.textContent = "Not connected yet — the intake spreadsheet hasn't been set up. (See gas/intake-sheet.gs in the site repository.)";
+      statusEl.className = "status-line err";
+      return;
+    }
+    var key = keyInput.value.trim();
+    if (!key) { statusEl.textContent = "Please enter the staff access key."; statusEl.className = "status-line err"; return; }
+    statusEl.textContent = "Loading…"; statusEl.className = "status-line";
+    fetch(SHEET_API_URL + "?key=" + encodeURIComponent(key))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.error) throw new Error(data.error);
+        localStorage.setItem("klcs_read_key", key);
+        records = data.rows || [];
+        renderList();
+        statusEl.textContent = records.length + " record(s) loaded.";
+      })
+      .catch(function (err) {
+        statusEl.textContent = String(err).indexOf("unauthorized") !== -1
+          ? "Wrong access key." : "Could not load records — check your connection and key.";
+        statusEl.className = "status-line err";
+      });
+  }
+
+  function renderList() {
+    var body = document.getElementById("records-body");
+    body.innerHTML = "";
+    records.forEach(function (rec, i) {
+      var tr = document.createElement("tr");
+      [fmtDate(rec.timestamp), rec.name, rec.date_of_birth, rec.email].forEach(function (v) {
+        var td = document.createElement("td");
+        td.textContent = v || "—";
+        tr.appendChild(td);
+      });
+      tr.addEventListener("click", function () { showDetail(i); });
+      body.appendChild(tr);
+    });
+    document.getElementById("records-wrap").style.display = records.length ? "block" : "none";
+  }
+
+  function showDetail(i) {
+    var rec = records[i];
+    document.getElementById("d-name").textContent = rec.name || "(no name)";
+    document.getElementById("d-meta").textContent =
+      "Submitted " + fmtDate(rec.timestamp) + " · DOB " + (rec.date_of_birth || "—") + " · " + (rec.email || "");
+    var dl = document.getElementById("d-body");
+    dl.innerHTML = "";
+    Object.keys(LABELS).forEach(function (field) {
+      if (field === "name" || field === "timestamp") return;
+      var pair = document.createElement("div");
+      pair.className = "pair";
+      var dt = document.createElement("dt");
+      dt.textContent = LABELS[field];
+      var dd = document.createElement("dd");
+      var v = rec[field] || "";
+      dd.textContent = v;
+      var isYes = v.toLowerCase().indexOf("yes") === 0;
+      if ((FLAG_IF_YES.indexOf(field) !== -1 && isYes) ||
+          (field === "diagnosed_conditions" && v && v !== "None checked")) {
+        dd.classList.add("flag");
+      }
+      pair.appendChild(dt); pair.appendChild(dd);
+      dl.appendChild(pair);
+    });
+    document.getElementById("detail").classList.add("open");
+    document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleString("en-GB", { timeZone: "Asia/Tokyo", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+</script>
+
+</body>
+</html>
