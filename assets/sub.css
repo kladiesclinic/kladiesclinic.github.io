@@ -80,6 +80,7 @@ form textarea { min-height: 110px; resize: vertical; }
   display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; line-height: 1.5;
   color: var(--ink); padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
   background: var(--paper); cursor: pointer;
+  text-transform: none; letter-spacing: normal; font-weight: 400; margin-bottom: 0;
 }
 .choice input { margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
 .choice small { display: block; color: var(--faint); font-size: 12.5px; margin-top: 2px; }

@@ -11,6 +11,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/sub.css" />
+<style>
+  .q-block { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 22px; }
+  .q-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .yn-row { display: flex; gap: 10px; }
+  .yn-row .choice { flex: 1; justify-content: flex-start; }
+  .cond-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  @media (min-width: 560px) { .cond-grid { grid-template-columns: 1fr 1fr; } }
+  .section-label {
+    font-family: var(--serif); font-size: 20px; font-weight: 400;
+    margin: 34px 0 16px; color: var(--ink);
+  }
+  .section-label:first-child { margin-top: 0; }
+</style>
 </head>
 <body>
 
@@ -26,95 +39,258 @@
     <div class="eyebrow">Before your consultation</div>
     <h1 class="display">Your intake form, <em>in English.</em></h1>
     <p class="lede">
-      Answering these questions before your appointment helps the doctor make the
-      most of your consultation time. Our staff review your answers in advance —
-      everything is kept confidential.
+      These questions follow the official Japanese OC/LEP prescribing checklist
+      (Japan Society of Obstetrics and Gynecology, ver. 2020) — the same screening
+      every patient receives in Japanese. The doctor reviews your answers before
+      your consultation, and everything is kept confidential.
     </p>
   </div>
 
   <div class="card">
     <form id="intake-form" novalidate>
+
+      <div class="section-label">About you</div>
+
       <div class="field-row">
         <div class="field">
           <label for="if-name">Full name</label>
           <input id="if-name" type="text" autocomplete="name" required />
         </div>
         <div class="field">
-          <label for="if-dob">Date of birth</label>
-          <input id="if-dob" type="date" required />
+          <label for="if-email">Email address</label>
+          <input id="if-email" type="email" autocomplete="email" required />
         </div>
       </div>
 
       <div class="field-row">
         <div class="field">
-          <label for="if-email">Email address</label>
-          <input id="if-email" type="email" autocomplete="email" required />
+          <label for="if-dob">Date of birth</label>
+          <input id="if-dob" type="date" required />
         </div>
         <div class="field">
-          <label for="if-topic">Main concern</label>
-          <select id="if-topic" required>
-            <option value="">Please choose&hellip;</option>
-            <option>Birth control (starting or continuing)</option>
-            <option>Morning-after pill</option>
-            <option>PMS / mood</option>
-            <option>Irregular or heavy periods</option>
-            <option>Hormonal acne / skin</option>
-            <option>Menopause</option>
-            <option>Something else</option>
-          </select>
+          <label for="if-height">Height (cm)</label>
+          <input id="if-height" type="text" inputmode="decimal" placeholder="e.g. 165" required />
         </div>
       </div>
 
-      <div class="field">
-        <label for="if-symptoms">Tell us about your symptoms or request</label>
-        <textarea id="if-symptoms" required placeholder="What's been going on, and for how long?"></textarea>
+      <div class="field-row">
+        <div class="field">
+          <label for="if-weight">Weight (kg)</label>
+          <input id="if-weight" type="text" inputmode="decimal" placeholder="e.g. 55" required />
+        </div>
+        <div class="field">
+          <label for="if-bp">Blood pressure (if you know it)</label>
+          <input id="if-bp" type="text" placeholder="e.g. 118 / 76" />
+          <div class="hint">From a recent checkup or home monitor. Leave blank if unknown.</div>
+        </div>
       </div>
 
-      <div class="field">
-        <label for="if-meds">Current medications &amp; supplements</label>
-        <input id="if-meds" type="text" placeholder="Write &quot;none&quot; if none" required />
+      <div class="section-label">Your period</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="if-lmp">When did your last period start?</label>
+          <input id="if-lmp" type="date" required />
+        </div>
+        <div class="field">
+          <label for="if-lmp-days">How many days did it last?</label>
+          <input id="if-lmp-days" type="text" inputmode="numeric" placeholder="e.g. 5" required />
+        </div>
       </div>
 
-      <div class="field">
-        <label for="if-allergies">Allergies (medications, foods)</label>
-        <input id="if-allergies" type="text" placeholder="Write &quot;none&quot; if none" required />
+      <div class="q-block">
+        <div class="field">
+          <label>Do you have any unusual vaginal bleeding (outside your period)?</label>
+          <div class="yn-row">
+            <label class="choice"><input type="radio" name="bleeding" value="Yes" required /> Yes</label>
+            <label class="choice"><input type="radio" name="bleeding" value="No" /> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Are you pregnant, or possibly pregnant?</label>
+          <div class="yn-row">
+            <label class="choice"><input type="radio" name="pregnant" value="Yes" required /> Yes</label>
+            <label class="choice"><input type="radio" name="pregnant" value="No" /> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Are you currently breastfeeding?</label>
+          <div class="yn-row">
+            <label class="choice"><input type="radio" name="breastfeeding" value="Yes" required /> Yes</label>
+            <label class="choice"><input type="radio" name="breastfeeding" value="No" /> No</label>
+          </div>
+        </div>
       </div>
+
+      <div class="section-label">Lifestyle &amp; symptoms</div>
 
       <div class="field">
         <label>Do you smoke?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="smoke" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="smoke" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-smoke-count">If yes — roughly how many cigarettes per day?</label>
+        <input id="if-smoke-count" type="text" inputmode="numeric" placeholder="e.g. 10" />
+      </div>
+
+      <div class="field">
+        <label>Do you get severe headaches or migraines, or episodes of blurred vision?</label>
         <div class="choice-group">
-          <label class="choice"><input type="radio" name="smoke" value="No" required /> No</label>
-          <label class="choice"><input type="radio" name="smoke" value="Yes" /> Yes<small>If yes, roughly how many per day? You can add this below.</small></label>
+          <label class="choice"><input type="radio" name="migraine" value="No" required /> No</label>
+          <label class="choice"><input type="radio" name="migraine" value="Yes, without aura" /> Yes — without aura</label>
+          <label class="choice"><input type="radio" name="migraine" value="Yes, with aura" /> Yes — with aura<small>e.g. flashing or shimmering lights before the headache</small></label>
         </div>
       </div>
 
       <div class="field">
-        <label>Do any of these apply to you? (check all that apply)</label>
-        <div class="choice-group">
-          <label class="choice"><input type="checkbox" name="history" value="History of blood clots (DVT/PE)" /> History of blood clots (DVT / pulmonary embolism)</label>
-          <label class="choice"><input type="checkbox" name="history" value="Migraine with aura" /> Migraines with aura</label>
-          <label class="choice"><input type="checkbox" name="history" value="High blood pressure" /> High blood pressure</label>
-          <label class="choice"><input type="checkbox" name="history" value="Breast cancer (self or close family)" /> Breast cancer (yourself or a close family member)</label>
-          <label class="choice"><input type="checkbox" name="history" value="Currently pregnant or possibly pregnant" /> Currently pregnant, or possibly pregnant</label>
-          <label class="choice"><input type="checkbox" name="history" value="Breastfeeding" /> Currently breastfeeding</label>
-          <label class="choice"><input type="checkbox" name="history" value="None of the above" /> None of the above</label>
+        <label>Right now, do you have any of the following: calf pain or swelling, sudden shortness of breath, chest pain, severe headache, fainting, blurred vision, or slurred speech?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="aches" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="aches" value="No" /> No</label>
+        </div>
+      </div>
+
+      <div class="section-label">Medical history</div>
+
+      <div class="field">
+        <label>Are you currently being treated by a doctor for anything?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="in_treatment" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="in_treatment" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-treatment-detail">If yes — for what condition?</label>
+        <input id="if-treatment-detail" type="text" />
+      </div>
+
+      <div class="field">
+        <label>Have you ever had a serious illness that needed hospitalization or surgery?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="hospitalized" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="hospitalized" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-hosp-detail">If yes — what was it?</label>
+        <input id="if-hosp-detail" type="text" />
+      </div>
+
+      <div class="field">
+        <label>Have you ever been told you have any of the following? (check all that apply)</label>
+        <div class="cond-grid">
+          <label class="choice"><input type="checkbox" name="cond" value="Deep vein thrombosis" /> Deep vein thrombosis (DVT)</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Pulmonary embolism" /> Pulmonary embolism</label>
+          <label class="choice"><input type="checkbox" name="cond" value="SLE (lupus)" /> SLE (lupus)</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Antiphospholipid syndrome" /> Antiphospholipid syndrome</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Thrombophilia (clotting disorder)" /> Thrombophilia (clotting disorder)</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Stroke / cerebrovascular disease" /> Stroke / cerebrovascular disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Coronary artery disease" /> Coronary artery disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Heart valve disease" /> Heart valve disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Arrhythmia" /> Arrhythmia</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Kidney disease" /> Kidney disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="High blood pressure" /> High blood pressure</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Diabetes" /> Diabetes</label>
+          <label class="choice"><input type="checkbox" name="cond" value="High cholesterol (dyslipidemia)" /> High cholesterol (dyslipidemia)</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Liver disease / liver tumor" /> Liver disease / liver tumor</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Gallbladder disease" /> Gallbladder disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Cervical cancer" /> Cervical cancer</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Uterine (endometrial) cancer" /> Uterine (endometrial) cancer</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Breast cancer" /> Breast cancer</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Porphyria" /> Porphyria</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Epilepsy" /> Epilepsy</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Tetany" /> Tetany</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Crohn's disease" /> Crohn's disease</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Ulcerative colitis" /> Ulcerative colitis</label>
+          <label class="choice"><input type="checkbox" name="cond" value="None of the above" /> None of the above</label>
         </div>
       </div>
 
       <div class="field">
-        <label for="if-pillhistory">Have you taken birth control pills before?</label>
-        <select id="if-pillhistory" required>
-          <option value="">Please choose&hellip;</option>
-          <option>No, never</option>
-          <option>Yes, currently taking them</option>
-          <option>Yes, in the past</option>
-          <option>Not applicable</option>
-        </select>
-        <div class="hint">If yes, feel free to add the pill name in the notes below.</div>
+        <label>Have you had repeated miscarriages or stillbirths?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="miscarriage" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="miscarriage" value="No" /> No</label>
+        </div>
       </div>
 
       <div class="field">
-        <label for="if-notes">Anything else the doctor should know? (optional)</label>
+        <label>During a pregnancy, were you ever told you had hypertensive disorders of pregnancy (pre-eclampsia / toxemia)?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="preeclampsia" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="preeclampsia" value="No" /> No</label>
+        </div>
+      </div>
+
+      <div class="section-label">Medications &amp; allergies</div>
+
+      <div class="field">
+        <label>Are you currently taking any medications or supplements?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="meds" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="meds" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-meds-detail">If yes — which ones?</label>
+        <input id="if-meds-detail" type="text" />
+      </div>
+
+      <div class="field">
+        <label>Have you taken birth control pills (OC) or LEP before?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="oc_history" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="oc_history" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-oc-detail">If yes — which pill?</label>
+        <input id="if-oc-detail" type="text" />
+      </div>
+
+      <div class="field">
+        <label>Have you ever had an allergic reaction to a medication (hives, rash, etc.)?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="allergy" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="allergy" value="No" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="if-allergy-detail">If yes — which medication?</label>
+        <input id="if-allergy-detail" type="text" />
+      </div>
+
+      <div class="section-label">Surgery &amp; family history</div>
+
+      <div class="field">
+        <label>Have you had major surgery in the past 2 weeks, or is surgery planned in the next 4 weeks?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="surgery" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="surgery" value="No" /> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Has anyone in your family had blood clots (thrombosis)?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="family_clots" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="family_clots" value="No" /> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Has anyone in your family had breast cancer?</label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="family_breast_cancer" value="Yes" required /> Yes</label>
+          <label class="choice"><input type="radio" name="family_breast_cancer" value="No" /> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="if-notes">Anything else you're concerned about, or would like to ask about your body or the pill? (optional)</label>
         <textarea id="if-notes"></textarea>
       </div>
 
@@ -132,9 +308,11 @@
   </div>
 
   <div class="note-box">
-    This form is reviewed by clinic staff before your consultation and treated as
-    confidential medical information. It is not for emergencies — if you need urgent
-    care, call <strong>119</strong> (ambulance) or visit the nearest emergency department.
+    Based on the "OC/LEP first-prescription intake checklist (ver. 2020)" from the
+    official Japanese prescribing guideline. Your answers are reviewed by clinic
+    staff before your consultation and treated as confidential medical information.
+    This form is not for emergencies — if you need urgent care, call
+    <strong>119</strong> (ambulance) or visit the nearest emergency department.
   </div>
 </main>
 
@@ -152,26 +330,57 @@
   var statusEl = document.getElementById("if-status");
   var submitBtn = document.getElementById("if-submit");
 
+  function radioVal(name) {
+    var el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : "";
+  }
+  function val(id) { return document.getElementById(id).value.trim(); }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.className = "form-status";
     if (!form.reportValidity()) return;
     if (document.getElementById("if-company").value) return; // honeypot
 
-    var history = [].map.call(document.querySelectorAll('input[name="history"]:checked'), function (c) { return c.value; }).join("; ") || "None checked";
-    var smoke = (document.querySelector('input[name="smoke"]:checked') || {}).value || "";
+    var h = parseFloat(val("if-height"));
+    var w = parseFloat(val("if-weight"));
+    var bmi = h > 0 && w > 0 ? (w / Math.pow(h / 100, 2)).toFixed(1) : "";
+    var conditions = [].map.call(document.querySelectorAll('input[name="cond"]:checked'), function (c) { return c.value; }).join("; ") || "None checked";
+
     var payload = {
-      name: document.getElementById("if-name").value.trim(),
-      date_of_birth: document.getElementById("if-dob").value,
-      email: document.getElementById("if-email").value.trim(),
-      main_concern: document.getElementById("if-topic").value,
-      symptoms: document.getElementById("if-symptoms").value.trim(),
-      medications: document.getElementById("if-meds").value.trim(),
-      allergies: document.getElementById("if-allergies").value.trim(),
-      smoking: smoke,
-      medical_history: history,
-      pill_history: document.getElementById("if-pillhistory").value,
-      notes: document.getElementById("if-notes").value.trim(),
+      name: val("if-name"),
+      email: val("if-email"),
+      date_of_birth: val("if-dob"),
+      height_cm: val("if-height"),
+      weight_kg: val("if-weight"),
+      bmi: bmi,
+      blood_pressure: val("if-bp"),
+      last_period_start: val("if-lmp"),
+      last_period_days: val("if-lmp-days"),
+      abnormal_bleeding: radioVal("bleeding"),
+      pregnant_or_possibly: radioVal("pregnant"),
+      breastfeeding: radioVal("breastfeeding"),
+      smoking: radioVal("smoke"),
+      cigarettes_per_day: val("if-smoke-count"),
+      migraine_or_blurred_vision: radioVal("migraine"),
+      current_acute_symptoms: radioVal("aches"),
+      currently_in_treatment: radioVal("in_treatment"),
+      treatment_detail: val("if-treatment-detail"),
+      past_hospitalization_or_surgery: radioVal("hospitalized"),
+      hospitalization_detail: val("if-hosp-detail"),
+      diagnosed_conditions: conditions,
+      repeated_miscarriage_stillbirth: radioVal("miscarriage"),
+      hypertensive_disorder_of_pregnancy: radioVal("preeclampsia"),
+      taking_medications: radioVal("meds"),
+      medications_detail: val("if-meds-detail"),
+      previous_oc_lep_use: radioVal("oc_history"),
+      previous_pill_name: val("if-oc-detail"),
+      medication_allergy: radioVal("allergy"),
+      allergy_detail: val("if-allergy-detail"),
+      recent_or_planned_surgery: radioVal("surgery"),
+      family_history_thrombosis: radioVal("family_clots"),
+      family_history_breast_cancer: radioVal("family_breast_cancer"),
+      notes: val("if-notes"),
     };
 
     submitBtn.disabled = true;
@@ -179,7 +388,7 @@
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(Object.assign({
-        _subject: "[Intake form] " + payload.name + " — " + payload.main_concern,
+        _subject: "[Intake form] " + payload.name,
         _template: "table",
         _captcha: "false",
       }, payload)),
