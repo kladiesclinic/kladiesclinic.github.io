@@ -58,9 +58,12 @@
   .btn-print { background: var(--ink); color: var(--paper); border: none; }
   .btn-close { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
   dl.answers { display: grid; grid-template-columns: 1fr; gap: 0; }
-  .answers .pair { display: grid; grid-template-columns: 220px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid #F3EAE4; }
-  .answers dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); padding-top: 2px; }
+  .answers .pair { display: grid; grid-template-columns: 250px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid #F3EAE4; }
+  .answers dt { padding-top: 2px; }
+  .answers dt .lbl-ja { display: block; font-size: 13px; color: var(--ink); line-height: 1.45; }
+  .answers dt .lbl-en { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint); margin-top: 1px; }
   .answers dd { font-size: 14px; color: var(--ink); word-break: break-word; }
+  .answers dd .val-en { display: block; font-size: 11px; color: var(--faint); margin-top: 1px; }
   .answers dd:empty::after { content: "—"; color: var(--faint); }
   .flag { color: #B03A44; font-weight: 600; }
 
@@ -78,9 +81,11 @@
     }
     .print-header img { height: 30px; }
     .print-header span { font-size: 12px; font-weight: 600; }
-    .answers .pair { grid-template-columns: 200px 1fr; padding: 4px 0; break-inside: avoid; }
-    .answers dt { font-size: 8.5px; }
+    .answers .pair { grid-template-columns: 230px 1fr; padding: 3px 0; break-inside: avoid; }
+    .answers dt .lbl-ja { font-size: 10px; }
+    .answers dt .lbl-en { font-size: 7px; }
     .answers dd { font-size: 10.5px; }
+    .answers dd .val-en { font-size: 8px; }
   }
   .section-title { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-top: 48px; }
   .section-title em { font-style: italic; color: var(--accent); }
@@ -144,7 +149,7 @@
     <div class="detail-card">
       <div class="print-header">
         <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
-        <span>Pre-Consultation Intake Form (OC / LEP) &middot; ver. 2020</span>
+        <span>OC・LEP初回処方時問診チェックシート（ver. 2020）／ Pre-Consultation Intake Form</span>
       </div>
       <div class="detail-head">
         <div>
@@ -172,32 +177,90 @@
   // Paste the Apps Script Web app URL here once it's deployed (ends in /exec).
   var SHEET_API_URL = "";
 
+  // ja = original wording from the JSOG OC/LEP checklist (ver. 2020) so the
+  // (Japanese) doctor reads familiar terms; en = what the patient was asked.
   var LABELS = {
-    timestamp: "Submitted at",
-    name: "Full name", email: "Email", date_of_birth: "Date of birth",
-    height_cm: "Height (cm)", weight_kg: "Weight (kg)", bmi: "BMI",
-    blood_pressure: "Blood pressure",
-    last_period_start: "Last period started", last_period_days: "Period length (days)",
-    abnormal_bleeding: "Unusual vaginal bleeding",
-    pregnant_or_possibly: "Pregnant / possibly pregnant",
-    breastfeeding: "Breastfeeding",
-    smoking: "Smokes", cigarettes_per_day: "Cigarettes per day",
-    migraine_or_blurred_vision: "Migraine / blurred vision",
-    current_acute_symptoms: "Acute symptoms now (ACHES)",
-    currently_in_treatment: "Currently in treatment", treatment_detail: "Treatment details",
-    past_hospitalization_or_surgery: "Past hospitalization / surgery",
-    hospitalization_detail: "Hospitalization details",
-    diagnosed_conditions: "Diagnosed conditions",
-    repeated_miscarriage_stillbirth: "Repeated miscarriage / stillbirth",
-    hypertensive_disorder_of_pregnancy: "Hypertensive disorder of pregnancy",
-    taking_medications: "Taking medications / supplements", medications_detail: "Medication details",
-    previous_oc_lep_use: "Previous OC / LEP use", previous_pill_name: "Previous pill name",
-    medication_allergy: "Medication allergy", allergy_detail: "Allergy details",
-    recent_or_planned_surgery: "Surgery within 2 wks / planned 4 wks",
-    family_history_thrombosis: "Family history: thrombosis",
-    family_history_breast_cancer: "Family history: breast cancer",
-    notes: "Patient notes",
+    timestamp: { ja: "送信日時", en: "Submitted at" },
+    name: { ja: "氏名", en: "Full name" },
+    email: { ja: "メールアドレス", en: "Email" },
+    date_of_birth: { ja: "生年月日", en: "Date of birth" },
+    height_cm: { ja: "身長（cm）", en: "Height (cm)" },
+    weight_kg: { ja: "体重（kg）", en: "Weight (kg)" },
+    bmi: { ja: "BMI（自動計算）", en: "BMI (auto)" },
+    blood_pressure: { ja: "血圧", en: "Blood pressure" },
+    last_period_start: { ja: "最終月経の開始日", en: "Last period started" },
+    last_period_days: { ja: "月経の日数", en: "Period length (days)" },
+    abnormal_bleeding: { ja: "不正性器出血", en: "Unusual vaginal bleeding" },
+    pregnant_or_possibly: { ja: "妊娠中または妊娠の可能性", en: "Pregnant / possibly pregnant" },
+    breastfeeding: { ja: "授乳中", en: "Breastfeeding" },
+    smoking: { ja: "喫煙", en: "Smokes" },
+    cigarettes_per_day: { ja: "1日の本数", en: "Cigarettes per day" },
+    migraine_or_blurred_vision: { ja: "激しい頭痛・片頭痛・目のかすみ", en: "Migraine / blurred vision" },
+    current_acute_symptoms: { ja: "現在の急性症状（ACHES：ふくらはぎ痛・息切れ・胸痛・失神・舌のもつれ等）", en: "Acute symptoms now (ACHES)" },
+    currently_in_treatment: { ja: "現在治療中の疾患", en: "Currently in treatment" },
+    treatment_detail: { ja: "病名", en: "Treatment details" },
+    past_hospitalization_or_surgery: { ja: "入院・手術を要する大きな病気の既往", en: "Past hospitalization / surgery" },
+    hospitalization_detail: { ja: "その病名", en: "Hospitalization details" },
+    diagnosed_conditions: { ja: "既往・診断歴（チェックリスト）", en: "Diagnosed conditions" },
+    repeated_miscarriage_stillbirth: { ja: "流産・死産の反復", en: "Repeated miscarriage / stillbirth" },
+    hypertensive_disorder_of_pregnancy: { ja: "妊娠高血圧症候群（妊娠中毒症）の既往", en: "Hypertensive disorder of pregnancy" },
+    taking_medications: { ja: "服用中の薬・サプリメント", en: "Taking medications / supplements" },
+    medications_detail: { ja: "薬剤名", en: "Medication details" },
+    previous_oc_lep_use: { ja: "OC・LEPの服用歴", en: "Previous OC / LEP use" },
+    previous_pill_name: { ja: "服用していた薬剤名", en: "Previous pill name" },
+    medication_allergy: { ja: "薬剤アレルギー（じんましん等）", en: "Medication allergy" },
+    allergy_detail: { ja: "その薬剤名", en: "Allergy details" },
+    recent_or_planned_surgery: { ja: "2週間以内の手術／4週間以内の手術予定", en: "Surgery within 2 wks / planned 4 wks" },
+    family_history_thrombosis: { ja: "家族の血栓症歴", en: "Family history: thrombosis" },
+    family_history_breast_cancer: { ja: "家族の乳がん歴", en: "Family history: breast cancer" },
+    notes: { ja: "その他・心配なこと（自由記入）", en: "Patient notes" },
   };
+
+  // Answer values → Japanese (original checklist terms). Free text passes through.
+  var VALUE_JA = {
+    "Yes": "はい",
+    "No": "いいえ",
+    "Yes, without aura": "はい（前兆なし）",
+    "Yes, with aura": "はい（前兆あり：目がチカチカする等）",
+    "None checked": "該当なし",
+    "None of the above": "該当なし",
+    "Deep vein thrombosis (DVT)": "深部静脈血栓",
+    "Pulmonary embolism": "肺塞栓症",
+    "SLE (lupus)": "SLE",
+    "Antiphospholipid syndrome": "抗リン脂質抗体症候群",
+    "Thrombophilia (clotting disorder)": "血栓性素因",
+    "Stroke / cerebrovascular disease": "脳血管障害",
+    "Coronary artery disease": "冠動脈疾患",
+    "Heart valve disease": "心臓弁膜症",
+    "Arrhythmia": "不整脈",
+    "Kidney disease": "腎機能障害",
+    "High blood pressure": "高血圧",
+    "Diabetes": "糖尿病",
+    "High cholesterol (dyslipidemia)": "脂質代謝異常（高脂血症）",
+    "Liver disease / liver tumor": "肝機能障害・肝腫瘍",
+    "Gallbladder disease": "胆嚢疾患",
+    "Cervical cancer": "子宮頸がん",
+    "Uterine (endometrial) cancer": "子宮体がん",
+    "Breast cancer": "乳がん",
+    "Porphyria": "ポルフィリン症",
+    "Epilepsy": "てんかん",
+    "Tetany": "テタニー",
+    "Crohn's disease": "クローン病",
+    "Ulcerative colitis": "潰瘍性大腸炎",
+  };
+
+  function translateValue(v) {
+    if (!v) return "";
+    if (VALUE_JA[v]) return VALUE_JA[v];
+    // semicolon-separated checklist values
+    if (v.indexOf(";") !== -1) {
+      return v.split(";").map(function (part) {
+        var p = part.trim();
+        return VALUE_JA[p] || p;
+      }).join("、");
+    }
+    return null; // free text — no translation
+  }
   var FLAG_IF_YES = [
     "abnormal_bleeding", "pregnant_or_possibly", "breastfeeding", "smoking",
     "current_acute_symptoms", "repeated_miscarriage_stillbirth",
@@ -265,14 +328,33 @@
       if (field === "name" || field === "timestamp") return;
       var pair = document.createElement("div");
       pair.className = "pair";
+
       var dt = document.createElement("dt");
-      dt.textContent = LABELS[field];
+      var jaLabel = document.createElement("span");
+      jaLabel.className = "lbl-ja";
+      jaLabel.textContent = LABELS[field].ja;
+      var enLabel = document.createElement("span");
+      enLabel.className = "lbl-en";
+      enLabel.textContent = LABELS[field].en;
+      dt.appendChild(jaLabel); dt.appendChild(enLabel);
+
       var dd = document.createElement("dd");
       var v = rec[field] || "";
-      dd.textContent = v;
+      var ja = translateValue(v);
+      if (ja && ja !== v) {
+        var main = document.createElement("span");
+        main.textContent = ja;
+        var sub = document.createElement("span");
+        sub.className = "val-en";
+        sub.textContent = v;
+        dd.appendChild(main); dd.appendChild(sub);
+      } else {
+        dd.textContent = v;
+      }
+
       var isYes = v.toLowerCase().indexOf("yes") === 0;
       if ((FLAG_IF_YES.indexOf(field) !== -1 && isYes) ||
-          (field === "diagnosed_conditions" && v && v !== "None checked")) {
+          (field === "diagnosed_conditions" && v && v !== "None checked" && v !== "None of the above")) {
         dd.classList.add("flag");
       }
       pair.appendChild(dt); pair.appendChild(dd);
