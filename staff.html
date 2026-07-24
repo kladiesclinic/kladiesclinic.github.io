@@ -1,94 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Staff Dashboard — K Ladies Clinic Shinjuku</title>
+<title>Staff — K Ladies Clinic Shinjuku</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232B2124'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/sub.css" />
 <style>
-  .wrap { max-width: 900px; }
-  .tool-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
+  body { font-family: 'Noto Sans JP', var(--sans); }
+  .wrap { max-width: 860px; }
+  .tool-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
   @media (min-width: 640px) { .tool-grid { grid-template-columns: 1fr 1fr; } }
   .tool-card {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px;
     padding: 22px; display: block;
   }
-  .tool-card h3 { font-family: var(--serif); font-size: 19px; font-weight: 400; margin-bottom: 6px; }
-  .tool-card p { font-size: 13px; line-height: 1.6; color: var(--soft); }
+  .tool-card.primary { border: 2px solid var(--ink); }
+  .tool-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .tool-card p { font-size: 13px; line-height: 1.7; color: var(--soft); }
   .tool-card .go { color: var(--accent); font-size: 13px; font-weight: 600; margin-top: 10px; display: inline-block; }
-
-  .key-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
-  .key-row input {
-    flex: 1; min-width: 220px; font-family: var(--sans); font-size: 15px;
-    padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
-    background: #FFFFFF; outline: none;
+  .tool-card.pending { opacity: 0.55; }
+  .tool-card.pending .go { color: var(--faint); }
+  .section-title { font-family: var(--serif); font-size: 24px; font-weight: 300; margin-top: 44px; }
+  .flow-note {
+    border: 1px solid var(--line); border-left: 3px solid var(--accent-light);
+    border-radius: 0 12px 12px 0; background: #FFFFFF;
+    padding: 14px 18px; font-size: 13px; line-height: 1.8; color: var(--soft); margin-top: 24px;
   }
-  .key-row input:focus { border-color: var(--accent); }
-  .key-row button {
-    font-family: var(--sans); font-size: 14px; font-weight: 600; cursor: pointer;
-    padding: 12px 22px; border-radius: 999px; border: none;
-    background: var(--ink); color: var(--paper);
-  }
-  .status-line { font-size: 13px; color: var(--faint); margin-top: 10px; }
-  .status-line.err { color: var(--accent); }
-
-  table.records { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13.5px; background: #FFFFFF; border-radius: 12px; overflow: hidden; }
-  .records th, .records td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
-  .records th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--soft); background: #FFF; }
-  .records tbody tr { cursor: pointer; }
-  .records tbody tr:hover { background: var(--paper); }
-  .records-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
-
-  #detail { margin-top: 28px; display: none; }
-  #detail.open { display: block; }
-  .detail-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
-  .detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
-  .detail-head h2 { font-family: var(--serif); font-size: 24px; font-weight: 400; }
-  .detail-head .meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
-  .detail-actions { display: flex; gap: 10px; }
-  .detail-actions button {
-    font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer;
-    padding: 10px 18px; border-radius: 999px;
-  }
-  .btn-print { background: var(--ink); color: var(--paper); border: none; }
-  .btn-close { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
-  dl.answers { display: grid; grid-template-columns: 1fr; gap: 0; }
-  .answers .pair { display: grid; grid-template-columns: 250px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid #F3EAE4; }
-  .answers dt { padding-top: 2px; }
-  .answers dt .lbl-ja { display: block; font-size: 13px; color: var(--ink); line-height: 1.45; }
-  .answers dt .lbl-en { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint); margin-top: 1px; }
-  .answers dd { font-size: 14px; color: var(--ink); word-break: break-word; }
-  .answers dd .val-en { display: block; font-size: 11px; color: var(--faint); margin-top: 1px; }
-  .answers dd:empty::after { content: "—"; color: var(--faint); }
-  .flag { color: #B03A44; font-weight: 600; }
-
-  .print-header { display: none; }
-  @media print {
-    @page { size: A4; margin: 14mm 12mm; }
-    body { background: #FFF; font-size: 11px; }
-    header, .page-head, .tool-grid, .section-block, .key-row, .status-line,
-    .records-scroll, .detail-actions, footer { display: none !important; }
-    #detail { display: block !important; margin-top: 0; }
-    .detail-card { border: none; padding: 0; }
-    .print-header {
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px;
-    }
-    .print-header img { height: 30px; }
-    .print-header span { font-size: 12px; font-weight: 600; }
-    .answers .pair { grid-template-columns: 230px 1fr; padding: 3px 0; break-inside: avoid; }
-    .answers dt .lbl-ja { font-size: 10px; }
-    .answers dt .lbl-en { font-size: 7px; }
-    .answers dd { font-size: 10.5px; }
-    .answers dd .val-en { font-size: 8px; }
-  }
-  .section-title { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-top: 48px; }
-  .section-title em { font-style: italic; color: var(--accent); }
 </style>
 </head>
 <body>
@@ -96,280 +38,81 @@
 <header>
   <div class="header-inner">
     <a href="./"><img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" class="brand-logo" /></a>
-    <span style="font-size:12px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#A8968F;">Staff only</span>
+    <span style="font-size:12px; font-weight:600; letter-spacing:0.14em; color:#A8968F;">スタッフ用</span>
   </div>
 </header>
 
 <main class="wrap">
   <div class="page-head">
-    <div class="eyebrow">Internal &middot; Not linked from the public site</div>
-    <h1 class="display">Staff <em>dashboard.</em></h1>
+    <div class="eyebrow">Internal &middot; 公開サイトからはリンクされていません</div>
+    <h1 class="display">スタッフ<em>ページ</em></h1>
     <p class="lede">
-      Everything for running English online consultations: today's bookings and
-      Zoom links live in Calendly; patient intake forms are collected below.
+      英語オンライン診療の運用に必要なものをここにまとめています。
+      予約とZoomはCalendly、問診票はGoogleドライブに自動保存されます。
     </p>
   </div>
 
-  <h2 class="section-title">Appointments &amp; <em>Zoom links</em></h2>
+  <h2 class="section-title">予約・Zoom</h2>
   <div class="tool-grid">
-    <a class="tool-card" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
-      <h3>Upcoming bookings</h3>
-      <p>Calendly's Meetings page lists every booking with the patient's name,
-      email, and the <strong>Join Zoom</strong> link for each appointment.
-      Cancel or reschedule from there too.</p>
-      <span class="go">Open Calendly &rarr;</span>
+    <a class="tool-card primary" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
+      <h3>📅 予約一覧（時間順）</h3>
+      <p>今日・今後の予約が時間順に並びます。<strong>患者名・メールアドレス・各予約の「Join」ボタン（Zoom参加リンク）</strong>もここに表示。キャンセル・日時変更もこの画面からできます。</p>
+      <span class="go">Calendlyを開く →</span>
     </a>
     <a class="tool-card" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
-      <h3>Availability settings</h3>
-      <p>Change bookable hours, block days off, or pause online bookings
-      entirely (toggle the event off).</p>
-      <span class="go">Manage availability &rarr;</span>
+      <h3>⚙️ 予約可能時間の設定</h3>
+      <p>診察枠の変更、休診日のブロック、オンライン予約の一時停止（イベントのオン/オフ）はこちら。</p>
+      <span class="go">設定を開く →</span>
     </a>
   </div>
 
-  <h2 class="section-title">Intake form <em>records</em></h2>
-  <div class="section-block">
-    <div class="key-row">
-      <input id="read-key" type="password" placeholder="Staff access key" autocomplete="off" />
-      <button id="load-btn" type="button">Load records</button>
-    </div>
-    <p class="status-line" id="rec-status">Enter the staff access key to load submitted intake forms.</p>
+  <h2 class="section-title">問診票</h2>
+  <div class="tool-grid">
+    <a class="tool-card pending" id="drive-card" href="#">
+      <h3>🗂 問診票PDFフォルダ（Googleドライブ）</h3>
+      <p>問診票が送信されるたびに、<strong>日本語訳付きのA4 PDF</strong>（ファイル名：日付＋患者名）が自動で追加されます。診察前に開いて確認・印刷してください。リスク回答は赤字表示。</p>
+      <span class="go">※初期設定待ち</span>
+    </a>
+    <a class="tool-card pending" id="sheet-card" href="#">
+      <h3>📊 問診票一覧（スプレッドシート）</h3>
+      <p>全送信データが1行ずつ蓄積される一覧表。名前や日付での検索・並び替えに便利です。</p>
+      <span class="go">※初期設定待ち</span>
+    </a>
   </div>
 
-  <div class="records-scroll" id="records-wrap" style="display:none;">
-    <table class="records">
-      <thead>
-        <tr><th>Submitted</th><th>Name</th><th>Date of birth</th><th>Email</th></tr>
-      </thead>
-      <tbody id="records-body"></tbody>
-    </table>
-  </div>
-
-  <div id="detail">
-    <div class="detail-card">
-      <div class="print-header">
-        <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
-        <span>OC・LEP初回処方時問診チェックシート（ver. 2020）／ Pre-Consultation Intake Form</span>
-      </div>
-      <div class="detail-head">
-        <div>
-          <h2 id="d-name"></h2>
-          <div class="meta" id="d-meta"></div>
-        </div>
-        <div class="detail-actions">
-          <button class="btn-print" type="button" onclick="window.print()">Print / save as PDF</button>
-          <button class="btn-close" type="button" onclick="document.getElementById('detail').classList.remove('open')">Close</button>
-        </div>
-      </div>
-      <dl class="answers" id="d-body"></dl>
-    </div>
+  <div class="flow-note">
+    <strong>診察前の流れ：</strong>
+    ① Calendlyの予約一覧で次の患者名と時間を確認 →
+    ② ドライブの問診票フォルダで同じ患者名のPDFを開く（必要ならA4印刷して医師へ）→
+    ③ 時間になったらCalendlyの「Join」からZoomに入室。<br />
+    ※問診票はメールでも staff@klcs.jp に届いています（バックアップ）。
+    閲覧にはクリニックのGoogleアカウントへのログインだけが必要です — 追加のパスワードやキーはありません。
   </div>
 </main>
 
 <footer>
   <div class="footer-inner">
     <span>&copy; 2026 K Ladies Clinic Shinjuku &middot; Internal use only</span>
-    <span><a href="./">Public site</a></span>
+    <span><a href="./">公開サイトへ</a></span>
   </div>
 </footer>
 
 <script>
-  // Paste the Apps Script Web app URL here once it's deployed (ends in /exec).
-  var SHEET_API_URL = "";
-
-  // ja = original wording from the JSOG OC/LEP checklist (ver. 2020) so the
-  // (Japanese) doctor reads familiar terms; en = what the patient was asked.
-  var LABELS = {
-    timestamp: { ja: "送信日時", en: "Submitted at" },
-    name: { ja: "氏名", en: "Full name" },
-    email: { ja: "メールアドレス", en: "Email" },
-    date_of_birth: { ja: "生年月日", en: "Date of birth" },
-    height_cm: { ja: "身長（cm）", en: "Height (cm)" },
-    weight_kg: { ja: "体重（kg）", en: "Weight (kg)" },
-    bmi: { ja: "BMI（自動計算）", en: "BMI (auto)" },
-    blood_pressure: { ja: "血圧", en: "Blood pressure" },
-    last_period_start: { ja: "最終月経の開始日", en: "Last period started" },
-    last_period_days: { ja: "月経の日数", en: "Period length (days)" },
-    abnormal_bleeding: { ja: "不正性器出血", en: "Unusual vaginal bleeding" },
-    pregnant_or_possibly: { ja: "妊娠中または妊娠の可能性", en: "Pregnant / possibly pregnant" },
-    breastfeeding: { ja: "授乳中", en: "Breastfeeding" },
-    smoking: { ja: "喫煙", en: "Smokes" },
-    cigarettes_per_day: { ja: "1日の本数", en: "Cigarettes per day" },
-    migraine_or_blurred_vision: { ja: "激しい頭痛・片頭痛・目のかすみ", en: "Migraine / blurred vision" },
-    current_acute_symptoms: { ja: "現在の急性症状（ACHES：ふくらはぎ痛・息切れ・胸痛・失神・舌のもつれ等）", en: "Acute symptoms now (ACHES)" },
-    currently_in_treatment: { ja: "現在治療中の疾患", en: "Currently in treatment" },
-    treatment_detail: { ja: "病名", en: "Treatment details" },
-    past_hospitalization_or_surgery: { ja: "入院・手術を要する大きな病気の既往", en: "Past hospitalization / surgery" },
-    hospitalization_detail: { ja: "その病名", en: "Hospitalization details" },
-    diagnosed_conditions: { ja: "既往・診断歴（チェックリスト）", en: "Diagnosed conditions" },
-    repeated_miscarriage_stillbirth: { ja: "流産・死産の反復", en: "Repeated miscarriage / stillbirth" },
-    hypertensive_disorder_of_pregnancy: { ja: "妊娠高血圧症候群（妊娠中毒症）の既往", en: "Hypertensive disorder of pregnancy" },
-    taking_medications: { ja: "服用中の薬・サプリメント", en: "Taking medications / supplements" },
-    medications_detail: { ja: "薬剤名", en: "Medication details" },
-    previous_oc_lep_use: { ja: "OC・LEPの服用歴", en: "Previous OC / LEP use" },
-    previous_pill_name: { ja: "服用していた薬剤名", en: "Previous pill name" },
-    medication_allergy: { ja: "薬剤アレルギー（じんましん等）", en: "Medication allergy" },
-    allergy_detail: { ja: "その薬剤名", en: "Allergy details" },
-    recent_or_planned_surgery: { ja: "2週間以内の手術／4週間以内の手術予定", en: "Surgery within 2 wks / planned 4 wks" },
-    family_history_thrombosis: { ja: "家族の血栓症歴", en: "Family history: thrombosis" },
-    family_history_breast_cancer: { ja: "家族の乳がん歴", en: "Family history: breast cancer" },
-    notes: { ja: "その他・心配なこと（自由記入）", en: "Patient notes" },
-  };
-
-  // Answer values → Japanese (original checklist terms). Free text passes through.
-  var VALUE_JA = {
-    "Yes": "はい",
-    "No": "いいえ",
-    "Yes, without aura": "はい（前兆なし）",
-    "Yes, with aura": "はい（前兆あり：目がチカチカする等）",
-    "None checked": "該当なし",
-    "None of the above": "該当なし",
-    "Deep vein thrombosis (DVT)": "深部静脈血栓",
-    "Pulmonary embolism": "肺塞栓症",
-    "SLE (lupus)": "SLE",
-    "Antiphospholipid syndrome": "抗リン脂質抗体症候群",
-    "Thrombophilia (clotting disorder)": "血栓性素因",
-    "Stroke / cerebrovascular disease": "脳血管障害",
-    "Coronary artery disease": "冠動脈疾患",
-    "Heart valve disease": "心臓弁膜症",
-    "Arrhythmia": "不整脈",
-    "Kidney disease": "腎機能障害",
-    "High blood pressure": "高血圧",
-    "Diabetes": "糖尿病",
-    "High cholesterol (dyslipidemia)": "脂質代謝異常（高脂血症）",
-    "Liver disease / liver tumor": "肝機能障害・肝腫瘍",
-    "Gallbladder disease": "胆嚢疾患",
-    "Cervical cancer": "子宮頸がん",
-    "Uterine (endometrial) cancer": "子宮体がん",
-    "Breast cancer": "乳がん",
-    "Porphyria": "ポルフィリン症",
-    "Epilepsy": "てんかん",
-    "Tetany": "テタニー",
-    "Crohn's disease": "クローン病",
-    "Ulcerative colitis": "潰瘍性大腸炎",
-  };
-
-  function translateValue(v) {
-    if (!v) return "";
-    if (VALUE_JA[v]) return VALUE_JA[v];
-    // semicolon-separated checklist values
-    if (v.indexOf(";") !== -1) {
-      return v.split(";").map(function (part) {
-        var p = part.trim();
-        return VALUE_JA[p] || p;
-      }).join("、");
+  // Set these once the Google Sheet + Apps Script are set up:
+  var DRIVE_FOLDER_URL = ""; // KLCS問診票PDF folder URL
+  var SHEET_URL = "";        // spreadsheet URL
+  function wire(id, url) {
+    var el = document.getElementById(id);
+    if (url) {
+      el.href = url; el.target = "_blank"; el.rel = "noopener";
+      el.classList.remove("pending");
+      el.querySelector(".go").textContent = "開く →";
+    } else {
+      el.addEventListener("click", function (e) { e.preventDefault(); });
     }
-    return null; // free text — no translation
   }
-  var FLAG_IF_YES = [
-    "abnormal_bleeding", "pregnant_or_possibly", "breastfeeding", "smoking",
-    "current_acute_symptoms", "repeated_miscarriage_stillbirth",
-    "hypertensive_disorder_of_pregnancy", "medication_allergy",
-    "recent_or_planned_surgery", "family_history_thrombosis",
-    "family_history_breast_cancer",
-  ];
-
-  var keyInput = document.getElementById("read-key");
-  var statusEl = document.getElementById("rec-status");
-  var records = [];
-  keyInput.value = localStorage.getItem("klcs_read_key") || "";
-
-  document.getElementById("load-btn").addEventListener("click", loadRecords);
-
-  function loadRecords() {
-    if (!SHEET_API_URL) {
-      statusEl.textContent = "Not connected yet — the intake spreadsheet hasn't been set up. (See gas/intake-sheet.gs in the site repository.)";
-      statusEl.className = "status-line err";
-      return;
-    }
-    var key = keyInput.value.trim();
-    if (!key) { statusEl.textContent = "Please enter the staff access key."; statusEl.className = "status-line err"; return; }
-    statusEl.textContent = "Loading…"; statusEl.className = "status-line";
-    fetch(SHEET_API_URL + "?key=" + encodeURIComponent(key))
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data.error) throw new Error(data.error);
-        localStorage.setItem("klcs_read_key", key);
-        records = data.rows || [];
-        renderList();
-        statusEl.textContent = records.length + " record(s) loaded.";
-      })
-      .catch(function (err) {
-        statusEl.textContent = String(err).indexOf("unauthorized") !== -1
-          ? "Wrong access key." : "Could not load records — check your connection and key.";
-        statusEl.className = "status-line err";
-      });
-  }
-
-  function renderList() {
-    var body = document.getElementById("records-body");
-    body.innerHTML = "";
-    records.forEach(function (rec, i) {
-      var tr = document.createElement("tr");
-      [fmtDate(rec.timestamp), rec.name, rec.date_of_birth, rec.email].forEach(function (v) {
-        var td = document.createElement("td");
-        td.textContent = v || "—";
-        tr.appendChild(td);
-      });
-      tr.addEventListener("click", function () { showDetail(i); });
-      body.appendChild(tr);
-    });
-    document.getElementById("records-wrap").style.display = records.length ? "block" : "none";
-  }
-
-  function showDetail(i) {
-    var rec = records[i];
-    document.getElementById("d-name").textContent = rec.name || "(no name)";
-    document.getElementById("d-meta").textContent =
-      "Submitted " + fmtDate(rec.timestamp) + " · DOB " + (rec.date_of_birth || "—") + " · " + (rec.email || "");
-    var dl = document.getElementById("d-body");
-    dl.innerHTML = "";
-    Object.keys(LABELS).forEach(function (field) {
-      if (field === "name" || field === "timestamp") return;
-      var pair = document.createElement("div");
-      pair.className = "pair";
-
-      var dt = document.createElement("dt");
-      var jaLabel = document.createElement("span");
-      jaLabel.className = "lbl-ja";
-      jaLabel.textContent = LABELS[field].ja;
-      var enLabel = document.createElement("span");
-      enLabel.className = "lbl-en";
-      enLabel.textContent = LABELS[field].en;
-      dt.appendChild(jaLabel); dt.appendChild(enLabel);
-
-      var dd = document.createElement("dd");
-      var v = rec[field] || "";
-      var ja = translateValue(v);
-      if (ja && ja !== v) {
-        var main = document.createElement("span");
-        main.textContent = ja;
-        var sub = document.createElement("span");
-        sub.className = "val-en";
-        sub.textContent = v;
-        dd.appendChild(main); dd.appendChild(sub);
-      } else {
-        dd.textContent = v;
-      }
-
-      var isYes = v.toLowerCase().indexOf("yes") === 0;
-      if ((FLAG_IF_YES.indexOf(field) !== -1 && isYes) ||
-          (field === "diagnosed_conditions" && v && v !== "None checked" && v !== "None of the above")) {
-        dd.classList.add("flag");
-      }
-      pair.appendChild(dt); pair.appendChild(dd);
-      dl.appendChild(pair);
-    });
-    document.getElementById("detail").classList.add("open");
-    document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
-  }
-
-  function fmtDate(iso) {
-    if (!iso) return "—";
-    var d = new Date(iso);
-    if (isNaN(d)) return iso;
-    return d.toLocaleString("en-GB", { timeZone: "Asia/Tokyo", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
-  }
+  wire("drive-card", DRIVE_FOLDER_URL);
+  wire("sheet-card", SHEET_URL);
 </script>
 
 </body>
