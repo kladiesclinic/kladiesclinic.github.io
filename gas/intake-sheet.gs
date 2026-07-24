@@ -3,10 +3,10 @@
  *
  * What it does on every submission from intake.html:
  *   1. Appends one row to the spreadsheet (list view for staff).
- *   2. Generates a bilingual (Japanese + English) A4 PDF of the intake form
- *      into a Drive folder, named "YYYY-MM-DD HHmm 患者名.pdf".
- * Staff simply open the Drive folder or the sheet — Google login is the
- * security; no extra keys or dashboards needed.
+ *   2. Generates a Japanese-labeled A4 PDF of the intake form.
+ *   3. Emails that PDF to STAFF_EMAIL immediately (subject 【問診票】患者名),
+ *      so staff never need to open Drive day-to-day.
+ *   4. Archives the same PDF in a Drive folder for later lookup.
  *
  * Setup (one time, ~5 min, signed in to the clinic's Google account):
  * 1. Create a new Google Spreadsheet (e.g. "KLCS問診票").
@@ -22,6 +22,7 @@
  */
 
 var WRITE_KEY = "CHANGE_ME_WRITE";
+var STAFF_EMAIL = "staff@klcs.jp";
 var SHEET_NAME = "Intake";
 var PDF_FOLDER_NAME = "KLCS問診票PDF";
 
@@ -161,9 +162,24 @@ function createPdf(data, now) {
   }
 
   doc.saveAndClose();
-  var folder = getFolder();
-  var pdf = DriveApp.getFileById(doc.getId()).getAs("application/pdf");
-  folder.createFile(pdf).setName(title + ".pdf");
+  var pdf = DriveApp.getFileById(doc.getId()).getAs("application/pdf").setName(title + ".pdf");
+
+  // 1) Email the PDF to staff right away — the everyday way to receive it.
+  MailApp.sendEmail({
+    to: STAFF_EMAIL,
+    subject: "【問診票】" + (data.name || "名前未記入") + "（" + stamp + "）",
+    body:
+      "新しい英語問診票が送信されました。日本語訳付きのA4 PDFを添付します。\n" +
+      "そのまま印刷して医師にお渡しください。\n\n" +
+      "氏名: " + (data.name || "-") + "\n" +
+      "メール: " + (data.email || "-") + "\n" +
+      "生年月日: " + (data.date_of_birth || "-") + "\n\n" +
+      "※同じPDFはGoogleドライブの「" + PDF_FOLDER_NAME + "」フォルダにも保管されています。",
+    attachments: [pdf],
+  });
+
+  // 2) Archive a copy in Drive for later lookup.
+  getFolder().createFile(pdf);
   DriveApp.getFileById(doc.getId()).setTrashed(true);
 }
 
