@@ -3,117 +3,81 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Staff — K Ladies Clinic Shinjuku</title>
+<title>スタッフ — K Ladies Clinic</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232B2124'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/sub.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
-  body { font-family: 'Noto Sans JP', var(--sans); }
-  .wrap { max-width: 860px; }
-  .tool-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
-  @media (min-width: 640px) { .tool-grid { grid-template-columns: 1fr 1fr; } }
-  .tool-card {
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px;
-    padding: 22px; display: block;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif; background: #FBF7F4; color: #2B2124;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    padding: 32px 20px 48px;
   }
-  .tool-card.primary { border: 2px solid var(--ink); }
-  .tool-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-  .tool-card p { font-size: 13px; line-height: 1.7; color: var(--soft); }
-  .tool-card .go { color: var(--accent); font-size: 13px; font-weight: 600; margin-top: 10px; display: inline-block; }
-  .tool-card.pending { opacity: 0.55; }
-  .tool-card.pending .go { color: var(--faint); }
-  .section-title { font-family: var(--serif); font-size: 24px; font-weight: 300; margin-top: 44px; }
-  .flow-note {
-    border: 1px solid var(--line); border-left: 3px solid var(--accent-light);
-    border-radius: 0 12px 12px 0; background: #FFFFFF;
-    padding: 14px 18px; font-size: 13px; line-height: 1.8; color: var(--soft); margin-top: 24px;
+  .logo { height: 36px; margin-bottom: 8px; }
+  .tag { font-size: 12px; color: #A8968F; letter-spacing: 0.2em; margin-bottom: 36px; }
+  .menu { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
+  .big-btn {
+    display: flex; align-items: center; gap: 16px;
+    background: #FFFFFF; border: 1px solid #E9DDD6; border-radius: 18px;
+    padding: 24px 22px; text-decoration: none; color: #2B2124;
+    font-size: 19px; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(43,33,36,0.05);
   }
+  .big-btn:active { transform: scale(0.99); }
+  .big-btn .icon { font-size: 30px; }
+  .big-btn small { display: block; font-size: 12.5px; font-weight: 400; color: #7A6A66; margin-top: 3px; }
+  .big-btn.main { background: #2B2124; color: #FBF7F4; border-color: #2B2124; }
+  .big-btn.main small { color: #C9BCB6; }
+  .big-btn.pending { opacity: 0.45; pointer-events: none; }
+  .note {
+    max-width: 480px; width: 100%; margin-top: 28px;
+    font-size: 13px; line-height: 1.9; color: #7A6A66;
+    background: #FFFFFF; border: 1px solid #E9DDD6; border-radius: 14px; padding: 16px 18px;
+  }
+  .note strong { color: #2B2124; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="./"><img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" class="brand-logo" /></a>
-    <span style="font-size:12px; font-weight:600; letter-spacing:0.14em; color:#A8968F;">スタッフ用</span>
-  </div>
-</header>
+<img class="logo" src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
+<div class="tag">スタッフ用</div>
 
-<main class="wrap">
-  <div class="page-head">
-    <div class="eyebrow">Internal &middot; 公開サイトからはリンクされていません</div>
-    <h1 class="display">スタッフ<em>ページ</em></h1>
-    <p class="lede">
-      英語オンライン診療の運用に必要なものをここにまとめています。
-      予約とZoomはCalendly、問診票はGoogleドライブに自動保存されます。
-    </p>
-  </div>
+<div class="menu">
+  <a class="big-btn main" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
+    <span class="icon">📅</span>
+    <span>予約一覧・Zoom入室<small>時間順に患者名と「Join」ボタンが並びます</small></span>
+  </a>
 
-  <h2 class="section-title">予約・Zoom</h2>
-  <div class="tool-grid">
-    <a class="tool-card primary" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
-      <h3>📅 予約一覧（時間順）</h3>
-      <p>今日・今後の予約が時間順に並びます。<strong>患者名・メールアドレス・各予約の「Join」ボタン（Zoom参加リンク）</strong>もここに表示。キャンセル・日時変更もこの画面からできます。</p>
-      <span class="go">Calendlyを開く →</span>
-    </a>
-    <a class="tool-card" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
-      <h3>⚙️ 予約可能時間の設定</h3>
-      <p>診察枠の変更、休診日のブロック、オンライン予約の一時停止（イベントのオン/オフ）はこちら。</p>
-      <span class="go">設定を開く →</span>
-    </a>
-  </div>
+  <a class="big-btn pending" id="viewer-btn" href="#">
+    <span class="icon">📄</span>
+    <span>問診票を見る<small>一覧→タップで日本語表示→印刷（設定待ち）</small></span>
+  </a>
 
-  <h2 class="section-title">問診票</h2>
-  <div class="tool-grid">
-    <a class="tool-card pending" id="drive-card" href="#">
-      <h3>🗂 問診票PDFフォルダ（Googleドライブ）</h3>
-      <p>問診票が送信されるたびに、<strong>日本語訳付きのA4 PDF</strong>（ファイル名：日付＋患者名）が自動で追加されます。診察前に開いて確認・印刷してください。リスク回答は赤字表示。</p>
-      <span class="go">※初期設定待ち</span>
-    </a>
-    <a class="tool-card pending" id="sheet-card" href="#">
-      <h3>📊 問診票一覧（スプレッドシート）</h3>
-      <p>全送信データが1行ずつ蓄積される一覧表。名前や日付での検索・並び替えに便利です。</p>
-      <span class="go">※初期設定待ち</span>
-    </a>
-  </div>
+  <a class="big-btn" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
+    <span class="icon">⚙️</span>
+    <span>診察枠の設定<small>時間変更・休診・予約の一時停止</small></span>
+  </a>
+</div>
 
-  <div class="flow-note">
-    <strong>診察前の流れ：</strong>
-    ① 問診票は送信された瞬間に <strong>staff@klcs.jp へ「【問診票】患者名」という件名でPDF付きメールが届きます</strong>。
-    そのままA4印刷して医師へ →
-    ② Calendlyの予約一覧で時間と患者名を確認 →
-    ③ 時間になったらCalendlyの「Join」からZoomに入室。<br />
-    ※ドライブのフォルダとスプレッドシートは、あとから探すとき用の保管庫です（毎回開く必要はありません）。
-    閲覧にはクリニックのGoogleアカウントへのログインだけが必要で、追加のパスワードやキーはありません。
-  </div>
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <span>&copy; 2026 K Ladies Clinic Shinjuku &middot; Internal use only</span>
-    <span><a href="./">公開サイトへ</a></span>
-  </div>
-</footer>
+<div class="note">
+  <strong>問診票の見かたは2通り</strong> —
+  ① 上の「問診票を見る」から一覧を開く（Googleにログインしていれば押すだけ・キー不要）
+  ② 送信された瞬間に <strong>staff@klcs.jp へPDF付きメール</strong>も自動で届きます（日本語訳・リスク赤字）。
+  どちらからでもそのままA4印刷できます。
+</div>
 
 <script>
-  // Set these once the Google Sheet + Apps Script are set up:
-  var DRIVE_FOLDER_URL = ""; // KLCS問診票PDF folder URL
-  var SHEET_URL = "";        // spreadsheet URL
-  function wire(id, url) {
-    var el = document.getElementById(id);
-    if (url) {
-      el.href = url; el.target = "_blank"; el.rel = "noopener";
-      el.classList.remove("pending");
-      el.querySelector(".go").textContent = "開く →";
-    } else {
-      el.addEventListener("click", function (e) { e.preventDefault(); });
-    }
+  // 問診票ビューアのURL（Apps Scriptのスタッフ用デプロイURL）ができたらここに貼るだけ
+  var VIEWER_URL = "";
+  if (VIEWER_URL) {
+    var b = document.getElementById("viewer-btn");
+    b.href = VIEWER_URL; b.target = "_blank"; b.rel = "noopener";
+    b.classList.remove("pending");
+    b.querySelector("small").textContent = "一覧→タップで日本語表示→印刷";
   }
-  wire("drive-card", DRIVE_FOLDER_URL);
-  wire("sheet-card", SHEET_URL);
 </script>
 
 </body>

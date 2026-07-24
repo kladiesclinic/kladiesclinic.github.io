@@ -1,24 +1,29 @@
 /**
- * K Ladies Clinic — intake form collector (Google Apps Script)
+ * K Ladies Clinic — 問診票システム (Google Apps Script)
  *
- * What it does on every submission from intake.html:
- *   1. Appends one row to the spreadsheet (list view for staff).
- *   2. Generates a Japanese-labeled A4 PDF of the intake form.
- *   3. Emails that PDF to STAFF_EMAIL immediately (subject 【問診票】患者名),
- *      so staff never need to open Drive day-to-day.
- *   4. Archives the same PDF in a Drive folder for later lookup.
+ * 患者が intake.html を送信すると：
+ *   1. スプレッドシートに1行追加（保管庫）
+ *   2. 日本語訳付きA4 PDFを生成し staff@klcs.jp へメール送信（件名：【問診票】患者名）
+ *   3. 同じPDFをドライブの「KLCS問診票PDF」フォルダにも保存
  *
- * Setup (one time, ~5 min, signed in to the clinic's Google account):
- * 1. Create a new Google Spreadsheet (e.g. "KLCS問診票").
- * 2. Extensions → Apps Script → paste this whole file, replacing any code.
- * 3. Change WRITE_KEY below to a random string.
- * 4. Deploy → New deployment → type "Web app"
- *      - Execute as: Me
- *      - Who has access: Anyone
- *    → Deploy, authorize, and copy the Web app URL (ends in /exec).
- * 5. Send the Web app URL + WRITE_KEY to Claude to wire into intake.html.
+ * スタッフは「問診票ビューア」（このスクリプトが表示するWebページ）で
+ * 一覧→詳細（日本語・リスク赤字）→印刷 ができます。キー入力は不要で、
+ * このスプレッドシートを共有されたGoogleアカウントだけが見られます。
  *
- * WRITE_KEY only prevents strangers from spamming rows; it cannot read data.
+ * ―― 初期設定（1回だけ・約7分）――
+ * 1. クリニックのGoogleアカウントで新しいスプレッドシートを作成（例：KLCS問診票）
+ * 2. 拡張機能 → Apps Script → このファイルを全部貼り付け
+ * 3. 下の WRITE_KEY をランダムな文字列に変更
+ * 4. デプロイ → 新しいデプロイ → 種類「ウェブアプリ」
+ *      実行ユーザー：自分 ／ アクセス：全員
+ *    → デプロイして承認 → URLをコピー（これが【送信受付URL】）
+ * 5. もう一度 デプロイ → 新しいデプロイ → 種類「ウェブアプリ」
+ *      実行ユーザー：ウェブアプリにアクセスしているユーザー
+ *      アクセス：Googleアカウントを持つ全員
+ *    → デプロイ → URLをコピー（これが【スタッフ用ビューアURL】）
+ * 6. スタッフに見せたい場合は、スプレッドシートを各スタッフのGoogleアカウントに
+ *    「閲覧者」として共有（通常のGoogle共有と同じ）
+ * 7. 【送信受付URL】【スタッフ用ビューアURL】【WRITE_KEY】の3つをClaudeに共有
  */
 
 var WRITE_KEY = "CHANGE_ME_WRITE";
@@ -40,7 +45,6 @@ var FIELDS = [
   "family_history_thrombosis", "family_history_breast_cancer", "notes"
 ];
 
-// Japanese labels (JSOG OC/LEP checklist ver.2020 wording) for the PDF.
 var LABELS_JA = {
   name: "氏名", email: "メールアドレス", date_of_birth: "生年月日",
   height_cm: "身長（cm）", weight_kg: "体重（kg）", bmi: "BMI",
@@ -97,18 +101,128 @@ var VALUE_JA = {
   "Ulcerative colitis": "潰瘍性大腸炎"
 };
 
+var RISK_FIELDS = [
+  "abnormal_bleeding", "pregnant_or_possibly", "breastfeeding", "smoking",
+  "current_acute_symptoms", "repeated_miscarriage_stillbirth",
+  "hypertensive_disorder_of_pregnancy", "medication_allergy",
+  "recent_or_planned_surgery", "family_history_thrombosis",
+  "family_history_breast_cancer"
+];
+
+/* ============ 患者フォームからの送信受付（デプロイ1：全員） ============ */
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
     if (data.key !== WRITE_KEY) return json({ error: "unauthorized" });
     var now = new Date();
     appendRow(data, now);
-    createPdf(data, now);
+    createAndSendPdf(data, now);
     return json({ ok: true });
   } catch (err) {
     return json({ error: String(err) });
   }
 }
+
+/* ============ スタッフ用ビューア（デプロイ2：Googleアカウント必須） ============ */
+
+function doGet() {
+  var rows;
+  try {
+    rows = readAll();
+  } catch (err) {
+    return HtmlService.createHtmlOutput(
+      "<meta charset='utf-8'><body style='font-family:sans-serif;padding:40px;'>" +
+      "<h3>アクセス権がありません</h3><p>このGoogleアカウントには問診票スプレッドシートが共有されていません。<br>" +
+      "管理者にスプレッドシートの共有を依頼してください。</p></body>"
+    );
+  }
+  var t = HtmlService.createTemplate(VIEWER_HTML);
+  t.data = JSON.stringify({
+    rows: rows, labels: LABELS_JA, values: VALUE_JA,
+    fields: FIELDS, risk: RISK_FIELDS
+  });
+  return t.evaluate()
+    .setTitle("問診票ビューア — K Ladies Clinic")
+    .addMetaTag("viewport", "width=device-width, initial-scale=1");
+}
+
+function readAll() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  var values = sheet.getDataRange().getValues();
+  var header = values.shift();
+  return values.map(function (row) {
+    var obj = {};
+    header.forEach(function (h, i) {
+      obj[h] = row[i] instanceof Date
+        ? Utilities.formatDate(row[i], "Asia/Tokyo", "yyyy-MM-dd HH:mm")
+        : String(row[i]);
+    });
+    return obj;
+  }).reverse();
+}
+
+var VIEWER_HTML =
+'<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">' +
+'<style>' +
+'*{margin:0;padding:0;box-sizing:border-box}' +
+'body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:#FBF7F4;color:#2B2124;padding:24px 16px}' +
+'.wrap{max-width:760px;margin:0 auto}' +
+'h1{font-size:20px;margin-bottom:4px}' +
+'.sub{font-size:12px;color:#A8968F;margin-bottom:20px}' +
+'.row{display:flex;justify-content:space-between;align-items:center;background:#FFF;border:1px solid #E9DDD6;' +
+'border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;font-size:16px;font-weight:700}' +
+'.row small{display:block;font-weight:400;font-size:12px;color:#7A6A66;margin-top:2px}' +
+'.row .arrow{color:#F25C5B}' +
+'#detail{display:none}' +
+'.bar{display:flex;gap:10px;margin-bottom:16px}' +
+'.bar button{font-size:14px;font-weight:700;padding:10px 20px;border-radius:999px;cursor:pointer;font-family:inherit}' +
+'.b-print{background:#2B2124;color:#FFF;border:none}' +
+'.b-back{background:#FFF;color:#2B2124;border:1px solid #E9DDD6}' +
+'.sheet{background:#FFF;border:1px solid #E9DDD6;border-radius:12px;padding:20px}' +
+'.ph{display:none}' +
+'h2{font-size:18px;margin-bottom:2px}' +
+'.meta{font-size:12px;color:#7A6A66;margin-bottom:14px}' +
+'.pair{display:grid;grid-template-columns:210px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #F3EAE4;font-size:14px}' +
+'.pair .l{color:#7A6A66;font-size:12.5px}' +
+'.pair .v small{display:block;color:#A8968F;font-size:11px}' +
+'.flag{color:#B03A44;font-weight:700}' +
+'@media print{' +
+'body{background:#FFF;padding:0}.list,.bar{display:none!important}#detail{display:block!important}' +
+'.sheet{border:none;padding:0}.ph{display:block;border-bottom:2px solid #000;padding-bottom:6px;margin-bottom:10px;font-size:13px;font-weight:700}' +
+'.pair{padding:3px 0;font-size:11px;break-inside:avoid}.pair .l{font-size:9px}' +
+'@page{size:A4;margin:14mm 12mm}}' +
+'</style></head><body><div class="wrap">' +
+'<div class="list" id="list"><h1>問診票ビューア</h1><div class="sub">新しい順 — 名前をタップすると開きます</div><div id="rows"></div></div>' +
+'<div id="detail"><div class="bar"><button class="b-back" onclick="back()">&larr; 一覧へ</button>' +
+'<button class="b-print" onclick="window.print()">印刷 / PDF保存</button></div>' +
+'<div class="sheet"><div class="ph">OC・LEP初回処方時問診チェックシート（ver. 2020）— K Ladies Clinic Shinjuku</div>' +
+'<h2 id="d-name"></h2><div class="meta" id="d-meta"></div><div id="d-body"></div></div></div>' +
+'</div><script>' +
+'var DATA = <?!= data ?>;' +
+'function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}' +
+'function tr(v){if(!v)return"";if(DATA.values[v])return DATA.values[v];' +
+'if(v.indexOf(";")!==-1){return v.split(";").map(function(p){p=p.trim();return DATA.values[p]||p}).join("、")}return v}' +
+'var rowsEl=document.getElementById("rows");' +
+'if(!DATA.rows.length){rowsEl.innerHTML="<div class=sub>まだ問診票はありません。</div>"}' +
+'DATA.rows.forEach(function(rec,i){var d=document.createElement("div");d.className="row";' +
+'d.innerHTML="<span>"+esc(rec.name||"名前未記入")+"<small>"+esc(rec.timestamp||"")+"　生年月日 "+esc(rec.date_of_birth||"-")+"</small></span><span class=arrow>&rarr;</span>";' +
+'d.onclick=function(){show(i)};rowsEl.appendChild(d)});' +
+'function show(i){var rec=DATA.rows[i];' +
+'document.getElementById("d-name").textContent=rec.name||"名前未記入";' +
+'document.getElementById("d-meta").textContent="送信 "+(rec.timestamp||"")+"　生年月日 "+(rec.date_of_birth||"-")+"　"+(rec.email||"");' +
+'var b=document.getElementById("d-body");b.innerHTML="";' +
+'DATA.fields.forEach(function(f){if(f==="name")return;var v=rec[f]||"";var ja=tr(v);' +
+'var risky=(DATA.risk.indexOf(f)!==-1&&v.indexOf("Yes")===0)||(f==="diagnosed_conditions"&&v&&v!=="None checked"&&v!=="None of the above");' +
+'var p=document.createElement("div");p.className="pair";' +
+'p.innerHTML="<div class=l>"+esc(DATA.labels[f]||f)+"</div><div class=\\"v"+(risky?" flag":"")+"\\">"+esc(ja||"―")+' +
+'(ja&&ja!==v&&v?"<small>"+esc(v)+"</small>":"")+"</div>";b.appendChild(p)});' +
+'document.getElementById("list").style.display="none";document.getElementById("detail").style.display="block";window.scrollTo(0,0)}' +
+'function back(){document.getElementById("detail").style.display="none";document.getElementById("list").style.display="block"}' +
+'</script></body></html>';
+
+/* ============ 保存・PDF生成・メール ============ */
 
 function appendRow(data, now) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -123,15 +237,15 @@ function appendRow(data, now) {
   );
 }
 
-function createPdf(data, now) {
+function createAndSendPdf(data, now) {
   var stamp = Utilities.formatDate(now, "Asia/Tokyo", "yyyy-MM-dd HHmm");
   var title = stamp + " " + (data.name || "名前未記入");
   var doc = DocumentApp.create(title);
   var body = doc.getBody();
   body.setMarginTop(36).setMarginBottom(36).setMarginLeft(40).setMarginRight(40);
 
-  var h = body.appendParagraph("OC・LEP初回処方時問診チェックシート（ver. 2020）");
-  h.setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  body.appendParagraph("OC・LEP初回処方時問診チェックシート（ver. 2020）")
+    .setHeading(DocumentApp.ParagraphHeading.HEADING2);
   body.appendParagraph("K Ladies Clinic Shinjuku ／ Pre-Consultation Intake Form")
     .setFontSize(9).setForegroundColor("#666666");
   body.appendParagraph("送信日時：" + Utilities.formatDate(now, "Asia/Tokyo", "yyyy年MM月dd日 HH:mm"))
@@ -139,7 +253,8 @@ function createPdf(data, now) {
 
   var rows = FIELDS.map(function (f) {
     var v = String(data[f] || "");
-    return [LABELS_JA[f] || f, translateValue(v) + (needsOriginal(v) ? "\n(" + v + ")" : "")];
+    var ja = translateValue(v);
+    return [LABELS_JA[f] || f, ja + (v && v.indexOf(";") !== -1 ? "\n(" + v + ")" : "")];
   });
   var table = body.appendTable(rows);
   table.setBorderColor("#BBBBBB");
@@ -147,24 +262,17 @@ function createPdf(data, now) {
     var row = table.getRow(r);
     row.getCell(0).setWidth(190).editAsText().setFontSize(8.5).setBold(true);
     row.getCell(1).editAsText().setFontSize(9);
-    // Flag risky answers in red for the doctor
-    var valText = row.getCell(1).getText();
     var field = FIELDS[r];
+    var valText = row.getCell(1).getText();
     var risky =
-      (valText.indexOf("はい") === 0 &&
-        ["abnormal_bleeding","pregnant_or_possibly","breastfeeding","smoking",
-         "current_acute_symptoms","repeated_miscarriage_stillbirth",
-         "hypertensive_disorder_of_pregnancy","medication_allergy",
-         "recent_or_planned_surgery","family_history_thrombosis",
-         "family_history_breast_cancer"].indexOf(field) !== -1) ||
-      (field === "diagnosed_conditions" && valText !== "該当なし" && valText !== "");
+      (valText.indexOf("はい") === 0 && RISK_FIELDS.indexOf(field) !== -1) ||
+      (field === "diagnosed_conditions" && valText !== "該当なし" && valText !== "―");
     if (risky) row.getCell(1).editAsText().setForegroundColor("#B03A44").setBold(true);
   }
 
   doc.saveAndClose();
   var pdf = DriveApp.getFileById(doc.getId()).getAs("application/pdf").setName(title + ".pdf");
 
-  // 1) Email the PDF to staff right away — the everyday way to receive it.
   MailApp.sendEmail({
     to: STAFF_EMAIL,
     subject: "【問診票】" + (data.name || "名前未記入") + "（" + stamp + "）",
@@ -174,11 +282,10 @@ function createPdf(data, now) {
       "氏名: " + (data.name || "-") + "\n" +
       "メール: " + (data.email || "-") + "\n" +
       "生年月日: " + (data.date_of_birth || "-") + "\n\n" +
-      "※同じPDFはGoogleドライブの「" + PDF_FOLDER_NAME + "」フォルダにも保管されています。",
+      "※問診票ビューア（スタッフページの「問診票を見る」）でも閲覧できます。",
     attachments: [pdf],
   });
 
-  // 2) Archive a copy in Drive for later lookup.
   getFolder().createFile(pdf);
   DriveApp.getFileById(doc.getId()).setTrashed(true);
 }
@@ -192,12 +299,7 @@ function translateValue(v) {
       return VALUE_JA[p] || p;
     }).join("、");
   }
-  return v; // free text stays as written
-}
-
-function needsOriginal(v) {
-  // Show the English original under translated multi-item lists
-  return v && v.indexOf(";") !== -1;
+  return v;
 }
 
 function getFolder() {
