@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pre-Consultation Intake Form — K Ladies Clinic Shinjuku</title>
-<meta name="description" content="Fill in your medical intake form in English before your online consultation with K Ladies Clinic Shinjuku." />
+<title>Pre-Consultation Questionnaire — K Ladies Clinic Shinjuku</title>
+<meta name="description" content="Fill in your medical questionnaire in English before your consultation with K Ladies Clinic Shinjuku." />
 <meta name="robots" content="noindex, follow" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6766'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/sub.css" />
 <style>
-  .q-block { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 22px; }
-  .q-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .q-block { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 20px; }
   .yn-row { display: flex; gap: 10px; }
   .yn-row .choice { flex: 1; justify-content: flex-start; }
   .cond-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -23,6 +22,16 @@
     margin: 34px 0 16px; color: var(--ink);
   }
   .section-label:first-child { margin-top: 0; }
+  .section-label .ja { font-family: 'Noto Sans JP', var(--sans); font-size: 12px; color: var(--faint); display: block; margin-top: 1px; }
+
+  /* bilingual bits */
+  .ja { font-family: 'Noto Sans JP', var(--sans); }
+  form label .ja {
+    display: block; font-size: 11.5px; color: var(--faint);
+    text-transform: none; letter-spacing: normal; font-weight: 400; margin-top: 2px; line-height: 1.5;
+  }
+  .choice .ja { color: var(--faint); font-size: 12px; margin-left: 5px; }
+  .sub-field { margin-top: 8px; margin-left: 2px; }
 
   .print-btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -32,46 +41,47 @@
   }
   .print-header { display: none; }
 
-  /* ---------- print / save as PDF ---------- */
   @media print {
-    @page { size: A4; margin: 14mm 12mm; }
-    body { background: #FFFFFF; color: #000000; font-size: 10.5px; }
+    @page { size: A4; margin: 12mm 10mm; }
+    body { background: #FFFFFF; color: #000000; font-size: 10px; }
     header, footer, .page-head, .note-box, .submit-btn, .print-btn,
     .form-status, .hp-field, .hint { display: none !important; }
     .wrap { max-width: none; padding: 0; }
     .print-header {
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 14px;
+      border-bottom: 2px solid #000000; padding-bottom: 6px; margin-bottom: 10px;
     }
-    .print-header img { height: 30px; }
+    .print-header img { height: 26px; }
     .print-header .ph-title { text-align: right; }
-    .print-header .ph-title strong { font-size: 13px; display: block; }
-    .print-header .ph-title span { font-size: 9.5px; color: #444444; }
+    .print-header .ph-title strong { font-size: 12px; display: block; }
+    .print-header .ph-title span { font-size: 9px; color: #444444; }
     .card { border: none; border-radius: 0; padding: 0; margin-top: 0; background: #FFFFFF; }
     .section-label {
-      font-size: 12.5px; font-weight: 600; margin: 12px 0 6px;
-      border-bottom: 1px solid #999999; padding-bottom: 2px;
-      break-after: avoid;
+      font-size: 11.5px; font-weight: 600; margin: 10px 0 5px;
+      border-bottom: 1px solid #999999; padding-bottom: 2px; break-after: avoid;
     }
-    form .field { margin-bottom: 7px; break-inside: avoid; }
-    form label { font-size: 8.5px; letter-spacing: 0.04em; color: #333333; margin-bottom: 2px; }
-    form input[type="text"], form input[type="email"], form input[type="date"], form textarea {
-      font-size: 10.5px; padding: 4px 7px; border: 1px solid #AAAAAA; border-radius: 4px;
+    .section-label .ja { display: inline; font-size: 9px; margin-left: 6px; }
+    form .field { margin-bottom: 6px; break-inside: avoid; }
+    form label { font-size: 8.5px; letter-spacing: 0.03em; color: #222222; margin-bottom: 2px; }
+    form label .ja { display: inline; font-size: 8px; margin-left: 5px; }
+    form input[type="text"], form input[type="email"], form input[type="tel"],
+    form input[type="date"], form select, form textarea {
+      font-size: 10px; padding: 3px 6px; border: 1px solid #AAAAAA; border-radius: 3px;
       background: #FFFFFF; min-height: 0;
     }
-    form textarea { min-height: 44px; }
-    .field-row { grid-template-columns: 1fr 1fr; gap: 6px 10px; }
-    .field-row + .field, .field-row + .field-row { margin-top: 7px; }
+    form textarea { min-height: 34px; }
+    .field-row { grid-template-columns: 1fr 1fr; gap: 5px 8px; }
+    .field-row + .field, .field-row + .field-row { margin-top: 6px; }
     .q-block { border-top: none; padding-top: 0; margin-top: 0; }
-    .choice-group { gap: 3px; }
-    .yn-row { gap: 6px; }
+    .choice-group { gap: 2px; }
+    .yn-row { gap: 5px; }
     .choice {
-      padding: 3px 7px; border: 1px solid #BBBBBB; border-radius: 4px;
-      background: #FFFFFF; font-size: 9.5px; gap: 5px;
+      padding: 2px 6px; border: 1px solid #BBBBBB; border-radius: 3px;
+      background: #FFFFFF; font-size: 9px; gap: 4px;
     }
-    .choice small { font-size: 8px; }
-    .choice input { margin-top: 1px; transform: scale(0.85); }
-    .cond-grid { grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+    .choice .ja { font-size: 8px; }
+    .choice input { margin-top: 1px; transform: scale(0.8); }
+    .cond-grid { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
   }
 </style>
 </head>
@@ -87,268 +97,377 @@
 <main class="wrap">
   <div class="page-head">
     <div class="eyebrow">Before your consultation</div>
-    <h1 class="display">Your intake form, <em>in English.</em></h1>
+    <h1 class="display">Your questionnaire, <em>in English.</em></h1>
     <p class="lede">
-      These questions follow the official Japanese OC/LEP prescribing checklist
-      (Japan Society of Obstetrics and Gynecology, ver. 2020) — the same screening
-      every patient receives in Japanese. The doctor reviews your answers before
-      your consultation, and everything is kept confidential.
+      Everything is shown in English and Japanese, so you, our English-speaking
+      staff and your doctor all read the same form. Your answers are reviewed
+      before your consultation and kept confidential.
     </p>
   </div>
 
   <div class="print-header">
     <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
     <div class="ph-title">
-      <strong>Pre-Consultation Intake Form (OC / LEP)</strong>
-      <span>Based on the JSOG first-prescription checklist ver. 2020 &middot; K Ladies Clinic Shinjuku</span>
+      <strong>Questionnaire ／ 問診票</strong>
+      <span>K Ladies Clinic Shinjuku (Gynecology) ／ ケイ・レディースクリニック新宿</span>
     </div>
   </div>
 
   <div class="card">
     <form id="intake-form" novalidate>
 
-      <div class="section-label">About you</div>
+      <div class="section-label">About you<span class="ja">患者情報</span></div>
 
       <div class="field-row">
         <div class="field">
-          <label for="if-name">Full name</label>
+          <label for="if-name">Full name<span class="ja">氏名</span></label>
           <input id="if-name" type="text" autocomplete="name" required />
         </div>
         <div class="field">
-          <label for="if-email">Email address</label>
-          <input id="if-email" type="email" autocomplete="email" required />
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label for="if-dob">Date of birth</label>
+          <label for="if-dob">Date of birth<span class="ja">生年月日</span></label>
           <input id="if-dob" type="date" required />
         </div>
+      </div>
+
+      <div class="field-row">
         <div class="field">
-          <label for="if-height">Height (cm)</label>
+          <label for="if-email">Email address<span class="ja">メールアドレス</span></label>
+          <input id="if-email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="if-phone">Phone number<span class="ja">電話番号</span></label>
+          <input id="if-phone" type="tel" autocomplete="tel" required />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="if-nationality">Nationality<span class="ja">国籍</span></label>
+          <input id="if-nationality" type="text" required />
+        </div>
+        <div class="field">
+          <label for="if-address">Address in Japan (for delivery)<span class="ja">日本国内の住所（お薬の配送先）</span></label>
+          <input id="if-address" type="text" autocomplete="street-address" required />
+          <div class="hint">Home, hotel or wherever you're staying.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="if-height">Height (cm)<span class="ja">身長</span></label>
           <input id="if-height" type="text" inputmode="decimal" placeholder="e.g. 165" required />
         </div>
-      </div>
-
-      <div class="field-row">
         <div class="field">
-          <label for="if-weight">Weight (kg)</label>
+          <label for="if-weight">Weight (kg)<span class="ja">体重</span></label>
           <input id="if-weight" type="text" inputmode="decimal" placeholder="e.g. 55" required />
         </div>
-        <div class="field">
-          <label for="if-bp">Blood pressure (if you know it)</label>
-          <input id="if-bp" type="text" placeholder="e.g. 118 / 76" />
-          <div class="hint">From a recent checkup or home monitor. Leave blank if unknown.</div>
+      </div>
+
+      <div class="field">
+        <label for="if-bp">Blood pressure (if you know it)<span class="ja">血圧（わかる場合）</span></label>
+        <input id="if-bp" type="text" placeholder="e.g. 118 / 76" />
+      </div>
+
+      <div class="section-label">Reason for your visit<span class="ja">本日の受診理由</span></div>
+
+      <div class="field">
+        <label>What would you like to see us about? (check all that apply)<span class="ja">どのようなご相談ですか（複数選択可）</span></label>
+        <div class="cond-grid">
+          <label class="choice"><input type="checkbox" name="reason" value="Birth control pills" /> Birth control pills<span class="ja">低用量ピル</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Morning-after pill / Plan B" /> Morning-after pill<span class="ja">アフターピル</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Menstrual pain" /> Menstrual pain<span class="ja">生理痛</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Irregular period" /> Irregular period<span class="ja">生理不順</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Genital discharge / vaginal itching" /> Discharge / itching<span class="ja">おりもの・かゆみ</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Genital bleeding" /> Genital bleeding<span class="ja">不正出血</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="STD check-up" /> STD check-up<span class="ja">性感染症検査</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Pap smear" /> Pap smear<span class="ja">子宮頸がん検診</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="UTI (urinary tract infection)" /> UTI<span class="ja">膀胱炎</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Acne / skin" /> Acne / skin<span class="ja">ニキビ・肌荒れ</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="PMS / mood" /> PMS / mood<span class="ja">PMS・気分の不調</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Menopause" /> Menopause<span class="ja">更年期</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Other" /> Other<span class="ja">その他</span></label>
+        </div>
+        <div class="sub-field">
+          <label for="if-reason-other">If "Morning-after pill" — when did the intercourse happen? / If "Other" — please describe<span class="ja">アフターピルの場合は性交渉の日時／その他の場合は内容</span></label>
+          <input id="if-reason-other" type="text" />
         </div>
       </div>
 
-      <div class="section-label">Your period</div>
+      <div class="section-label">Your period<span class="ja">月経について</span></div>
 
       <div class="field-row">
         <div class="field">
-          <label for="if-lmp">When did your last period start?</label>
+          <label for="if-lmp">When did your last period start?<span class="ja">最終月経の開始日</span></label>
           <input id="if-lmp" type="date" required />
         </div>
         <div class="field">
-          <label for="if-lmp-days">How many days did it last?</label>
+          <label for="if-lmp-days">How many days did it last?<span class="ja">月経の日数</span></label>
           <input id="if-lmp-days" type="text" inputmode="numeric" placeholder="e.g. 5" required />
         </div>
       </div>
 
       <div class="q-block">
         <div class="field">
-          <label>Do you have any unusual vaginal bleeding (outside your period)?</label>
+          <label>Is your menstrual cycle regular?<span class="ja">月経周期は順調ですか</span></label>
           <div class="yn-row">
-            <label class="choice"><input type="radio" name="bleeding" value="Yes" required /> Yes</label>
-            <label class="choice"><input type="radio" name="bleeding" value="No" /> No</label>
+            <label class="choice"><input type="radio" name="cycle" value="Regular" required /> Regular<span class="ja">順調</span></label>
+            <label class="choice"><input type="radio" name="cycle" value="Irregular" /> Irregular<span class="ja">不順</span></label>
+          </div>
+          <div class="sub-field">
+            <label for="if-cycle-detail">If regular — how long is your cycle? If irregular — how often does it come?<span class="ja">順調な場合は周期の日数／不順な場合はどのくらいの頻度か</span></label>
+            <input id="if-cycle-detail" type="text" placeholder="e.g. 28 days / every 2–3 months" required />
           </div>
         </div>
+
         <div class="field">
-          <label>Are you pregnant, or possibly pregnant?</label>
+          <label>Do you have spotting or bleeding outside of your period?<span class="ja">不正性器出血がありますか</span></label>
           <div class="yn-row">
-            <label class="choice"><input type="radio" name="pregnant" value="Yes" required /> Yes</label>
-            <label class="choice"><input type="radio" name="pregnant" value="No" /> No</label>
+            <label class="choice"><input type="radio" name="bleeding" value="Yes" required /> Yes<span class="ja">はい</span></label>
+            <label class="choice"><input type="radio" name="bleeding" value="No" /> No<span class="ja">いいえ</span></label>
           </div>
-        </div>
-        <div class="field">
-          <label>Are you currently breastfeeding?</label>
-          <div class="yn-row">
-            <label class="choice"><input type="radio" name="breastfeeding" value="Yes" required /> Yes</label>
-            <label class="choice"><input type="radio" name="breastfeeding" value="No" /> No</label>
+          <div class="sub-field">
+            <label for="if-bleeding-since">If yes — since when?<span class="ja">はいの場合、いつから</span></label>
+            <input id="if-bleeding-since" type="text" />
           </div>
         </div>
       </div>
 
-      <div class="section-label">Lifestyle &amp; symptoms</div>
+      <div class="section-label">Pregnancy &amp; sexual health<span class="ja">妊娠・性交渉について</span></div>
 
       <div class="field">
-        <label>Do you smoke?</label>
+        <label>Are you pregnant, or possibly pregnant?<span class="ja">妊娠中または妊娠の可能性がありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="smoke" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="smoke" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="pregnant" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="pregnant" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
-      </div>
-      <div class="field">
-        <label for="if-smoke-count">If yes — roughly how many cigarettes per day?</label>
-        <input id="if-smoke-count" type="text" inputmode="numeric" placeholder="e.g. 10" />
       </div>
 
       <div class="field">
-        <label>Do you get severe headaches or migraines, or episodes of blurred vision?</label>
+        <label>Are you currently breastfeeding?<span class="ja">授乳中ですか</span></label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="breastfeeding" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="breastfeeding" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Have you ever been pregnant?<span class="ja">妊娠したことがありますか</span></label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="ever_pregnant" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="ever_pregnant" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+        <div class="sub-field field-row">
+          <div class="field">
+            <label for="if-preg-times">If yes — how many times?<span class="ja">妊娠回数</span></label>
+            <input id="if-preg-times" type="text" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label for="if-birth-times">Given birth how many times?<span class="ja">出産回数</span></label>
+            <input id="if-birth-times" type="text" inputmode="numeric" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Have you ever had sexual intercourse?<span class="ja">性交渉の経験がありますか</span></label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="intercourse" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="intercourse" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+      </div>
+
+      <div class="section-label">Lifestyle &amp; symptoms<span class="ja">生活習慣・症状</span></div>
+
+      <div class="field">
+        <label>Do you smoke?<span class="ja">喫煙しますか</span></label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="smoke" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="smoke" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+        <div class="sub-field field-row">
+          <div class="field">
+            <label for="if-smoke-count">If yes — cigarettes per day<span class="ja">1日の本数</span></label>
+            <input id="if-smoke-count" type="text" inputmode="numeric" placeholder="e.g. 10" />
+          </div>
+          <div class="field">
+            <label for="if-smoke-years">For how many years?<span class="ja">喫煙年数</span></label>
+            <input id="if-smoke-years" type="text" inputmode="numeric" placeholder="e.g. 5" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you get severe headaches or migraines, or episodes of blurred vision?<span class="ja">激しい頭痛・片頭痛、目のかすみがありますか</span></label>
         <div class="choice-group">
-          <label class="choice"><input type="radio" name="migraine" value="No" required /> No</label>
-          <label class="choice"><input type="radio" name="migraine" value="Yes, without aura" /> Yes — without aura</label>
-          <label class="choice"><input type="radio" name="migraine" value="Yes, with aura" /> Yes — with aura<small>e.g. flashing or shimmering lights before the headache</small></label>
+          <label class="choice"><input type="radio" name="migraine" value="No" required /> No<span class="ja">いいえ</span></label>
+          <label class="choice"><input type="radio" name="migraine" value="Yes, without aura" /> Yes — without aura<span class="ja">はい（前兆なし）</span></label>
+          <label class="choice"><input type="radio" name="migraine" value="Yes, with aura" /> Yes — with aura (flashing lights before the headache)<span class="ja">はい（前兆あり：目がチカチカする等）</span></label>
         </div>
       </div>
 
       <div class="field">
-        <label>Right now, do you have any of the following: calf pain or swelling, sudden shortness of breath, chest pain, severe headache, fainting, blurred vision, or slurred speech?</label>
+        <label>Right now, do you have any of these: calf pain or swelling, sudden shortness of breath, chest pain, severe headache, fainting, blurred vision, slurred speech?<span class="ja">現在、ふくらはぎの痛み・むくみ、突然の息切れ、胸の痛み、激しい頭痛、失神、目のかすみ、舌のもつれがありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="aches" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="aches" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="aches" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="aches" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
       </div>
 
-      <div class="section-label">Medical history</div>
+      <div class="section-label">Medical history<span class="ja">既往歴</span></div>
 
       <div class="field">
-        <label>Are you currently being treated by a doctor for anything?</label>
+        <label>Are you currently being treated by a doctor for anything?<span class="ja">現在治療中の疾患がありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="in_treatment" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="in_treatment" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="in_treatment" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="in_treatment" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
-      </div>
-      <div class="field">
-        <label for="if-treatment-detail">If yes — for what condition?</label>
-        <input id="if-treatment-detail" type="text" />
+        <div class="sub-field">
+          <label for="if-treatment-detail">If yes — for what condition?<span class="ja">病名</span></label>
+          <input id="if-treatment-detail" type="text" />
+        </div>
       </div>
 
       <div class="field">
-        <label>Have you ever had a serious illness that needed hospitalization or surgery?</label>
+        <label>Have you ever had an operation, or an illness needing hospitalization?<span class="ja">手術、または入院を要する病気の既往がありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="hospitalized" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="hospitalized" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="hospitalized" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="hospitalized" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
-      </div>
-      <div class="field">
-        <label for="if-hosp-detail">If yes — what was it?</label>
-        <input id="if-hosp-detail" type="text" />
+        <div class="sub-field">
+          <label for="if-hosp-detail">If yes — what was it?<span class="ja">その内容</span></label>
+          <input id="if-hosp-detail" type="text" />
+        </div>
       </div>
 
       <div class="field">
-        <label>Have you ever been told you have any of the following? (check all that apply)</label>
+        <label>Have you ever been told you have any of the following? (check all that apply)<span class="ja">以下の病気といわれたことがありますか（複数選択可）</span></label>
         <div class="cond-grid">
-          <label class="choice"><input type="checkbox" name="cond" value="Deep vein thrombosis" /> Deep vein thrombosis (DVT)</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Pulmonary embolism" /> Pulmonary embolism</label>
-          <label class="choice"><input type="checkbox" name="cond" value="SLE (lupus)" /> SLE (lupus)</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Antiphospholipid syndrome" /> Antiphospholipid syndrome</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Thrombophilia (clotting disorder)" /> Thrombophilia (clotting disorder)</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Stroke / cerebrovascular disease" /> Stroke / cerebrovascular disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Coronary artery disease" /> Coronary artery disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Heart valve disease" /> Heart valve disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Arrhythmia" /> Arrhythmia</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Kidney disease" /> Kidney disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="High blood pressure" /> High blood pressure</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Diabetes" /> Diabetes</label>
-          <label class="choice"><input type="checkbox" name="cond" value="High cholesterol (dyslipidemia)" /> High cholesterol (dyslipidemia)</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Liver disease / liver tumor" /> Liver disease / liver tumor</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Gallbladder disease" /> Gallbladder disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Cervical cancer" /> Cervical cancer</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Uterine (endometrial) cancer" /> Uterine (endometrial) cancer</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Breast cancer" /> Breast cancer</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Porphyria" /> Porphyria</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Epilepsy" /> Epilepsy</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Tetany" /> Tetany</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Crohn's disease" /> Crohn's disease</label>
-          <label class="choice"><input type="checkbox" name="cond" value="Ulcerative colitis" /> Ulcerative colitis</label>
-          <label class="choice"><input type="checkbox" name="cond" value="None of the above" /> None of the above</label>
+          <label class="choice"><input type="checkbox" name="cond" value="Deep vein thrombosis" /> Deep vein thrombosis<span class="ja">深部静脈血栓</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Pulmonary embolism" /> Pulmonary embolism<span class="ja">肺塞栓症</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="SLE (lupus)" /> SLE (lupus)<span class="ja">SLE</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Antiphospholipid syndrome" /> Antiphospholipid syndrome<span class="ja">抗リン脂質抗体症候群</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Thrombophilia" /> Thrombophilia<span class="ja">血栓性素因</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Stroke / cerebrovascular disease" /> Stroke<span class="ja">脳血管障害</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Coronary artery disease" /> Coronary artery disease<span class="ja">冠動脈疾患</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Heart valve disease" /> Heart valve disease<span class="ja">心臓弁膜症</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Arrhythmia" /> Arrhythmia<span class="ja">不整脈</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Kidney disease" /> Kidney disease<span class="ja">腎機能障害</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="High blood pressure" /> High blood pressure<span class="ja">高血圧</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Diabetes" /> Diabetes<span class="ja">糖尿病</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="High cholesterol" /> High cholesterol<span class="ja">脂質代謝異常</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Liver disease / liver tumor" /> Liver disease<span class="ja">肝機能障害・肝腫瘍</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Gallbladder disease" /> Gallbladder disease<span class="ja">胆嚢疾患</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Cervical cancer" /> Cervical cancer<span class="ja">子宮頸がん</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Uterine cancer" /> Uterine cancer<span class="ja">子宮体がん</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Breast cancer" /> Breast cancer<span class="ja">乳がん</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Porphyria" /> Porphyria<span class="ja">ポルフィリン症</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Epilepsy" /> Epilepsy<span class="ja">てんかん</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Tetany" /> Tetany<span class="ja">テタニー</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Crohn's disease" /> Crohn's disease<span class="ja">クローン病</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="Ulcerative colitis" /> Ulcerative colitis<span class="ja">潰瘍性大腸炎</span></label>
+          <label class="choice"><input type="checkbox" name="cond" value="None of the above" /> None of the above<span class="ja">該当なし</span></label>
         </div>
       </div>
 
       <div class="field">
-        <label>Have you had repeated miscarriages or stillbirths?</label>
+        <label>Have you had repeated miscarriages or stillbirths?<span class="ja">流産・死産を繰り返したことがありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="miscarriage" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="miscarriage" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="miscarriage" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="miscarriage" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
       </div>
 
       <div class="field">
-        <label>During a pregnancy, were you ever told you had hypertensive disorders of pregnancy (pre-eclampsia / toxemia)?</label>
+        <label>During a pregnancy, were you ever told you had pre-eclampsia (toxemia)?<span class="ja">妊娠高血圧症候群（妊娠中毒症）といわれたことがありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="preeclampsia" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="preeclampsia" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="preeclampsia" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="preeclampsia" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
       </div>
 
-      <div class="section-label">Medications &amp; allergies</div>
+      <div class="section-label">Medications &amp; allergies<span class="ja">服薬・アレルギー</span></div>
 
       <div class="field">
-        <label>Are you currently taking any medications or supplements?</label>
+        <label>Are you taking any medications or supplements?<span class="ja">服用中の薬・サプリメントがありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="meds" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="meds" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="meds" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="meds" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
-      </div>
-      <div class="field">
-        <label for="if-meds-detail">If yes — which ones?</label>
-        <input id="if-meds-detail" type="text" />
+        <div class="sub-field">
+          <label for="if-meds-detail">If yes — which ones?<span class="ja">薬剤名</span></label>
+          <input id="if-meds-detail" type="text" />
+        </div>
       </div>
 
       <div class="field">
-        <label>Have you taken birth control pills (OC) or LEP before?</label>
+        <label>Do you, or have you ever, taken birth control pills?<span class="ja">OC・LEP（ピル）の服用歴がありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="oc_history" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="oc_history" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="oc_history" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="oc_history" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
-      </div>
-      <div class="field">
-        <label for="if-oc-detail">If yes — which pill?</label>
-        <input id="if-oc-detail" type="text" />
+        <div class="sub-field">
+          <label for="if-oc-detail">If yes — name of the pill and for how long?<span class="ja">薬剤名と服用期間</span></label>
+          <input id="if-oc-detail" type="text" placeholder="e.g. Marvelon 28, 2 years" />
+        </div>
       </div>
 
       <div class="field">
-        <label>Have you ever had an allergic reaction to a medication (hives, rash, etc.)?</label>
+        <label>Have you ever had an allergic reaction to a medication or food?<span class="ja">薬や食べ物でアレルギー症状が出たことがありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="allergy" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="allergy" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="allergy" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="allergy" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+        <div class="sub-field">
+          <label for="if-allergy-detail">If yes — to what?<span class="ja">その薬剤名・食品名</span></label>
+          <input id="if-allergy-detail" type="text" />
         </div>
       </div>
-      <div class="field">
-        <label for="if-allergy-detail">If yes — which medication?</label>
-        <input id="if-allergy-detail" type="text" />
-      </div>
 
-      <div class="section-label">Surgery &amp; family history</div>
+      <div class="section-label">Surgery &amp; family history<span class="ja">手術予定・家族歴</span></div>
 
       <div class="field">
-        <label>Have you had major surgery in the past 2 weeks, or is surgery planned in the next 4 weeks?</label>
+        <label>Have you had surgery in the past 2 weeks, or is surgery planned within 4 weeks?<span class="ja">過去2週間以内の手術、または4週間以内の手術予定がありますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="surgery" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="surgery" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="surgery" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="surgery" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
       </div>
 
       <div class="field">
-        <label>Has anyone in your family had blood clots (thrombosis)?</label>
+        <label>Has anyone in your family had blood clots (thrombosis)?<span class="ja">ご家族に血栓症の方はいますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="family_clots" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="family_clots" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="family_clots" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="family_clots" value="No" /> No<span class="ja">いいえ</span></label>
         </div>
       </div>
 
       <div class="field">
-        <label>Has anyone in your family had breast cancer?</label>
+        <label>Has anyone in your family had breast cancer?<span class="ja">ご家族に乳がんの方はいますか</span></label>
         <div class="yn-row">
-          <label class="choice"><input type="radio" name="family_breast_cancer" value="Yes" required /> Yes</label>
-          <label class="choice"><input type="radio" name="family_breast_cancer" value="No" /> No</label>
+          <label class="choice"><input type="radio" name="family_breast_cancer" value="Yes" required /> Yes<span class="ja">はい</span></label>
+          <label class="choice"><input type="radio" name="family_breast_cancer" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+      </div>
+
+      <div class="section-label">How did you find us?<span class="ja">当院を知ったきっかけ</span></div>
+
+      <div class="field">
+        <div class="choice-group">
+          <label class="choice"><input type="radio" name="found_us" value="Internet search" required /> Internet search<span class="ja">インターネット検索</span></label>
+          <label class="choice"><input type="radio" name="found_us" value="Instagram" /> Instagram<span class="ja">インスタグラム</span></label>
+          <label class="choice"><input type="radio" name="found_us" value="Other social media" /> Other social media<span class="ja">その他SNS</span></label>
+          <label class="choice"><input type="radio" name="found_us" value="Google Maps" /> Google Maps<span class="ja">Googleマップ</span></label>
+          <label class="choice"><input type="radio" name="found_us" value="From a friend" /> From a friend<span class="ja">知人の紹介</span></label>
+          <label class="choice"><input type="radio" name="found_us" value="Other" /> Other<span class="ja">その他</span></label>
+        </div>
+        <div class="sub-field">
+          <label for="if-found-detail">If you searched — what words did you use? Otherwise, please describe<span class="ja">検索した場合は検索ワード／その他の場合は内容</span></label>
+          <input id="if-found-detail" type="text" />
         </div>
       </div>
 
       <div class="field">
-        <label for="if-notes">Anything else you're concerned about, or would like to ask about your body or the pill? (optional)</label>
+        <label for="if-notes">Anything else you'd like to ask or tell us?<span class="ja">その他、ご心配なことやご質問</span></label>
         <textarea id="if-notes"></textarea>
       </div>
 
@@ -358,7 +477,7 @@
       </div>
 
       <button type="submit" class="submit-btn" id="if-submit">
-        Submit my intake form
+        Submit my questionnaire
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
       <button type="button" class="print-btn" id="if-print">
@@ -370,9 +489,8 @@
   </div>
 
   <div class="note-box">
-    Based on the "OC/LEP first-prescription intake checklist (ver. 2020)" from the
-    official Japanese prescribing guideline. Your answers are reviewed by clinic
-    staff before your consultation and treated as confidential medical information.
+    Screening questions follow the official Japanese OC/LEP prescribing guideline
+    (JSOG, ver. 2020). Your answers are treated as confidential medical information.
     This form is not for emergencies — if you need urgent care, call
     <strong>119</strong> (ambulance) or visit the nearest emergency department.
   </div>
@@ -389,55 +507,98 @@
   var CONTACT_EMAIL = "staff@klcs.jp";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
   var form = document.getElementById("intake-form");
+  var statusEl = document.getElementById("if-status");
+  var submitBtn = document.getElementById("if-submit");
 
-  // [payload key, Japanese label] in the order the doctor reads them.
-  // Labels follow the JSOG OC/LEP first-prescription checklist (ver. 2020).
-  var JA_ORDER = [
-    ["name", "氏名"],
-    ["email", "メールアドレス"],
-    ["date_of_birth", "生年月日"],
-    ["height_cm", "身長(cm)"],
-    ["weight_kg", "体重(kg)"],
-    ["bmi", "BMI"],
-    ["blood_pressure", "血圧"],
-    ["last_period_start", "最終月経の開始日"],
-    ["last_period_days", "月経の日数"],
-    ["abnormal_bleeding", "不正性器出血"],
-    ["pregnant_or_possibly", "妊娠中または妊娠の可能性"],
-    ["breastfeeding", "授乳中"],
-    ["smoking", "喫煙"],
-    ["cigarettes_per_day", "1日の本数"],
-    ["migraine_or_blurred_vision", "激しい頭痛・片頭痛・目のかすみ"],
-    ["current_acute_symptoms", "現在の急性症状(ACHES)"],
-    ["currently_in_treatment", "現在治療中の疾患"],
-    ["treatment_detail", "その病名"],
-    ["past_hospitalization_or_surgery", "入院・手術を要する大きな病気の既往"],
-    ["hospitalization_detail", "その病名"],
-    ["diagnosed_conditions", "既往・診断歴"],
-    ["repeated_miscarriage_stillbirth", "流産・死産の反復"],
-    ["hypertensive_disorder_of_pregnancy", "妊娠高血圧症候群の既往"],
-    ["taking_medications", "服用中の薬・サプリメント"],
-    ["medications_detail", "薬剤名"],
-    ["previous_oc_lep_use", "OC・LEPの服用歴"],
-    ["previous_pill_name", "服用していた薬剤名"],
-    ["medication_allergy", "薬剤アレルギー"],
-    ["allergy_detail", "その薬剤名"],
-    ["recent_or_planned_surgery", "2週間以内の手術/4週間以内の手術予定"],
-    ["family_history_thrombosis", "家族の血栓症歴"],
-    ["family_history_breast_cancer", "家族の乳がん歴"],
-    ["notes", "その他・自由記入"],
+  document.getElementById("if-print").addEventListener("click", function () { window.print(); });
+
+  function radioVal(name) {
+    var el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : "";
+  }
+  function checkVals(name) {
+    return [].map.call(document.querySelectorAll('input[name="' + name + '"]:checked'),
+      function (c) { return c.value; }).join("; ");
+  }
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  // [payload key, English label, Japanese label] — the email shows both so the
+  // doctor and the English-speaking staff read the same sheet.
+  var FIELDS = [
+    ["name", "Full name", "氏名"],
+    ["date_of_birth", "Date of birth", "生年月日"],
+    ["email", "Email", "メールアドレス"],
+    ["phone", "Phone", "電話番号"],
+    ["nationality", "Nationality", "国籍"],
+    ["address", "Address in Japan", "日本国内の住所"],
+    ["height_cm", "Height (cm)", "身長"],
+    ["weight_kg", "Weight (kg)", "体重"],
+    ["bmi", "BMI", "BMI"],
+    ["blood_pressure", "Blood pressure", "血圧"],
+    ["reason_for_visit", "Reason for visit", "受診理由"],
+    ["reason_detail", "Reason details", "受診理由の詳細"],
+    ["last_period_start", "Last period started", "最終月経の開始日"],
+    ["last_period_days", "Period length (days)", "月経の日数"],
+    ["cycle", "Menstrual cycle", "月経周期"],
+    ["cycle_detail", "Cycle length / frequency", "周期の日数・頻度"],
+    ["abnormal_bleeding", "Bleeding outside period", "不正性器出血"],
+    ["bleeding_since", "Bleeding since", "出血はいつから"],
+    ["pregnant_or_possibly", "Pregnant / possibly pregnant", "妊娠中または妊娠の可能性"],
+    ["breastfeeding", "Breastfeeding", "授乳中"],
+    ["ever_pregnant", "Ever been pregnant", "妊娠歴"],
+    ["pregnancy_times", "Number of pregnancies", "妊娠回数"],
+    ["birth_times", "Number of births", "出産回数"],
+    ["intercourse", "Ever had intercourse", "性交渉の経験"],
+    ["smoking", "Smokes", "喫煙"],
+    ["cigarettes_per_day", "Cigarettes per day", "1日の本数"],
+    ["smoking_years", "Years smoking", "喫煙年数"],
+    ["migraine_or_blurred_vision", "Migraine / blurred vision", "激しい頭痛・片頭痛・目のかすみ"],
+    ["current_acute_symptoms", "Acute symptoms now (ACHES)", "現在の急性症状(ACHES)"],
+    ["currently_in_treatment", "Currently in treatment", "現在治療中の疾患"],
+    ["treatment_detail", "Condition", "病名"],
+    ["past_surgery_or_hospitalization", "Past operation / hospitalization", "手術・入院の既往"],
+    ["hospitalization_detail", "Details", "その内容"],
+    ["diagnosed_conditions", "Diagnosed conditions", "既往・診断歴"],
+    ["repeated_miscarriage_stillbirth", "Repeated miscarriage / stillbirth", "流産・死産の反復"],
+    ["hypertensive_disorder_of_pregnancy", "Pre-eclampsia history", "妊娠高血圧症候群の既往"],
+    ["taking_medications", "Taking medications", "服用中の薬・サプリメント"],
+    ["medications_detail", "Medication names", "薬剤名"],
+    ["previous_oc_lep_use", "Birth control pill history", "OC・LEPの服用歴"],
+    ["previous_pill_detail", "Pill name and duration", "薬剤名と服用期間"],
+    ["allergy", "Medication / food allergy", "薬剤・食物アレルギー"],
+    ["allergy_detail", "Allergic to", "その薬剤名・食品名"],
+    ["recent_or_planned_surgery", "Surgery within 2 wks / planned 4 wks", "2週間以内の手術・4週間以内の手術予定"],
+    ["family_history_thrombosis", "Family history: thrombosis", "家族の血栓症歴"],
+    ["family_history_breast_cancer", "Family history: breast cancer", "家族の乳がん歴"],
+    ["found_us", "How they found us", "当院を知ったきっかけ"],
+    ["found_us_detail", "Search words / details", "検索ワード・詳細"],
+    ["notes", "Patient notes", "その他・自由記入"],
   ];
 
   var JA_ANSWERS = {
     "Yes": "はい", "No": "いいえ",
+    "Regular": "順調", "Irregular": "不順",
     "Yes, without aura": "はい（前兆なし）",
     "Yes, with aura": "はい（前兆あり）",
-    "None checked": "該当なし", "None of the above": "該当なし",
-    "Deep vein thrombosis (DVT)": "深部静脈血栓",
+    "None of the above": "該当なし",
+    "Birth control pills": "低用量ピル",
+    "Morning-after pill / Plan B": "アフターピル",
+    "Menstrual pain": "生理痛",
+    "Irregular period": "生理不順",
+    "Genital discharge / vaginal itching": "おりもの・かゆみ",
+    "Genital bleeding": "不正出血",
+    "STD check-up": "性感染症検査",
+    "Pap smear": "子宮頸がん検診",
+    "UTI (urinary tract infection)": "膀胱炎",
+    "Acne / skin": "ニキビ・肌荒れ",
+    "PMS / mood": "PMS・気分の不調",
+    "Menopause": "更年期",
+    "Other": "その他",
+    "Deep vein thrombosis": "深部静脈血栓",
     "Pulmonary embolism": "肺塞栓症",
     "SLE (lupus)": "SLE",
     "Antiphospholipid syndrome": "抗リン脂質抗体症候群",
-    "Thrombophilia (clotting disorder)": "血栓性素因",
+    "Thrombophilia": "血栓性素因",
     "Stroke / cerebrovascular disease": "脳血管障害",
     "Coronary artery disease": "冠動脈疾患",
     "Heart valve disease": "心臓弁膜症",
@@ -445,21 +606,26 @@
     "Kidney disease": "腎機能障害",
     "High blood pressure": "高血圧",
     "Diabetes": "糖尿病",
-    "High cholesterol (dyslipidemia)": "脂質代謝異常（高脂血症）",
+    "High cholesterol": "脂質代謝異常",
     "Liver disease / liver tumor": "肝機能障害・肝腫瘍",
     "Gallbladder disease": "胆嚢疾患",
     "Cervical cancer": "子宮頸がん",
-    "Uterine (endometrial) cancer": "子宮体がん",
+    "Uterine cancer": "子宮体がん",
     "Breast cancer": "乳がん",
     "Porphyria": "ポルフィリン症",
     "Epilepsy": "てんかん",
     "Tetany": "テタニー",
     "Crohn's disease": "クローン病",
     "Ulcerative colitis": "潰瘍性大腸炎",
+    "Internet search": "インターネット検索",
+    "Instagram": "インスタグラム",
+    "Other social media": "その他SNS",
+    "Google Maps": "Googleマップ",
+    "From a friend": "知人の紹介",
   };
 
-  function translateAnswer(v) {
-    if (!v) return v;
+  function toJa(v) {
+    if (!v) return "";
     if (JA_ANSWERS[v]) return JA_ANSWERS[v];
     if (v.indexOf(";") !== -1) {
       return v.split(";").map(function (p) {
@@ -467,20 +633,8 @@
         return JA_ANSWERS[p] || p;
       }).join("、");
     }
-    return v; // free text (medication names, notes) stays as written
+    return v; // free text stays as written
   }
-  var statusEl = document.getElementById("if-status");
-  var submitBtn = document.getElementById("if-submit");
-
-  document.getElementById("if-print").addEventListener("click", function () {
-    window.print();
-  });
-
-  function radioVal(name) {
-    var el = document.querySelector('input[name="' + name + '"]:checked');
-    return el ? el.value : "";
-  }
-  function val(id) { return document.getElementById(id).value.trim(); }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -491,79 +645,89 @@
     var h = parseFloat(val("if-height"));
     var w = parseFloat(val("if-weight"));
     var bmi = h > 0 && w > 0 ? (w / Math.pow(h / 100, 2)).toFixed(1) : "";
-    var conditions = [].map.call(document.querySelectorAll('input[name="cond"]:checked'), function (c) { return c.value; }).join("; ") || "None checked";
 
-    var payload = {
+    var data = {
       name: val("if-name"),
-      email: val("if-email"),
       date_of_birth: val("if-dob"),
+      email: val("if-email"),
+      phone: val("if-phone"),
+      nationality: val("if-nationality"),
+      address: val("if-address"),
       height_cm: val("if-height"),
       weight_kg: val("if-weight"),
       bmi: bmi,
       blood_pressure: val("if-bp"),
+      reason_for_visit: checkVals("reason") || "None checked",
+      reason_detail: val("if-reason-other"),
       last_period_start: val("if-lmp"),
       last_period_days: val("if-lmp-days"),
+      cycle: radioVal("cycle"),
+      cycle_detail: val("if-cycle-detail"),
       abnormal_bleeding: radioVal("bleeding"),
+      bleeding_since: val("if-bleeding-since"),
       pregnant_or_possibly: radioVal("pregnant"),
       breastfeeding: radioVal("breastfeeding"),
+      ever_pregnant: radioVal("ever_pregnant"),
+      pregnancy_times: val("if-preg-times"),
+      birth_times: val("if-birth-times"),
+      intercourse: radioVal("intercourse"),
       smoking: radioVal("smoke"),
       cigarettes_per_day: val("if-smoke-count"),
+      smoking_years: val("if-smoke-years"),
       migraine_or_blurred_vision: radioVal("migraine"),
       current_acute_symptoms: radioVal("aches"),
       currently_in_treatment: radioVal("in_treatment"),
       treatment_detail: val("if-treatment-detail"),
-      past_hospitalization_or_surgery: radioVal("hospitalized"),
+      past_surgery_or_hospitalization: radioVal("hospitalized"),
       hospitalization_detail: val("if-hosp-detail"),
-      diagnosed_conditions: conditions,
+      diagnosed_conditions: checkVals("cond") || "None checked",
       repeated_miscarriage_stillbirth: radioVal("miscarriage"),
       hypertensive_disorder_of_pregnancy: radioVal("preeclampsia"),
       taking_medications: radioVal("meds"),
       medications_detail: val("if-meds-detail"),
       previous_oc_lep_use: radioVal("oc_history"),
-      previous_pill_name: val("if-oc-detail"),
-      medication_allergy: radioVal("allergy"),
+      previous_pill_detail: val("if-oc-detail"),
+      allergy: radioVal("allergy"),
       allergy_detail: val("if-allergy-detail"),
       recent_or_planned_surgery: radioVal("surgery"),
       family_history_thrombosis: radioVal("family_clots"),
       family_history_breast_cancer: radioVal("family_breast_cancer"),
+      found_us: radioVal("found_us"),
+      found_us_detail: val("if-found-detail"),
       notes: val("if-notes"),
     };
 
-    submitBtn.disabled = true;
-
-    // The clinic's doctors read Japanese, so the notification email is built
-    // with Japanese labels (JSOG checklist wording) and translated answers,
-    // keeping the patient's English wording in parentheses where it differs.
-    var jaPayload = {};
-    JA_ORDER.forEach(function (pair) {
-      var key = pair[1];                       // Japanese label
-      var raw = String(payload[pair[0]] || "");
-      var ja = translateAnswer(raw);
-      jaPayload[key] = !raw ? "―"
-        : (ja !== raw ? ja + "（" + raw + "）" : raw);
+    // Bilingual email body: "English label ／ 日本語ラベル" -> "English answer ／ 日本語"
+    var payload = {};
+    FIELDS.forEach(function (f) {
+      var raw = String(data[f[0]] || "");
+      var ja = toJa(raw);
+      payload[f[1] + " ／ " + f[2]] = !raw ? "—"
+        : (ja && ja !== raw ? raw + " ／ " + ja : raw);
     });
 
+    submitBtn.disabled = true;
     fetch(FORM_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(Object.assign({
-        _subject: "【問診票】" + payload.name + "（" + payload.date_of_birth + "）",
+        _subject: "【問診票 / Questionnaire】" + data.name + "（" + data.date_of_birth + "）",
         _template: "table",
         _captcha: "false",
-      }, jaPayload)),
+      }, payload)),
     })
       .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data.success === "true" || data.success === true) {
+      .then(function (d) {
+        if (d.success === "true" || d.success === true) {
           form.reset();
-          statusEl.textContent = "Thank you — your intake form has been sent. The doctor will review it before your consultation.";
+          statusEl.textContent = "Thank you — your questionnaire has been sent. The doctor will review it before your consultation.";
           statusEl.className = "form-status ok";
         } else { throw new Error(); }
       })
       .catch(function () {
-        var body = Object.keys(jaPayload).map(function (k) { return k + ": " + jaPayload[k]; }).join("\n");
+        var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
         window.location.href = "mailto:" + CONTACT_EMAIL +
-          "?subject=" + encodeURIComponent("【問診票】" + payload.name) +
+          "?subject=" + encodeURIComponent("【問診票 / Questionnaire】" + data.name) +
           "&body=" + encodeURIComponent(body);
         statusEl.textContent = "We couldn't send the form directly — your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
         statusEl.className = "form-status err";
