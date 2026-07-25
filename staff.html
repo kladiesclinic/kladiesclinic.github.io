@@ -51,9 +51,9 @@
     <span>予約一覧・Zoom入室<small>時間順に患者名と「Join」ボタンが並びます</small></span>
   </a>
 
-  <a class="big-btn pending" id="viewer-btn" href="#">
+  <a class="big-btn" href="https://mail.google.com/mail/u/0/#search/%E5%95%8F%E8%A8%BA%E7%A5%A8" target="_blank" rel="noopener">
     <span class="icon">📄</span>
-    <span>問診票を見る<small>一覧→タップで日本語表示→印刷（設定待ち）</small></span>
+    <span>問診票メールを開く<small>件名「【問診票】患者名」で検索した受信トレイ</small></span>
   </a>
 
   <a class="big-btn" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
@@ -63,22 +63,11 @@
 </div>
 
 <div class="note">
-  <strong>問診票の見かたは2通り</strong> —
-  ① 上の「問診票を見る」から一覧を開く（Googleにログインしていれば押すだけ・キー不要）
-  ② 送信された瞬間に <strong>staff@klcs.jp へPDF付きメール</strong>も自動で届きます（日本語訳・リスク赤字）。
-  どちらからでもそのままA4印刷できます。
+  <strong>問診票は自動で日本語で届きます</strong> — 患者が送信すると
+  <strong>staff@klcs.jp に「【問診票】患者名（生年月日）」</strong>という件名で、
+  項目も回答も日本語に訳された表が届きます（英語の原文はカッコ内に併記）。
+  メールをそのまま <strong>Ctrl+P でA4印刷</strong>して医師にお渡しください。
 </div>
-
-<script>
-  // 問診票ビューアのURL（Apps Scriptのスタッフ用デプロイURL）ができたらここに貼るだけ
-  var VIEWER_URL = "";
-  if (VIEWER_URL) {
-    var b = document.getElementById("viewer-btn");
-    b.href = VIEWER_URL; b.target = "_blank"; b.rel = "noopener";
-    b.classList.remove("pending");
-    b.querySelector("small").textContent = "一覧→タップで日本語表示→印刷";
-  }
-</script>
 
 </body>
 </html>
