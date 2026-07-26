@@ -36,6 +36,14 @@
   }
   .choice .ja { color: var(--faint); font-size: 12px; margin-left: 5px; }
   .sub-field { margin-top: 8px; margin-left: 2px; }
+  .visit-note {
+    margin-top: 12px; padding: 13px 16px;
+    background: #FCF1F0; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0;
+    font-size: 12.5px; line-height: 1.65; color: var(--soft);
+  }
+  .visit-note strong { color: var(--ink); font-weight: 600; }
+  .visit-note a { color: var(--accent); font-weight: 600; }
+  .visit-note .ja { display: block; margin-top: 4px; font-size: 11.5px; color: var(--faint); }
 
   .print-btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -49,7 +57,7 @@
     @page { size: A4; margin: 12mm 10mm; }
     body { background: #FFFFFF; color: #000000; font-size: 10px; }
     header, footer, .page-head, .note-box, .submit-btn, .print-btn,
-    .form-status, .hp-field, .hint { display: none !important; }
+    .form-status, .hp-field, .hint, .visit-note { display: none !important; }
     .wrap { max-width: none; padding: 0; }
     .print-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -186,6 +194,13 @@
           <label class="choice"><input type="checkbox" name="reason" value="PMS / mood" /> PMS / mood<span class="ja">PMS・気分の不調</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Menopause" /> Menopause<span class="ja">更年期</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Other" /> Other<span class="ja">その他</span></label>
+        </div>
+        <div class="visit-note">
+          <strong>Need an examination or a lab test?</strong> Discharge or itching, STD testing,
+          a Pap smear and bladder infections can't be handled over video — please
+          <a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">book an in-person visit</a>
+          at our Shinjuku clinic instead.
+          <span class="ja">おりもの・かゆみ、性感染症検査、子宮頸がん検診、膀胱炎などは内診・検査が必要なため、オンラインでは対応できません。来院予約をご利用ください。</span>
         </div>
         <div class="sub-field">
           <label for="if-reason-other">If "Morning-after pill" — when did the intercourse happen? / If "Other" — please describe<span class="ja">アフターピルの場合は性交渉の日時／その他の場合は内容</span></label>
