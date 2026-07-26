@@ -162,10 +162,10 @@
   .step {
     display: grid; grid-template-columns: auto 1fr; gap: 8px 32px;
     align-items: start; border-top: 1px solid var(--line);
-    padding: 40px 0;
+    padding: 32px 0;
   }
-  .step-art { grid-column: 1 / -1; margin-top: 22px; justify-self: center; }
-  .step-art svg { display: block; width: 168px; height: auto; color: var(--ink); }
+  .step-art { grid-column: 1 / -1; margin-top: 16px; justify-self: center; }
+  .step-art svg { display: block; width: 116px; height: auto; color: var(--ink); }
   .step-num {
     font-family: var(--serif); font-weight: 300; font-style: italic;
     font-size: clamp(52px, 10vw, 96px); line-height: 0.9;
@@ -178,7 +178,7 @@
   .step-title h3 { font-family: var(--serif); font-size: clamp(22px, 4vw, 28px); font-weight: 400; }
   .step-body p { font-size: 15px; line-height: 1.75; color: var(--soft); }
   .flow-end { border-top: 1px solid var(--line); }
-  @media (min-width: 768px) { .step { padding: 48px 0; } }
+  @media (min-width: 768px) { .step { padding: 48px 0; } .step-art svg { width: 150px; } }
   @media (min-width: 900px) {
     .step { grid-template-columns: auto 1fr 200px; align-items: center; }
     .step-art { grid-column: 3; grid-row: 1; margin-top: 0; justify-self: end; }
