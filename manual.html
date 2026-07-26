@@ -21,7 +21,20 @@
   }
   .sheet { max-width: 560px; margin: 0 auto; }
 
-  .back { display: inline-block; font-size: 13px; color: var(--soft); text-decoration: none; margin-bottom: 16px; }
+  /* 言語切り替え */
+  body.lang-ja [data-lang="en"] { display: none !important; }
+  body.lang-en [data-lang="ja"] { display: none !important; }
+
+  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .back { font-size: 13px; color: var(--soft); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  .langs { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; flex-shrink: 0; }
+  .langs button {
+    border: 0; background: transparent; font-family: inherit; font-size: 12.5px; font-weight: 700;
+    color: var(--soft); padding: 7px 15px; cursor: pointer; line-height: 1.4;
+  }
+  .langs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
   h1 { font-size: 22px; font-weight: 700; }
   .sub { font-size: 13px; color: var(--soft); margin-top: 4px; }
 
@@ -30,34 +43,29 @@
     margin: 40px 0 14px;
   }
 
-  /* ステップカード */
   .card {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px;
     padding: 18px 18px 16px; margin-bottom: 12px;
   }
-  .card-h { display: flex; align-items: baseline; gap: 11px; }
+  .card-h { display: flex; align-items: center; gap: 11px; }
   .card-h .n {
     font-size: 13px; font-weight: 700; color: #FFFFFF; background: var(--ink);
     min-width: 24px; height: 24px; border-radius: 50%; text-align: center;
-    line-height: 24px; flex-shrink: 0; align-self: center;
+    line-height: 24px; flex-shrink: 0;
   }
-  .card-h h3 { font-size: 17px; font-weight: 700; }
+  .card-h h3 { font-size: 17px; font-weight: 700; line-height: 1.4; }
   .do { list-style: none; margin-top: 12px; }
   .do li { font-size: 14.5px; padding: 5px 0 5px 26px; position: relative; }
   .do li::before {
     content: ""; position: absolute; left: 4px; top: 13px;
     width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
   }
-  .do li b { font-weight: 700; }
   .key {
     display: inline-block; background: var(--paper); border: 1px solid var(--line);
     border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; font-size: 13px; font-weight: 700;
   }
 
-  /* 折りたたみ */
-  details {
-    border-top: 1px solid var(--line); margin-top: 14px; padding-top: 11px;
-  }
+  details { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 11px; }
   details summary {
     font-size: 13px; color: var(--soft); cursor: pointer; list-style: none;
     display: flex; align-items: center; gap: 7px;
@@ -70,7 +78,6 @@
   details .body p + p { margin-top: 8px; }
   details .body b { color: var(--ink); }
 
-  /* Q&A */
   .qa {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
     margin-bottom: 10px; overflow: hidden;
@@ -78,7 +85,6 @@
   .qa > summary {
     border: 0; margin: 0; padding: 14px 17px; font-size: 14.5px; font-weight: 700; color: var(--ink);
   }
-  .qa > summary::before { content: "＋"; }
   .qa[open] > summary::before { content: "−"; }
   .qa .body { padding: 0 17px 15px 38px; font-size: 14px; color: var(--soft); }
   .qa .body ol { list-style: none; counter-reset: q; }
@@ -89,11 +95,10 @@
     content: counter(q) "."; position: absolute; left: 2px; color: var(--accent); font-weight: 700;
   }
 
-  /* 英語テンプレ */
   .tpl { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; }
   .tpl > summary { padding: 13px 16px; font-size: 14px; font-weight: 700; }
   .tpl .body { padding: 0 16px 14px; }
-  .en {
+  .en-txt {
     background: var(--paper); border-radius: 9px; padding: 12px 14px;
     font-size: 13.5px; line-height: 1.7; color: var(--ink); user-select: all;
   }
@@ -116,7 +121,7 @@
     display: flex; justify-content: space-between; gap: 14px; align-items: center;
     padding: 12px 2px; text-decoration: none; color: var(--ink); font-size: 14.5px; font-weight: 500;
   }
-  .links a span { font-size: 12px; color: var(--faint); font-weight: 400; text-align: right; }
+  .links a span.tag { font-size: 12px; color: var(--faint); font-weight: 400; text-align: right; }
   .links a:hover { color: var(--accent); }
 
   .foot { margin-top: 34px; font-size: 12px; color: var(--faint); line-height: 1.9; }
@@ -131,218 +136,377 @@
     @page { size: A4; margin: 15mm; }
     body { background: #FFF; padding: 0; font-size: 10pt; }
     .sheet { max-width: none; }
-    .back, .print-btn { display: none !important; }
-    details { display: block; }
+    .back, .print-btn, .langs { display: none !important; }
     details summary { display: none; }
     details .body, .qa .body, .tpl .body { display: block !important; padding-left: 0; }
-    .qa, .tpl, .card { break-inside: avoid; border: 1px solid #CCC; }
     .qa > summary, .tpl > summary { display: block; }
+    .qa, .tpl, .card { break-inside: avoid; border: 1px solid #CCC; }
     h2 { break-after: avoid; }
   }
 </style>
 </head>
-<body>
+<body class="lang-ja">
 <div class="sheet">
 
-<a class="back" href="staff.html">← スタッフメニュー</a>
-<h1>オンライン英語診療マニュアル</h1>
-<p class="sub">予約が入ってから薬を送るまで。「＋」を押すと詳しい説明が開きます。</p>
+<div class="topbar">
+  <a class="back" href="staff.html">
+    <span data-lang="ja">← スタッフメニュー</span>
+    <span data-lang="en">← Staff menu</span>
+  </a>
+  <div class="langs">
+    <button type="button" id="btn-ja" aria-pressed="true" onclick="setLang('ja')">日本語</button>
+    <button type="button" id="btn-en" aria-pressed="false" onclick="setLang('en')">English</button>
+  </div>
+</div>
 
-<h2>毎日の流れ</h2>
+<h1>
+  <span data-lang="ja">オンライン英語診療マニュアル</span>
+  <span data-lang="en">Online consultation manual</span>
+</h1>
+<p class="sub">
+  <span data-lang="ja">予約が入ってから薬を送るまで。「＋」を押すと詳しい説明が開きます。</span>
+  <span data-lang="en">From booking to delivery. Press “＋” to open the details.</span>
+</p>
+
+<h2><span data-lang="ja">毎日の流れ</span><span data-lang="en">THE DAILY FLOW</span></h2>
 
 <!-- 1 -->
 <div class="card">
-  <div class="card-h"><span class="n">1</span><h3>予約が入ったら</h3></div>
+  <div class="card-h"><span class="n">1</span>
+    <h3><span data-lang="ja">予約が入ったら</span><span data-lang="en">When a booking comes in</span></h3>
+  </div>
   <ul class="do">
-    <li><b>予約一覧</b>で患者名と時間を確認する</li>
-    <li><b>問診票メール</b>が届いているか確認する</li>
-    <li>届いていなければ患者さんに記入をお願いする</li>
+    <li>
+      <span data-lang="ja"><b>予約一覧</b>で患者名と時間を確認する</span>
+      <span data-lang="en">Check the patient’s name and time in <b>Bookings</b></span>
+    </li>
+    <li>
+      <span data-lang="ja"><b>問診票メール</b>が届いているか確認する</span>
+      <span data-lang="en">Check that the <b>intake form email</b> has arrived</span>
+    </li>
+    <li>
+      <span data-lang="ja">届いていなければ患者さんに記入をお願いする</span>
+      <span data-lang="en">If it hasn’t, ask the patient to fill it in</span>
+    </li>
   </ul>
   <details>
-    <summary>詳しく</summary>
+    <summary><span data-lang="ja">詳しく</span><span data-lang="en">More</span></summary>
     <div class="body">
-      <p>確認メールとZoomリンクは<b>Calendlyが自動で送ります。</b>スタッフの操作は不要です。</p>
-      <p>問診票のURL → <b>kladiesclinic.github.io/intake.html</b>（記入5分）</p>
-      <p><b>予約は開始30分前まで入ります。</b>直前の予約では問診票が間に合わないことがあります。初回処方の場合は、問診票なしで診察に入らないでください（血栓症・片頭痛・喫煙・血圧の確認が必要なため）。</p>
+      <p data-lang="ja">確認メールとZoomリンクは<b>Calendlyが自動で送ります。</b>スタッフの操作は不要です。</p>
+      <p data-lang="en">The confirmation email and the Zoom link are <b>sent automatically by Calendly.</b> You don’t need to do anything.</p>
+      <p data-lang="ja">問診票のURL → <b>kladiesclinic.github.io/intake.html</b>（記入5分）</p>
+      <p data-lang="en">Intake form → <b>kladiesclinic.github.io/intake.html</b> (takes about 5 minutes)</p>
+      <p data-lang="ja"><b>予約は開始30分前まで入ります。</b>直前の予約では問診票が間に合わないことがあります。初回処方の場合は、問診票なしで診察に入らないでください（血栓症・片頭痛・喫煙・血圧の確認が必要なため）。</p>
+      <p data-lang="en"><b>Patients can book up to 30 minutes before the start time.</b> With last-minute bookings the intake form may not arrive in time. For a first prescription, do not start the consultation without it — we need to check blood clots, migraine, smoking and blood pressure.</p>
     </div>
   </details>
 </div>
 
 <!-- 2 -->
 <div class="card">
-  <div class="card-h"><span class="n">2</span><h3>診察前に印刷する</h3></div>
+  <div class="card-h"><span class="n">2</span>
+    <h3><span data-lang="ja">診察前に印刷する</span><span data-lang="en">Print before the consultation</span></h3>
+  </div>
   <ul class="do">
-    <li><b>問診票メール</b>を開く</li>
-    <li><span class="key">Ctrl</span> + <span class="key">P</span> でA4印刷する</li>
-    <li>医師に渡す</li>
+    <li>
+      <span data-lang="ja"><b>問診票メール</b>を開く</span>
+      <span data-lang="en">Open the <b>intake form email</b></span>
+    </li>
+    <li>
+      <span data-lang="ja"><span class="key">Ctrl</span> + <span class="key">P</span> でA4印刷する</span>
+      <span data-lang="en">Press <span class="key">Ctrl</span> + <span class="key">P</span> and print to A4</span>
+    </li>
+    <li>
+      <span data-lang="ja">医師に渡す</span>
+      <span data-lang="en">Give it to the doctor</span>
+    </li>
   </ul>
   <details>
-    <summary>詳しく</summary>
+    <summary><span data-lang="ja">詳しく</span><span data-lang="en">More</span></summary>
     <div class="body">
-      <p>件名は <b>【問診票】患者名（生年月日）</b>。項目も回答も<b>日本語に翻訳済み</b>で届きます（英語の原文はカッコ内）。Googleスプレッドシートを開く必要はありません。</p>
-      <p>日本産科婦人科学会「OC・LEPガイドライン」初回処方時チェックリスト（2020年版）に沿った内容です。</p>
+      <p data-lang="ja">件名は <b>【問診票】患者名（生年月日）</b>。項目も回答も<b>日本語に翻訳済み</b>で届きます（英語の原文はカッコ内）。Googleスプレッドシートを開く必要はありません。</p>
+      <p data-lang="en">The subject line is <b>【問診票】patient name (date of birth)</b>. Both the questions and the answers <b>arrive already translated into Japanese</b>, with the English original in brackets. You don’t need to open any spreadsheet.</p>
+      <p data-lang="ja">日本産科婦人科学会「OC・LEPガイドライン」初回処方時チェックリスト（2020年版）に沿った内容です。</p>
+      <p data-lang="en">It follows the JSOG (Japan Society of Obstetrics and Gynecology) OC/LEP first-prescription checklist, 2020 edition.</p>
     </div>
   </details>
-  <div class="todo"><b>※要記入</b>　印刷した問診票の置き場所／診察後の保管・廃棄ルール</div>
+  <div class="todo">
+    <b>※要記入</b>
+    <span data-lang="ja">　印刷した問診票の置き場所／診察後の保管・廃棄ルール</span>
+    <span data-lang="en">　Where to put the printed form / how it is stored and disposed of afterwards</span>
+  </div>
 </div>
 
 <!-- 3 -->
 <div class="card">
-  <div class="card-h"><span class="n">3</span><h3>診察する（Zoom・30分）</h3></div>
+  <div class="card-h"><span class="n">3</span>
+    <h3><span data-lang="ja">診察する（Zoom・30分）</span><span data-lang="en">Run the consultation (Zoom, 30 min)</span></h3>
+  </div>
   <ul class="do">
-    <li><b>予約一覧</b>から <b>Join</b> を押す</li>
-    <li>英語対応スタッフが同席する</li>
+    <li>
+      <span data-lang="ja"><b>予約一覧</b>から <b>Join</b> を押す</span>
+      <span data-lang="en">Press <b>Join</b> in <b>Bookings</b></span>
+    </li>
+    <li>
+      <span data-lang="ja">英語対応スタッフが同席する</span>
+      <span data-lang="en">An English-speaking staff member sits in</span>
+    </li>
   </ul>
   <details>
-    <summary>詳しく</summary>
+    <summary><span data-lang="ja">詳しく</span><span data-lang="en">More</span></summary>
     <div class="body">
-      <p>患者さんがZoomに入れないときは、使い方ガイド（英語）を案内してください → <b>kladiesclinic.github.io/zoom.html</b></p>
-      <p>アカウント登録もアプリのインストールも不要で、リンクを押すだけで入れます。</p>
+      <p data-lang="ja">患者さんがZoomに入れないときは、使い方ガイド（英語）を案内してください → <b>kladiesclinic.github.io/zoom.html</b></p>
+      <p data-lang="en">If the patient can’t get into Zoom, send them the guide → <b>kladiesclinic.github.io/zoom.html</b></p>
+      <p data-lang="ja">アカウント登録もアプリのインストールも不要で、リンクを押すだけで入れます。</p>
+      <p data-lang="en">No account and no app are needed — they just click the link.</p>
     </div>
   </details>
-  <div class="todo"><b>※要記入</b>　患者さんが来ないときの待ち時間と連絡方法／カルテ記載の担当／処方内容をSquare担当にどう伝えるか</div>
+  <div class="todo">
+    <b>※要記入</b>
+    <span data-lang="ja">　患者さんが来ないときの待ち時間と連絡方法／カルテ記載の担当／処方内容をSquare担当にどう伝えるか</span>
+    <span data-lang="en">　How long to wait if the patient doesn’t show and how to reach them / who writes the chart / how the prescription is passed to whoever sends the invoice</span>
+  </div>
 </div>
 
 <!-- 4 -->
 <div class="card">
-  <div class="card-h"><span class="n">4</span><h3>請求書を送る（Square）</h3></div>
+  <div class="card-h"><span class="n">4</span>
+    <h3><span data-lang="ja">請求書を送る（Square）</span><span data-lang="en">Send the invoice (Square)</span></h3>
+  </div>
   <ul class="do">
-    <li>Squareから患者さんのメール宛に請求書を送る</li>
-    <li>患者さんがカードで支払う</li>
+    <li>
+      <span data-lang="ja">Squareから患者さんのメール宛に請求書を送る</span>
+      <span data-lang="en">Send the invoice from Square to the patient’s email</span>
+    </li>
+    <li>
+      <span data-lang="ja">患者さんがカードで支払う</span>
+      <span data-lang="en">The patient pays by card</span>
+    </li>
   </ul>
   <div class="warn">
-    <b>カードから勝手に引き落とさないこと。</b>患者さんが金額を見てから支払う、とLPで約束しています。
+    <span data-lang="ja"><b>カードから勝手に引き落とさないこと。</b>患者さんが金額を見てから支払う、とLPで約束しています。</span>
+    <span data-lang="en"><b>Never charge the card before the patient has seen the amount.</b> We promise this on the landing page.</span>
   </div>
-  <div class="todo"><b>※要記入</b>　ログインアカウント／請求書の作成手順／金額の内訳と決め方／宛先メールの転記元／支払期限／控えの保存先</div>
+  <div class="todo">
+    <b>※要記入</b>
+    <span data-lang="ja">　ログインアカウント／請求書の作成手順／金額の内訳と決め方／宛先メールの転記元／支払期限／控えの保存先</span>
+    <span data-lang="en">　Which account to log in with / how to create the invoice / what the charges are and how they’re decided / where to copy the email address from / payment deadline / where the copy is filed</span>
+  </div>
   <details>
-    <summary>確認しておきたいこと</summary>
+    <summary><span data-lang="ja">確認しておきたいこと</span><span data-lang="en">Worth checking</span></summary>
     <div class="body">
-      <p>Squareの請求書メールが<b>英語で届く設定になっているか</b>、一度ご確認ください。日本語のままなら、内容を英語で補足するかSquare側の設定変更が必要です。</p>
-      <p>（LPには「請求書が英語で届く」とは書いていません）</p>
+      <p data-lang="ja">Squareの請求書メールが<b>英語で届く設定になっているか</b>、一度ご確認ください。日本語のままなら、内容を英語で補足するかSquare側の設定変更が必要です。</p>
+      <p data-lang="en">Please check whether <b>Square is set to send the invoice email in English.</b> If it still goes out in Japanese, either explain the contents in English or change the setting in Square.</p>
+      <p data-lang="ja">（LPには「請求書が英語で届く」とは書いていません）</p>
+      <p data-lang="en">(The landing page does not claim the invoice is in English.)</p>
     </div>
   </details>
 </div>
 
 <!-- 5 -->
 <div class="card">
-  <div class="card-h"><span class="n">5</span><h3>入金を確認して発送する</h3></div>
+  <div class="card-h"><span class="n">5</span>
+    <h3><span data-lang="ja">入金を確認して発送する</span><span data-lang="en">Confirm payment, then ship</span></h3>
+  </div>
   <ul class="do">
-    <li><b>入金を確認してから</b>発送する</li>
-    <li><b>無地の梱包</b>で送る</li>
-    <li>差出人は<b>院長個人名</b>にする</li>
+    <li>
+      <span data-lang="ja"><b>入金を確認してから</b>発送する</span>
+      <span data-lang="en">Ship <b>only after payment is confirmed</b></span>
+    </li>
+    <li>
+      <span data-lang="ja"><b>無地の梱包</b>で送る</span>
+      <span data-lang="en">Use <b>plain packaging</b></span>
+    </li>
+    <li>
+      <span data-lang="ja">差出人は<b>院長個人名</b>にする</span>
+      <span data-lang="en">Put <b>the director’s personal name</b> as the sender</span>
+    </li>
   </ul>
   <div class="warn">
-    <b>伝票にクリニック名を書かないこと。</b>「クリニックからの荷物だと知られたくない」という患者さんが多く、LPで明確に約束しています。
+    <span data-lang="ja"><b>伝票にクリニック名を書かないこと。</b>「クリニックからの荷物だと知られたくない」という患者さんが多く、LPで明確に約束しています。</span>
+    <span data-lang="en"><b>Do not put the clinic name on the label.</b> Many patients don’t want anyone to know the parcel came from a clinic, and we promise this clearly on the landing page.</span>
   </div>
-  <div class="todo"><b>※要記入</b>　入金の確認方法とタイミング／未入金時の督促／梱包資材と手順／配送業者と発送タイミング／追跡番号の連絡／ホテル宛の書き方／不在・返送時の対応</div>
+  <div class="todo">
+    <b>※要記入</b>
+    <span data-lang="ja">　入金の確認方法とタイミング／未入金時の督促／梱包資材と手順／配送業者と発送タイミング／追跡番号の連絡／ホテル宛の書き方／不在・返送時の対応</span>
+    <span data-lang="en">　How and when payment is checked / chasing unpaid invoices / packing materials and steps / courier and when parcels go out / whether a tracking number is sent / how to address a parcel to a hotel / what to do if delivery fails</span>
+  </div>
 </div>
 
-<h2>困ったとき</h2>
+<h2><span data-lang="ja">困ったとき</span><span data-lang="en">IF SOMETHING GOES WRONG</span></h2>
 
 <details class="qa">
-  <summary>予約をキャンセル・変更したい</summary>
+  <summary><span data-lang="ja">予約をキャンセル・変更したい</span><span data-lang="en">Cancelling or changing a booking</span></summary>
   <div class="body">
-    <p>患者さんのCalendly確認メールの下に <b>Reschedule</b>（変更）と <b>Cancel</b>（キャンセル）のリンクがあります。基本はこちらを案内してください。</p>
-    <p style="margin-top:10px">スタッフが操作する場合：</p>
-    <ol>
+    <p data-lang="ja">患者さんのCalendly確認メールの下に <b>Reschedule</b>（変更）と <b>Cancel</b>（キャンセル）のリンクがあります。基本はこちらを案内してください。</p>
+    <p data-lang="en">There are <b>Reschedule</b> and <b>Cancel</b> links at the bottom of the patient’s Calendly confirmation email. Point them there first.</p>
+    <p data-lang="ja" style="margin-top:10px">スタッフが操作する場合：</p>
+    <p data-lang="en" style="margin-top:10px">If you do it yourself:</p>
+    <ol data-lang="ja">
       <li>予約一覧を開く</li>
       <li>該当の予約をクリックする</li>
       <li>Cancel を押し、理由を入力して確定する</li>
+    </ol>
+    <ol data-lang="en">
+      <li>Open Bookings</li>
+      <li>Click the booking</li>
+      <li>Press Cancel, type a reason, and confirm</li>
     </ol>
   </div>
 </details>
 
 <details class="qa">
-  <summary>Cancelを押しても何も出てこない</summary>
+  <summary><span data-lang="ja">Cancelを押しても何も出てこない</span><span data-lang="en">Nothing happens when I press Cancel</span></summary>
   <div class="body">
-    <p>Calendly側の表示の不具合です。エラーではありません。</p>
-    <p><span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">R</span> でページを強制再読み込みしてから、もう一度Cancelを押してください。</p>
+    <p data-lang="ja">Calendly側の表示の不具合です。エラーではありません。</p>
+    <p data-lang="en">This is a display bug on Calendly’s side, not an error.</p>
+    <p data-lang="ja"><span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">R</span> でページを強制再読み込みしてから、もう一度Cancelを押してください。</p>
+    <p data-lang="en">Hard-reload the page with <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">R</span>, then press Cancel again.</p>
   </div>
 </details>
 
 <details class="qa">
-  <summary>休診日にしたい</summary>
+  <summary><span data-lang="ja">休診日にしたい</span><span data-lang="en">Closing a day</span></summary>
   <div class="body">
-    <p><b>急な休み →</b> Googleカレンダー <b>staff@klcs.jp</b> に終日の予定を1件入れる。それだけで予約枠が自動で閉じます。こちらが簡単です。</p>
-    <p style="margin-top:10px"><b>お盆・年末年始など決まった休み →</b> Calendlyで登録します：</p>
-    <ol>
+    <p data-lang="ja"><b>急な休み →</b> Googleカレンダー <b>staff@klcs.jp</b> に終日の予定を1件入れる。それだけで予約枠が自動で閉じます。こちらが簡単です。</p>
+    <p data-lang="en"><b>A sudden day off →</b> add a single all-day event to the <b>staff@klcs.jp</b> Google Calendar. The slots close automatically. This is the easy way.</p>
+    <p data-lang="ja" style="margin-top:10px"><b>お盆・年末年始など決まった休み →</b> Calendlyで登録します：</p>
+    <p data-lang="en" style="margin-top:10px"><b>Planned holidays (Obon, New Year) →</b> register them in Calendly:</p>
+    <ol data-lang="ja">
       <li>Availability → Schedules を開く</li>
       <li>ページ<b>いちばん下</b>の「+ Hours」を押す</li>
       <li>休診にする日付を選ぶ（複数可）</li>
       <li>Apply を押す</li>
       <li>Unavailable を選んで保存</li>
     </ol>
-    <p style="margin-top:10px"><b>診察時間そのものを変える →</b> Calendlyの「Working hours (Default)」を編集。全予約枠に影響するので、既存の予約がないか先に確認してください。</p>
+    <ol data-lang="en">
+      <li>Open Availability → Schedules</li>
+      <li>Press “+ Hours” at the <b>very bottom</b> of the page</li>
+      <li>Pick the dates to close (you can pick several)</li>
+      <li>Press Apply</li>
+      <li>Choose Unavailable and save</li>
+    </ol>
+    <p data-lang="ja" style="margin-top:10px"><b>診察時間そのものを変える →</b> Calendlyの「Working hours (Default)」を編集。全予約枠に影響するので、既存の予約がないか先に確認してください。</p>
+    <p data-lang="en" style="margin-top:10px"><b>Changing the consultation hours themselves →</b> edit “Working hours (Default)” in Calendly. This affects every slot, so check for existing bookings first.</p>
   </div>
 </details>
 
 <details class="qa">
-  <summary>検査・内診が必要と言われた</summary>
+  <summary><span data-lang="ja">検査・内診が必要と言われた</span><span data-lang="en">The patient needs a test or an examination</span></summary>
   <div class="body">
-    <p>次の相談は<b>オンラインでは対応できません。</b></p>
-    <p>おりもの・かゆみ／性感染症検査／子宮頸がん検診／膀胱炎</p>
-    <p style="margin-top:10px">新宿院への<b>来院予約</b>を案内してください。<br /><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">来院予約ページを開く</a></p>
-    <div class="todo" style="margin-top:12px"><b>※要記入</b>　診察の途中で来院が必要と分かった場合の診察料／予約を代わりに取るかどうか</div>
+    <p data-lang="ja">次の相談は<b>オンラインでは対応できません。</b>おりもの・かゆみ／性感染症検査／子宮頸がん検診／膀胱炎</p>
+    <p data-lang="en">These <b>cannot be handled online:</b> discharge or itching / STD testing / Pap smear / bladder infection.</p>
+    <p data-lang="ja" style="margin-top:10px">新宿院への<b>来院予約</b>を案内してください。</p>
+    <p data-lang="en" style="margin-top:10px">Point the patient to an <b>in-person booking</b> at the Shinjuku clinic.</p>
+    <p><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">
+      <span data-lang="ja">来院予約ページを開く</span><span data-lang="en">Open the in-person booking page</span>
+    </a></p>
+    <div class="todo" style="margin-top:12px">
+      <b>※要記入</b>
+      <span data-lang="ja">　診察の途中で来院が必要と分かった場合の診察料／予約を代わりに取るかどうか</span>
+      <span data-lang="en">　What to charge if this comes up mid-consultation / whether staff book the visit or the patient does</span>
+    </div>
   </div>
 </details>
 
 <details class="qa">
-  <summary>今日すぐ診てほしいと言われた</summary>
+  <summary><span data-lang="ja">今日すぐ診てほしいと言われた</span><span data-lang="en">The patient wants to be seen today</span></summary>
   <div class="body">
-    <p><b>開始30分前まで</b>予約できるので、当日対応はかなり柔軟にできます。</p>
-    <p>30分を切った枠は患者さん側から予約できません。その場合はCalendlyの管理画面から手動で予定を作るか、次の枠を案内してください。</p>
+    <p data-lang="ja"><b>開始30分前まで</b>予約できるので、当日対応はかなり柔軟にできます。</p>
+    <p data-lang="en">Patients can book <b>up to 30 minutes before</b> the start time, so same-day requests are usually fine.</p>
+    <p data-lang="ja">30分を切った枠は患者さん側から予約できません。その場合はCalendlyの管理画面から手動で予定を作るか、次の枠を案内してください。</p>
+    <p data-lang="en">Inside 30 minutes the patient can’t book it themselves. Either create the event manually in Calendly, or offer them the next slot.</p>
   </div>
 </details>
 
-<h2>英語の返信テンプレ</h2>
-<p class="sub" style="margin:-6px 0 14px">問い合わせは staff@klcs.jp に届きます。そのまま返信すれば患者さんに届きます。</p>
+<h2><span data-lang="ja">英語の返信テンプレ</span><span data-lang="en">REPLY TEMPLATES</span></h2>
+<p class="sub" style="margin:-6px 0 14px">
+  <span data-lang="ja">問い合わせは staff@klcs.jp に届きます。そのまま返信すれば患者さんに届きます。</span>
+  <span data-lang="en">Enquiries arrive at staff@klcs.jp. Just reply to the email and it reaches the patient.</span>
+</p>
 
 <details class="tpl">
-  <summary>保険は使える？ いくらかかる？</summary>
-  <div class="body"><div class="en">Our online consultations are self-pay (not covered by Japanese national health insurance). After your consultation we send an invoice by email — you will see the exact amount before you pay.</div></div>
+  <summary><span data-lang="ja">保険は使える？ いくらかかる？</span><span data-lang="en">Is it covered by insurance? How much is it?</span></summary>
+  <div class="body"><div class="en-txt">Our online consultations are self-pay (not covered by Japanese national health insurance). After your consultation we send an invoice by email — you will see the exact amount before you pay.</div></div>
 </details>
 
 <details class="tpl">
-  <summary>日本の銀行口座がなくても大丈夫？</summary>
-  <div class="body"><div class="en">Yes. Payment is by credit card through Square, so you do not need a Japanese bank account.</div></div>
+  <summary><span data-lang="ja">日本の銀行口座がなくても大丈夫？</span><span data-lang="en">Do I need a Japanese bank account?</span></summary>
+  <div class="body"><div class="en-txt">Yes. Payment is by credit card through Square, so you do not need a Japanese bank account.</div></div>
 </details>
 
 <details class="tpl">
-  <summary>ホテルに送ってもらえる？</summary>
-  <div class="body"><div class="en">Yes — we deliver anywhere in Japan, including hotels. The package is plain and there is no clinic name on the label. Please give us the hotel name, your room reservation name, and the dates you will be staying.</div></div>
+  <summary><span data-lang="ja">ホテルに送ってもらえる？</span><span data-lang="en">Can you deliver to my hotel?</span></summary>
+  <div class="body"><div class="en-txt">Yes — we deliver anywhere in Japan, including hotels. The package is plain and there is no clinic name on the label. Please give us the hotel name, your room reservation name, and the dates you will be staying.</div></div>
 </details>
 
 <details class="tpl">
-  <summary>女性の医師はいる？</summary>
-  <div class="body"><div class="en">Our doctors are male, and an English-speaking female staff member is present on every call. Please let us know if you have any concerns — we will do our best to make you comfortable.</div></div>
+  <summary><span data-lang="ja">女性の医師はいる？</span><span data-lang="en">Is there a female doctor?</span></summary>
+  <div class="body"><div class="en-txt">Our doctors are male, and an English-speaking female staff member is present on every call. Please let us know if you have any concerns — we will do our best to make you comfortable.</div></div>
 </details>
 
 <details class="tpl">
-  <summary>検査を受けたい</summary>
-  <div class="body"><div class="en">Tests and examinations need to be done in person. Please book a visit to our Shinjuku clinic here: https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services</div></div>
+  <summary><span data-lang="ja">検査を受けたい</span><span data-lang="en">I want to get tested</span></summary>
+  <div class="body"><div class="en-txt">Tests and examinations need to be done in person. Please book a visit to our Shinjuku clinic here: https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services</div></div>
 </details>
 
-<div class="todo"><b>※要記入</b>　返信までの目標時間／時間外・休診日に届いた場合／医師の判断が必要な内容の見分け方／緊急性が高い相談への案内文</div>
+<div class="todo">
+  <b>※要記入</b>
+  <span data-lang="ja">　返信までの目標時間／時間外・休診日に届いた場合／医師の判断が必要な内容の見分け方／緊急性が高い相談への案内文</span>
+  <span data-lang="en">　Target reply time / what to do with enquiries that arrive out of hours / how to spot the ones that need the doctor / what to say to urgent cases</span>
+</div>
 
-<h2>リンク</h2>
+<h2><span data-lang="ja">リンク</span><span data-lang="en">LINKS</span></h2>
 <ul class="links">
-  <li><a href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">予約一覧・Zoom入室 <span>Calendly</span></a></li>
-  <li><a href="https://mail.google.com/mail/u/0/#search/%E5%95%8F%E8%A8%BA%E7%A5%A8" target="_blank" rel="noopener">問診票メール <span>Gmail</span></a></li>
-  <li><a href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">診察枠の設定 <span>Calendly</span></a></li>
-  <li><a href="https://calendly.com/app/availability/schedules" target="_blank" rel="noopener">休診日の設定 <span>Calendly</span></a></li>
-  <li><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">来院予約ページ <span>Square</span></a></li>
-  <li><a href="intake.html" target="_blank">問診票 <span>患者さん用</span></a></li>
-  <li><a href="zoom.html" target="_blank">Zoomの使い方 <span>患者さん用</span></a></li>
-  <li><a href="index.html" target="_blank">英語LP <span>患者さん用</span></a></li>
+  <li><a href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
+    <span data-lang="ja">予約一覧・Zoom入室</span><span data-lang="en">Bookings &amp; Zoom</span><span class="tag">Calendly</span></a></li>
+  <li><a href="https://mail.google.com/mail/u/0/#search/%E5%95%8F%E8%A8%BA%E7%A5%A8" target="_blank" rel="noopener">
+    <span data-lang="ja">問診票メール</span><span data-lang="en">Intake form emails</span><span class="tag">Gmail</span></a></li>
+  <li><a href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
+    <span data-lang="ja">診察枠の設定</span><span data-lang="en">Slot settings</span><span class="tag">Calendly</span></a></li>
+  <li><a href="https://calendly.com/app/availability/schedules" target="_blank" rel="noopener">
+    <span data-lang="ja">休診日の設定</span><span data-lang="en">Closed days</span><span class="tag">Calendly</span></a></li>
+  <li><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">
+    <span data-lang="ja">来院予約ページ</span><span data-lang="en">In-person booking</span><span class="tag">Square</span></a></li>
+  <li><a href="intake.html" target="_blank">
+    <span data-lang="ja">問診票</span><span data-lang="en">Intake form</span>
+    <span class="tag"><span data-lang="ja">患者さん用</span><span data-lang="en">for patients</span></span></a></li>
+  <li><a href="zoom.html" target="_blank">
+    <span data-lang="ja">Zoomの使い方</span><span data-lang="en">How Zoom works</span>
+    <span class="tag"><span data-lang="ja">患者さん用</span><span data-lang="en">for patients</span></span></a></li>
+  <li><a href="index.html" target="_blank">
+    <span data-lang="ja">英語LP</span><span data-lang="en">Landing page</span>
+    <span class="tag"><span data-lang="ja">患者さん用</span><span data-lang="en">for patients</span></span></a></li>
 </ul>
 
-<button class="print-btn" onclick="window.print()">🖨 印刷 / PDFで保存</button>
+<button class="print-btn" onclick="window.print()">
+  <span data-lang="ja">🖨 印刷 / PDFで保存</span>
+  <span data-lang="en">🖨 Print / save as PDF</span>
+</button>
 
 <p class="foot">
-  このページとスタッフメニューは検索避けを設定しており、どこからもリンクしていません。URLを知っている人だけが開けます。患者さんや外部に共有しないでください。<br />
-  2026年7月26日 作成
+  <span data-lang="ja">このページとスタッフメニューは検索避けを設定しており、どこからもリンクしていません。URLを知っている人だけが開けます。患者さんや外部に共有しないでください。</span>
+  <span data-lang="en">This page and the staff menu are set to noindex and are not linked from anywhere. Only people who know the URL can open them. Please don’t share them with patients or anyone outside the clinic.</span>
+  <br />2026-07-26
 </p>
 
 </div>
+
+<script>
+  function setLang(l) {
+    document.body.className = 'lang-' + l;
+    document.documentElement.lang = l;
+    document.getElementById('btn-ja').setAttribute('aria-pressed', l === 'ja');
+    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
+    try { localStorage.setItem('klcsManualLang', l); } catch (e) {}
+  }
+  (function () {
+    var saved;
+    try { saved = localStorage.getItem('klcsManualLang'); } catch (e) {}
+    if (!saved) saved = (navigator.language || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+    setLang(saved);
+  })();
+</script>
+
 </body>
 </html>

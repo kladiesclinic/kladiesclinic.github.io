@@ -38,41 +38,91 @@
     background: #FFFFFF; border: 1px solid #E9DDD6; border-radius: 14px; padding: 16px 18px;
   }
   .note strong { color: #2B2124; }
+
+  /* 言語切り替え */
+  body.lang-ja [data-lang="en"] { display: none !important; }
+  body.lang-en [data-lang="ja"] { display: none !important; }
+  .langs {
+    display: flex; border: 1px solid #E9DDD6; border-radius: 999px;
+    overflow: hidden; background: #FFFFFF; margin-bottom: 22px;
+  }
+  .langs button {
+    border: 0; background: transparent; font-family: inherit; font-size: 12.5px; font-weight: 700;
+    color: #7A6A66; padding: 7px 16px; cursor: pointer; line-height: 1.4;
+  }
+  .langs button[aria-pressed="true"] { background: #2B2124; color: #FBF7F4; }
 </style>
 </head>
-<body>
+<body class="lang-ja">
 
 <img class="logo" src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
-<div class="tag">スタッフ用</div>
+<div class="tag"><span data-lang="ja">スタッフ用</span><span data-lang="en">STAFF</span></div>
+
+<div class="langs">
+  <button type="button" id="btn-ja" aria-pressed="true" onclick="setLang('ja')">日本語</button>
+  <button type="button" id="btn-en" aria-pressed="false" onclick="setLang('en')">English</button>
+</div>
 
 <div class="menu">
   <a class="big-btn main" href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">
     <span class="icon">📅</span>
-    <span>予約一覧・Zoom入室<small>時間順に患者名と「Join」ボタンが並びます</small></span>
+    <span>
+      <span data-lang="ja">予約一覧・Zoom入室<small>時間順に患者名と「Join」ボタンが並びます</small></span>
+      <span data-lang="en">Bookings &amp; Zoom<small>Patients listed by time, each with a Join button</small></span>
+    </span>
   </a>
 
   <a class="big-btn" href="https://mail.google.com/mail/u/0/#search/%E5%95%8F%E8%A8%BA%E7%A5%A8" target="_blank" rel="noopener">
     <span class="icon">📄</span>
-    <span>問診票メールを開く<small>件名「【問診票】患者名」で検索した受信トレイ</small></span>
+    <span>
+      <span data-lang="ja">問診票メールを開く<small>件名「【問診票】患者名」で検索した受信トレイ</small></span>
+      <span data-lang="en">Intake form emails<small>Inbox searched for 【問診票】</small></span>
+    </span>
   </a>
 
   <a class="big-btn" href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">
     <span class="icon">⚙️</span>
-    <span>診察枠の設定<small>時間変更・休診・予約の一時停止</small></span>
+    <span>
+      <span data-lang="ja">診察枠の設定<small>時間変更・休診・予約の一時停止</small></span>
+      <span data-lang="en">Slot settings<small>Change hours, close days, pause bookings</small></span>
+    </span>
   </a>
 
   <a class="big-btn" href="manual.html">
     <span class="icon">📖</span>
-    <span>マニュアル<small>予約から発送までの手順・英語返信例</small></span>
+    <span>
+      <span data-lang="ja">マニュアル<small>予約から発送までの手順・英語返信例</small></span>
+      <span data-lang="en">Manual<small>Booking to delivery, plus reply templates</small></span>
+    </span>
   </a>
 </div>
 
 <div class="note">
-  <strong>問診票は自動で日本語で届きます</strong> — 患者が送信すると
+  <span data-lang="ja"><strong>問診票は自動で日本語で届きます</strong> — 患者が送信すると
   <strong>staff@klcs.jp に「【問診票】患者名（生年月日）」</strong>という件名で、
   項目も回答も日本語に訳された表が届きます（英語の原文はカッコ内に併記）。
-  メールをそのまま <strong>Ctrl+P でA4印刷</strong>して医師にお渡しください。
+  メールをそのまま <strong>Ctrl+P でA4印刷</strong>して医師にお渡しください。</span>
+  <span data-lang="en"><strong>Intake forms arrive already translated into Japanese.</strong> When a patient submits one,
+  <strong>staff@klcs.jp</strong> receives an email titled <strong>【問診票】patient name (date of birth)</strong>
+  with both the questions and the answers in Japanese, the English original in brackets.
+  Just <strong>print it to A4 with Ctrl+P</strong> and give it to the doctor.</span>
 </div>
+
+<script>
+  function setLang(l) {
+    document.body.className = 'lang-' + l;
+    document.documentElement.lang = l;
+    document.getElementById('btn-ja').setAttribute('aria-pressed', l === 'ja');
+    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
+    try { localStorage.setItem('klcsManualLang', l); } catch (e) {}
+  }
+  (function () {
+    var saved;
+    try { saved = localStorage.getItem('klcsManualLang'); } catch (e) {}
+    if (!saved) saved = (navigator.language || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+    setLang(saved);
+  })();
+</script>
 
 </body>
 </html>
