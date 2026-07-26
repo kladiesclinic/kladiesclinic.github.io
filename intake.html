@@ -36,12 +36,6 @@
   }
   .choice .ja { color: var(--faint); font-size: 12px; margin-left: 5px; }
   .sub-field { margin-top: 8px; margin-left: 2px; }
-  .visit-tag {
-    font-style: normal; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
-    color: #B03A44; background: #FCE9EA; border-radius: 999px;
-    padding: 2px 7px; margin-left: 4px; white-space: nowrap;
-  }
-  .hint .visit-tag { margin-left: 0; }
 
   .print-btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -187,21 +181,11 @@
           <label class="choice"><input type="checkbox" name="reason" value="Morning-after pill / Plan B" /> Morning-after pill<span class="ja">アフターピル</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Menstrual pain" /> Menstrual pain<span class="ja">生理痛</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Irregular period" /> Irregular period<span class="ja">生理不順</span></label>
-          <label class="choice"><input type="checkbox" name="reason" value="Genital discharge / vaginal itching" /> Discharge / itching <em class="visit-tag">clinic visit</em><span class="ja">おりもの・かゆみ（要来院）</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Genital bleeding" /> Genital bleeding<span class="ja">不正出血</span></label>
-          <label class="choice"><input type="checkbox" name="reason" value="STD check-up" /> STD check-up <em class="visit-tag">clinic visit</em><span class="ja">性感染症検査（要来院）</span></label>
-          <label class="choice"><input type="checkbox" name="reason" value="Pap smear" /> Pap smear <em class="visit-tag">clinic visit</em><span class="ja">子宮頸がん検診（要来院）</span></label>
-          <label class="choice"><input type="checkbox" name="reason" value="UTI (urinary tract infection)" /> UTI <em class="visit-tag">clinic visit</em><span class="ja">膀胱炎（要来院）</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Acne / skin" /> Acne / skin<span class="ja">ニキビ・肌荒れ</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="PMS / mood" /> PMS / mood<span class="ja">PMS・気分の不調</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Menopause" /> Menopause<span class="ja">更年期</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Other" /> Other<span class="ja">その他</span></label>
-        </div>
-        <div class="hint" style="margin-top:10px;">
-          Items marked <em class="visit-tag">clinic visit</em> need an examination or lab test,
-          so they can't be completed over video — we'll arrange a visit to our Shinjuku
-          clinic. Everything else can be handled online.
-          <span class="ja" style="display:block; margin-top:3px;">「要来院」の項目は内診・検査が必要なため、オンラインでは完結しません（来院をご案内します）。</span>
         </div>
         <div class="sub-field">
           <label for="if-reason-other">If "Morning-after pill" — when did the intercourse happen? / If "Other" — please describe<span class="ja">アフターピルの場合は性交渉の日時／その他の場合は内容</span></label>
@@ -601,11 +585,7 @@
     "Morning-after pill / Plan B": "アフターピル",
     "Menstrual pain": "生理痛",
     "Irregular period": "生理不順",
-    "Genital discharge / vaginal itching": "おりもの・かゆみ【要来院】",
     "Genital bleeding": "不正出血",
-    "STD check-up": "性感染症検査【要来院】",
-    "Pap smear": "子宮頸がん検診【要来院】",
-    "UTI (urinary tract infection)": "膀胱炎【要来院】",
     "Acne / skin": "ニキビ・肌荒れ",
     "PMS / mood": "PMS・気分の不調",
     "Menopause": "更年期",
