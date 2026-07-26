@@ -109,6 +109,8 @@ form textarea { min-height: 110px; resize: vertical; }
 }
 .step-item h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin-bottom: 6px; }
 .step-item p { font-size: 14.5px; line-height: 1.7; color: var(--soft); max-width: 520px; }
+.step-item p + p { margin-top: 10px; }
+.step-item p strong { color: var(--ink); font-weight: 600; }
 
 .note-box {
   border: 1px solid var(--line); border-left: 3px solid var(--accent-light);
