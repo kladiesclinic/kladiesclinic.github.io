@@ -266,16 +266,14 @@
   /* ---------- instagram ---------- */
   .insta { padding-top: 8px; padding-bottom: 88px; }
   .insta-inner {
-    display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center;
+    text-align: center;
     border-top: 1px solid var(--line); padding-top: 64px; margin-top: 80px;
   }
   .insta h2 { font-size: clamp(30px, 5.5vw, 44px); }
-  .insta p { font-size: 15px; line-height: 1.75; color: var(--soft); max-width: 380px; margin-top: 16px; margin-bottom: 24px; }
-  .insta-embed {
-    width: 100%; max-width: 400px; height: 480px; border: 1px solid var(--line);
-    border-radius: 24px; display: block; margin: 0 auto; background: #FFFFFF;
+  .insta p {
+    font-size: 15px; line-height: 1.75; color: var(--soft);
+    max-width: 420px; margin: 16px auto 26px;
   }
-  @media (min-width: 820px) { .insta-inner { grid-template-columns: 1fr 1fr; } }
 
   /* ---------- faq ---------- */
   .faq { padding-top: 88px; padding-bottom: 72px; }
@@ -875,15 +873,6 @@
         Follow @k_ladies_clinic
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
       </a>
-    </div>
-    <div class="reveal">
-      <iframe
-        class="insta-embed"
-        src="https://www.instagram.com/k_ladies_clinic/embed"
-        title="K Ladies Clinic Shinjuku on Instagram"
-        loading="lazy"
-        allowtransparency="true"
-      ></iframe>
     </div>
   </div>
 </section>
