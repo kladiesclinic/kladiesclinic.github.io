@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>オンライン英語診療 スタッフマニュアル — K Ladies Clinic</title>
+<title>マニュアル — K Ladies Clinic スタッフ</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232B2124'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,483 +13,335 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --paper: #FBF7F4; --ink: #2B2124; --soft: #7A6A66; --faint: #A8968F;
-    --line: #E9DDD6; --accent: #F25C5B; --warn: #FCF1F0;
+    --line: #E9DDD6; --accent: #F25C5B;
   }
   body {
     font-family: 'Noto Sans JP', sans-serif; background: var(--paper); color: var(--ink);
-    padding: 28px 20px 64px; line-height: 1.8; -webkit-text-size-adjust: 100%;
+    padding: 26px 18px 56px; line-height: 1.75; -webkit-text-size-adjust: 100%;
   }
-  .sheet { max-width: 760px; margin: 0 auto; }
+  .sheet { max-width: 560px; margin: 0 auto; }
 
-  .back { display: inline-block; font-size: 13px; color: var(--soft); text-decoration: none; margin-bottom: 18px; }
-  .back:hover { color: var(--accent); }
-  .logo { height: 32px; display: block; margin-bottom: 10px; }
-  h1 { font-size: 25px; line-height: 1.4; font-weight: 700; }
-  .lede { font-size: 13.5px; color: var(--soft); margin-top: 8px; }
-  .meta { font-size: 12px; color: var(--faint); margin-top: 6px; }
+  .back { display: inline-block; font-size: 13px; color: var(--soft); text-decoration: none; margin-bottom: 16px; }
+  h1 { font-size: 22px; font-weight: 700; }
+  .sub { font-size: 13px; color: var(--soft); margin-top: 4px; }
 
-  /* 目次 */
-  .toc {
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
-    padding: 18px 20px; margin: 26px 0 8px;
-  }
-  .toc-h { font-size: 12px; letter-spacing: .16em; color: var(--faint); margin-bottom: 10px; }
-  .toc ol { list-style: none; counter-reset: toc; }
-  .toc li { counter-increment: toc; font-size: 14px; padding: 3px 0; }
-  .toc li::before {
-    content: counter(toc, decimal-leading-zero); color: var(--accent);
-    font-weight: 700; margin-right: 10px; font-size: 12.5px;
-  }
-  .toc a { color: var(--ink); text-decoration: none; }
-  .toc a:hover { color: var(--accent); }
-
-  section { margin-top: 40px; scroll-margin-top: 16px; }
   h2 {
-    font-size: 19px; font-weight: 700; padding-bottom: 10px;
-    border-bottom: 2px solid var(--ink); display: flex; gap: 12px; align-items: baseline;
+    font-size: 13px; letter-spacing: .14em; color: var(--faint); font-weight: 700;
+    margin: 40px 0 14px;
   }
-  h2 .n { color: var(--accent); font-size: 15px; }
-  h3 { font-size: 15px; font-weight: 700; margin-top: 22px; }
-  p { font-size: 14px; margin-top: 10px; }
-  ul, ol.steps { margin: 10px 0 0 0; padding-left: 0; list-style: none; }
-  ul li, ol.steps li { font-size: 14px; padding: 4px 0 4px 22px; position: relative; }
-  ul li::before { content: "•"; position: absolute; left: 6px; color: var(--faint); }
-  ol.steps { counter-reset: st; }
-  ol.steps li { counter-increment: st; }
-  ol.steps li::before {
-    content: counter(st); position: absolute; left: 0; top: 6px;
-    width: 17px; height: 17px; border-radius: 50%; background: var(--ink); color: #FFF;
-    font-size: 10.5px; font-weight: 700; text-align: center; line-height: 17px;
-  }
-  a { color: var(--accent); }
-  code {
-    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px;
-    word-break: break-all;
-  }
-  strong { font-weight: 700; }
 
-  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
-  th, td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
-  th { background: #FFFFFF; font-weight: 700; white-space: nowrap; }
-  .tw { overflow-x: auto; }
-
-  .box {
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px;
-    padding: 14px 17px; margin-top: 14px; font-size: 13.5px;
+  /* ステップカード */
+  .card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 18px 16px; margin-bottom: 12px;
   }
-  .box.warn { background: var(--warn); border-color: var(--accent); border-left-width: 3px; }
-  .box .t { font-weight: 700; display: block; margin-bottom: 4px; }
+  .card-h { display: flex; align-items: baseline; gap: 11px; }
+  .card-h .n {
+    font-size: 13px; font-weight: 700; color: #FFFFFF; background: var(--ink);
+    min-width: 24px; height: 24px; border-radius: 50%; text-align: center;
+    line-height: 24px; flex-shrink: 0; align-self: center;
+  }
+  .card-h h3 { font-size: 17px; font-weight: 700; }
+  .do { list-style: none; margin-top: 12px; }
+  .do li { font-size: 14.5px; padding: 5px 0 5px 26px; position: relative; }
+  .do li::before {
+    content: ""; position: absolute; left: 4px; top: 13px;
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+  }
+  .do li b { font-weight: 700; }
+  .key {
+    display: inline-block; background: var(--paper); border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; font-size: 13px; font-weight: 700;
+  }
+
+  /* 折りたたみ */
+  details {
+    border-top: 1px solid var(--line); margin-top: 14px; padding-top: 11px;
+  }
+  details summary {
+    font-size: 13px; color: var(--soft); cursor: pointer; list-style: none;
+    display: flex; align-items: center; gap: 7px;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "＋"; color: var(--accent); font-weight: 700; }
+  details[open] summary::before { content: "−"; }
+  details summary:hover { color: var(--accent); }
+  details .body { font-size: 13.5px; color: var(--soft); padding: 10px 0 2px 20px; }
+  details .body p + p { margin-top: 8px; }
+  details .body b { color: var(--ink); }
+
+  /* Q&A */
+  .qa {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
+    margin-bottom: 10px; overflow: hidden;
+  }
+  .qa > summary {
+    border: 0; margin: 0; padding: 14px 17px; font-size: 14.5px; font-weight: 700; color: var(--ink);
+  }
+  .qa > summary::before { content: "＋"; }
+  .qa[open] > summary::before { content: "−"; }
+  .qa .body { padding: 0 17px 15px 38px; font-size: 14px; color: var(--soft); }
+  .qa .body ol { list-style: none; counter-reset: q; }
+  .qa .body ol li {
+    counter-increment: q; padding: 4px 0 4px 24px; position: relative; color: var(--ink);
+  }
+  .qa .body ol li::before {
+    content: counter(q) "."; position: absolute; left: 2px; color: var(--accent); font-weight: 700;
+  }
+
+  /* 英語テンプレ */
+  .tpl { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; }
+  .tpl > summary { padding: 13px 16px; font-size: 14px; font-weight: 700; }
+  .tpl .body { padding: 0 16px 14px; }
+  .en {
+    background: var(--paper); border-radius: 9px; padding: 12px 14px;
+    font-size: 13.5px; line-height: 1.7; color: var(--ink); user-select: all;
+  }
+
+  .warn {
+    background: #FCF1F0; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0;
+    padding: 13px 16px; margin: 12px 0; font-size: 13.5px; line-height: 1.7; color: var(--soft);
+  }
+  .warn b { color: var(--ink); }
 
   .todo {
     background: #FFFDF3; border: 1px dashed #D9C48A; border-radius: 12px;
-    padding: 14px 17px; margin-top: 14px; font-size: 13.5px; color: #6B5B2E;
+    padding: 12px 15px; margin-top: 12px; font-size: 13px; color: #6B5B2E; line-height: 1.7;
   }
-  .todo .t { font-weight: 700; color: #8A6D1F; display: block; margin-bottom: 4px; }
-  .todo ul li::before { color: #C4A94F; }
-  .todo ul li { color: #6B5B2E; }
+  .todo b { color: #8A6D1F; }
 
-  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 10px;
-    padding: 9px 14px; font-size: 13px; font-weight: 500; color: var(--ink);
+  .links { list-style: none; }
+  .links li { border-bottom: 1px solid var(--line); }
+  .links a {
+    display: flex; justify-content: space-between; gap: 14px; align-items: center;
+    padding: 12px 2px; text-decoration: none; color: var(--ink); font-size: 14.5px; font-weight: 500;
   }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .links a span { font-size: 12px; color: var(--faint); font-weight: 400; text-align: right; }
+  .links a:hover { color: var(--accent); }
+
+  .foot { margin-top: 34px; font-size: 12px; color: var(--faint); line-height: 1.9; }
 
   .print-btn {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 26px;
-    background: var(--ink); color: var(--paper); border: 0; border-radius: 10px;
-    padding: 11px 18px; font-size: 13.5px; font-weight: 700; cursor: pointer;
-    font-family: inherit;
+    display: block; width: 100%; margin-top: 22px;
+    background: var(--ink); color: var(--paper); border: 0; border-radius: 12px;
+    padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
   }
 
   @media print {
-    @page { size: A4; margin: 14mm; }
-    body { background: #FFF; padding: 0; font-size: 10.5pt; line-height: 1.65; }
-    .back, .print-btn, .btn-row { display: none !important; }
-    .toc { break-inside: avoid; }
-    section { break-inside: auto; margin-top: 22px; }
+    @page { size: A4; margin: 15mm; }
+    body { background: #FFF; padding: 0; font-size: 10pt; }
+    .sheet { max-width: none; }
+    .back, .print-btn { display: none !important; }
+    details { display: block; }
+    details summary { display: none; }
+    details .body, .qa .body, .tpl .body { display: block !important; padding-left: 0; }
+    .qa, .tpl, .card { break-inside: avoid; border: 1px solid #CCC; }
+    .qa > summary, .tpl > summary { display: block; }
     h2 { break-after: avoid; }
-    h3 { break-after: avoid; }
-    .box, .todo, table { break-inside: avoid; }
-    a { color: var(--ink); text-decoration: none; }
   }
 </style>
 </head>
 <body>
 <div class="sheet">
 
-<a class="back" href="staff.html">← スタッフメニューに戻る</a>
-<img class="logo" src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku" />
-<h1>オンライン英語診療<br />スタッフマニュアル</h1>
-<p class="lede">英語話者の患者さんが、予約してから薬を受け取るまでの全工程と、その各段階でスタッフが行う作業をまとめたものです。</p>
-<p class="meta">2026年7月26日 作成 ／ ※要記入の項目は実際の運用に合わせて追記してください</p>
+<a class="back" href="staff.html">← スタッフメニュー</a>
+<h1>オンライン英語診療マニュアル</h1>
+<p class="sub">予約が入ってから薬を送るまで。「＋」を押すと詳しい説明が開きます。</p>
 
-<div class="toc">
-  <div class="toc-h">目次</div>
-  <ol>
-    <li><a href="#s1">全体の流れ</a></li>
-    <li><a href="#s2">予約が入ったら</a></li>
-    <li><a href="#s3">診察前（問診票の確認・印刷）</a></li>
-    <li><a href="#s4">診察当日（Zoom）</a></li>
-    <li><a href="#s5">診察後（Squareで請求書を送る）</a></li>
-    <li><a href="#s6">入金確認</a></li>
-    <li><a href="#s7">発送</a></li>
-    <li><a href="#s8">予約の変更・キャンセル</a></li>
-    <li><a href="#s9">休診日・診察枠の設定</a></li>
-    <li><a href="#s10">来院が必要な相談への対応</a></li>
-    <li><a href="#s11">問い合わせ対応（英語返信例）</a></li>
-    <li><a href="#s12">付録：URL・アカウント一覧</a></li>
-  </ol>
-</div>
+<h2>毎日の流れ</h2>
 
 <!-- 1 -->
-<section id="s1">
-  <h2><span class="n">01</span> 全体の流れ</h2>
-  <p>患者さんから見た流れは5段階です。英語LPにもこの順番で説明が載っています。</p>
-  <div class="tw"><table>
-    <tr><th>患者さんの動き</th><th>スタッフの作業</th><th>担当</th></tr>
-    <tr><td>① オンライン予約<br />（Calendly）</td><td>予約通知を確認。問診票が届いているか見る</td><td>※要記入</td></tr>
-    <tr><td>② オンライン診療<br />（Zoom・30分）</td><td>問診票を印刷して医師に渡す／Zoom同席・通訳</td><td>※要記入</td></tr>
-    <tr><td>③ 請求書がメールで届く</td><td><strong>Squareで請求書を作成・送信</strong></td><td>※要記入</td></tr>
-    <tr><td>④ カードで決済</td><td>入金を確認</td><td>※要記入</td></tr>
-    <tr><td>⑤ 薬が届く</td><td>梱包・発送</td><td>※要記入</td></tr>
-  </table></div>
-  <div class="box warn">
-    <span class="t">この診療で扱えないもの</span>
-    内診・検査が必要なもの（おりもの・かゆみ、性感染症検査、子宮頸がん検診、膀胱炎）はオンラインでは対応できません。来院予約へご案内します → <a href="#s10">10章</a>
-  </div>
-</section>
+<div class="card">
+  <div class="card-h"><span class="n">1</span><h3>予約が入ったら</h3></div>
+  <ul class="do">
+    <li><b>予約一覧</b>で患者名と時間を確認する</li>
+    <li><b>問診票メール</b>が届いているか確認する</li>
+    <li>届いていなければ患者さんに記入をお願いする</li>
+  </ul>
+  <details>
+    <summary>詳しく</summary>
+    <div class="body">
+      <p>確認メールとZoomリンクは<b>Calendlyが自動で送ります。</b>スタッフの操作は不要です。</p>
+      <p>問診票のURL → <b>kladiesclinic.github.io/intake.html</b>（記入5分）</p>
+      <p><b>予約は開始30分前まで入ります。</b>直前の予約では問診票が間に合わないことがあります。初回処方の場合は、問診票なしで診察に入らないでください（血栓症・片頭痛・喫煙・血圧の確認が必要なため）。</p>
+    </div>
+  </details>
+</div>
 
 <!-- 2 -->
-<section id="s2">
-  <h2><span class="n">02</span> 予約が入ったら</h2>
-
-  <h3>自動で起きること（スタッフの操作は不要）</h3>
-  <ul>
-    <li>患者さんに<strong>確認メールとZoomリンク</strong>がCalendlyから自動送信されます（1予約ごとに固有のZoom URL）</li>
-    <li><code>staff@klcs.jp</code> に予約通知メールが届きます</li>
-    <li>患者さんは予約完了ページで<strong>問診票の記入</strong>を案内されます</li>
+<div class="card">
+  <div class="card-h"><span class="n">2</span><h3>診察前に印刷する</h3></div>
+  <ul class="do">
+    <li><b>問診票メール</b>を開く</li>
+    <li><span class="key">Ctrl</span> + <span class="key">P</span> でA4印刷する</li>
+    <li>医師に渡す</li>
   </ul>
-
-  <h3>スタッフの確認</h3>
-  <ol class="steps">
-    <li>スタッフメニューの <strong>📅 予約一覧・Zoom入室</strong> を開く</li>
-    <li>予約が入っているか、患者名と時間を確認する</li>
-    <li>問診票メールが届いているか確認する（→ <a href="#s3">3章</a>）</li>
-  </ol>
-
-  <h3>予約の受付ルール（Calendlyの現在の設定）</h3>
-  <div class="tw"><table>
-    <tr><th>1枠の長さ</th><td>30分</td></tr>
-    <tr><th>直前予約</th><td><strong>開始の30分前まで</strong>受付。それより後は枠が表示されません</td></tr>
-    <tr><th>先の予約</th><td>60日先まで</td></tr>
-    <tr><th>受付時間</th><td>Calendlyの「Working hours (Default)」に従います（→ <a href="#s9">9章</a>）</td></tr>
-  </table></div>
-  <div class="box">
-    <span class="t">「今日中に診てほしい」と言われたら</span>
-    30分前まで受け付けているので、当日の対応はかなり柔軟にできます。ただし<strong>30分を切った枠は患者さん側から予約できません。</strong>その場合はスタッフがCalendlyの管理画面から手動で予定を作るか、次の枠をご案内してください。
-  </div>
-  <div class="box warn">
-    <span class="t">直前予約が入ることを前提に動いてください</span>
-    30分前でも予約が入るため、<strong>問診票が診察直前に届く／間に合わないことがあります。</strong>初回処方の場合は特に、予約が入った時点で問診票の有無を確認してください（→ <a href="#s3">3章</a>）。
-  </div>
-</section>
+  <details>
+    <summary>詳しく</summary>
+    <div class="body">
+      <p>件名は <b>【問診票】患者名（生年月日）</b>。項目も回答も<b>日本語に翻訳済み</b>で届きます（英語の原文はカッコ内）。Googleスプレッドシートを開く必要はありません。</p>
+      <p>日本産科婦人科学会「OC・LEPガイドライン」初回処方時チェックリスト（2020年版）に沿った内容です。</p>
+    </div>
+  </details>
+  <div class="todo"><b>※要記入</b>　印刷した問診票の置き場所／診察後の保管・廃棄ルール</div>
+</div>
 
 <!-- 3 -->
-<section id="s3">
-  <h2><span class="n">03</span> 診察前（問診票の確認・印刷）</h2>
-
-  <p>患者さんが英語の問診票を送信すると、<strong>自動で日本語に翻訳された状態</strong>で <code>staff@klcs.jp</code> にメールが届きます。Googleスプレッドシートなどを開く必要はありません。</p>
-
-  <div class="tw"><table>
-    <tr><th>件名</th><td><strong>【問診票】患者名（生年月日）</strong></td></tr>
-    <tr><th>本文</th><td>項目名も回答も日本語。英語の原文はカッコ内に併記</td></tr>
-    <tr><th>元になっている書式</th><td>日本産科婦人科学会「OC・LEPガイドライン」初回処方時チェックリスト（2020年版）</td></tr>
-  </table></div>
-
-  <h3>手順</h3>
-  <ol class="steps">
-    <li>スタッフメニューの <strong>📄 問診票メールを開く</strong> をタップ（Gmailが「問診票」で検索された状態で開きます）</li>
-    <li>該当患者のメールを開く</li>
-    <li><strong>Ctrl + P</strong> でA4に印刷する</li>
-    <li>診察前に医師へ渡す</li>
-  </ol>
-
-  <div class="box warn">
-    <span class="t">問診票が届いていない場合</span>
-    診察前に記入をお願いしてください。案内するURLは<br />
-    <code>https://kladiesclinic.github.io/intake.html</code><br />
-    所要5分程度です。ピルの安全性に関わる質問（血栓症・片頭痛・喫煙・血圧など）が含まれるため、<strong>初回処方の場合は記入がないまま診察に入らないでください。</strong>
-  </div>
-
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>印刷した問診票をどこに置くか（医師のデスク／診察室のトレイ など）</li>
-      <li>気になる回答（既往歴・服薬など）があった場合、誰にいつ共有するか</li>
-      <li>診察後の問診票の保管・廃棄ルール</li>
-    </ul>
-  </div>
-</section>
+<div class="card">
+  <div class="card-h"><span class="n">3</span><h3>診察する（Zoom・30分）</h3></div>
+  <ul class="do">
+    <li><b>予約一覧</b>から <b>Join</b> を押す</li>
+    <li>英語対応スタッフが同席する</li>
+  </ul>
+  <details>
+    <summary>詳しく</summary>
+    <div class="body">
+      <p>患者さんがZoomに入れないときは、使い方ガイド（英語）を案内してください → <b>kladiesclinic.github.io/zoom.html</b></p>
+      <p>アカウント登録もアプリのインストールも不要で、リンクを押すだけで入れます。</p>
+    </div>
+  </details>
+  <div class="todo"><b>※要記入</b>　患者さんが来ないときの待ち時間と連絡方法／カルテ記載の担当／処方内容をSquare担当にどう伝えるか</div>
+</div>
 
 <!-- 4 -->
-<section id="s4">
-  <h2><span class="n">04</span> 診察当日（Zoom）</h2>
-
-  <ol class="steps">
-    <li>スタッフメニューの <strong>📅 予約一覧・Zoom入室</strong> を開く</li>
-    <li>時間順に患者名が並んでいるので、該当の予約の <strong>Join</strong> を押す</li>
-    <li>英語対応スタッフが同席し、医師と患者さんの間に入る</li>
-  </ol>
-
-  <div class="box">
-    <span class="t">患者さんがZoomに入れない場合</span>
-    使い方ガイド（英語）を案内してください。<br />
-    <code>https://kladiesclinic.github.io/zoom.html</code><br />
-    アカウント登録もアプリのインストールも不要で、リンクを押すだけで入れます。
+<div class="card">
+  <div class="card-h"><span class="n">4</span><h3>請求書を送る（Square）</h3></div>
+  <ul class="do">
+    <li>Squareから患者さんのメール宛に請求書を送る</li>
+    <li>患者さんがカードで支払う</li>
+  </ul>
+  <div class="warn">
+    <b>カードから勝手に引き落とさないこと。</b>患者さんが金額を見てから支払う、とLPで約束しています。
   </div>
-
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>患者さんが時間になっても現れない場合、何分待つか・どう連絡するか</li>
-      <li>通信が切れた場合の再接続の手順、電話に切り替えるかどうか</li>
-      <li>カルテへの記載担当と記載場所</li>
-      <li>処方内容を誰がどうやってSquare担当に伝えるか（口頭／チャット／紙）</li>
-    </ul>
-  </div>
-</section>
+  <div class="todo"><b>※要記入</b>　ログインアカウント／請求書の作成手順／金額の内訳と決め方／宛先メールの転記元／支払期限／控えの保存先</div>
+  <details>
+    <summary>確認しておきたいこと</summary>
+    <div class="body">
+      <p>Squareの請求書メールが<b>英語で届く設定になっているか</b>、一度ご確認ください。日本語のままなら、内容を英語で補足するかSquare側の設定変更が必要です。</p>
+      <p>（LPには「請求書が英語で届く」とは書いていません）</p>
+    </div>
+  </details>
+</div>
 
 <!-- 5 -->
-<section id="s5">
-  <h2><span class="n">05</span> 診察後（Squareで請求書を送る）</h2>
-
-  <p>診察が終わったら、決済代行のSquareから患者さんのメールアドレス宛に請求書を送ります。<strong>カードから勝手に引き落とすことはなく、患者さんが金額を確認してから支払う</strong>流れです。英語LPにもそう明記しています。</p>
-
-  <div class="todo">
-    <span class="t">※要記入 — Squareの操作手順</span>
-    <ul>
-      <li>ログインするアカウント（どのメールアドレス／どの端末から）</li>
-      <li>請求書の作成手順（メニューのどこから、どの項目を選ぶか）</li>
-      <li>診察料・薬剤料・送料の内訳と金額の決め方</li>
-      <li>宛先メールアドレスをどこから転記するか（Calendlyの予約情報など）</li>
-      <li>支払期限の設定</li>
-      <li>送信後の控えの保存先</li>
-    </ul>
-  </div>
-
-  <div class="box warn">
-    <span class="t">請求書の言語について</span>
-    Squareから届くメールが英語になるかどうかは、Square側の設定によります。<strong>英語で届く設定になっているか一度ご確認ください。</strong>日本語のままの場合は、患者さんに内容を英語で補足するか、Squareの設定変更をご検討ください。<br />
-    （※LPには「請求書が英語で届く」とは書いていません）
-  </div>
-</section>
-
-<!-- 6 -->
-<section id="s6">
-  <h2><span class="n">06</span> 入金確認</h2>
-
-  <p>入金が確認できてから発送する流れです（LPにも「Once payment clears」と記載）。</p>
-
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>入金をどこで確認するか（Square管理画面／通知メール）</li>
-      <li>確認するタイミング（1日1回 決まった時間／通知が来たらその都度）</li>
-      <li>未入金のまま何日経ったら督促するか、その文面</li>
-      <li>キャンセル・返金が必要になった場合の手順</li>
-    </ul>
-  </div>
-</section>
-
-<!-- 7 -->
-<section id="s7">
-  <h2><span class="n">07</span> 発送</h2>
-
-  <p>患者さんへの約束は次のとおりです。LPに書いてある内容と実際の運用がずれないよう注意してください。</p>
-
-  <div class="tw"><table>
-    <tr><th>お届け先</th><td>自宅・ホテル・日本国内の滞在先どこでも</td></tr>
-    <tr><th>梱包</th><td><strong>無地。中身が何か分からない状態</strong></td></tr>
-    <tr><th>差出人</th><td><strong>院長個人名</strong>（クリニック名は伝票に出さない）</td></tr>
-  </table></div>
-
-  <div class="box warn">
-    <span class="t">クリニック名を伝票に書かないこと</span>
-    「クリニックからの荷物だと周囲に知られたくない」という患者さんが多く、これはLPで明確に約束している内容です（"no clinic name appears on the label"）。差出人は院長個人名で統一してください。
-  </div>
-
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>梱包資材と梱包の手順</li>
-      <li>配送業者、発送のタイミング（当日／翌営業日）</li>
-      <li>追跡番号を患者さんに知らせるか、知らせる場合の方法</li>
-      <li>ホテル宛の場合の宛名の書き方（宿泊者名・チェックアウト日の確認）</li>
-      <li>不在・返送された場合の対応</li>
-    </ul>
-  </div>
-</section>
-
-<!-- 8 -->
-<section id="s8">
-  <h2><span class="n">08</span> 予約の変更・キャンセル</h2>
-
-  <h3>患者さん側で操作してもらう場合</h3>
-  <p>Calendlyの確認メールの下部に <strong>Reschedule</strong>（変更）と <strong>Cancel</strong>（キャンセル）のリンクがあります。基本はこちらをご案内してください。</p>
-
-  <h3>スタッフが操作する場合</h3>
-  <ol class="steps">
-    <li><strong>📅 予約一覧</strong> を開く</li>
-    <li>該当の予約をクリックして詳細を開く</li>
-    <li><strong>Cancel</strong> を押し、確認ダイアログで理由を入力して確定する</li>
-  </ol>
-
-  <div class="box warn">
-    <span class="t">Cancelを押しても何も出てこない時（既知の不具合）</span>
-    Calendly側の表示の不具合で、確認ダイアログが画面に出てこないことがあります。エラーではないので、<strong>Ctrl + Shift + R でページを強制再読み込み</strong>してから、もう一度Cancelを押してください。これで正常に表示されます。
-  </div>
-</section>
-
-<!-- 9 -->
-<section id="s9">
-  <h2><span class="n">09</span> 休診日・診察枠の設定</h2>
-
-  <h3>方法A：特定の日だけ休診にする（Calendly）</h3>
-  <ol class="steps">
-    <li>Calendly → <strong>Availability</strong> → <strong>Schedules</strong> を開く</li>
-    <li>ページ<strong>いちばん下</strong>の <strong>+ Hours</strong> を押す</li>
-    <li>カレンダーで休診にしたい日付を選ぶ（複数選択可）</li>
-    <li><strong>Apply</strong> を押す</li>
-    <li><strong>Unavailable</strong> を選んで保存</li>
-  </ol>
-  <p>お盆・年末年始など、あらかじめ決まっている休診日はこの方法で登録します。</p>
-
-  <h3>方法B：急な休みに対応する（Googleカレンダー）</h3>
-  <p>CalendlyにはGoogleカレンダー <code>staff@klcs.jp</code> が接続されており、<strong>予定が入っている時間帯は自動的に予約枠が閉じます。</strong>急に休みにしたい日は、そのカレンダーに<strong>終日の予定</strong>を1件入れるだけで枠が閉じます。日常的にはこちらが簡単です。</p>
-
-  <h3>方法C：診察時間そのものを変える</h3>
-  <p>曜日ごとの受付時間を恒久的に変える場合は、Calendlyの <strong>Working hours (Default)</strong> を編集します。全ての予約枠に影響するので、変更前に既存の予約がないか確認してください。</p>
-
-  <div class="box">
-    <span class="t">予約を一時的に全部止めたい場合</span>
-    スタッフメニューの <strong>⚙️ 診察枠の設定</strong> からイベントを開き、無効化（Turn off）できます。LPの予約ページには「現在受付を停止しています」という表示ではなく空欄が出るため、長期間止める場合はご相談ください。
-  </div>
-</section>
-
-<!-- 10 -->
-<section id="s10">
-  <h2><span class="n">10</span> 来院が必要な相談への対応</h2>
-
-  <p>次の相談はオンラインでは対応できません。問診票にも記載がなく、診察中に判明することがあります。</p>
-  <ul>
-    <li>おりもの・かゆみ</li>
-    <li>性感染症検査</li>
-    <li>子宮頸がん検診</li>
-    <li>膀胱炎</li>
+<div class="card">
+  <div class="card-h"><span class="n">5</span><h3>入金を確認して発送する</h3></div>
+  <ul class="do">
+    <li><b>入金を確認してから</b>発送する</li>
+    <li><b>無地の梱包</b>で送る</li>
+    <li>差出人は<b>院長個人名</b>にする</li>
   </ul>
-  <p>いずれも内診・検査が必要なためです。この場合は<strong>新宿院への来院予約</strong>をご案内してください。予約はSquare Appointmentsです。</p>
-  <div class="btn-row">
-    <a class="btn" href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">来院予約ページを開く</a>
+  <div class="warn">
+    <b>伝票にクリニック名を書かないこと。</b>「クリニックからの荷物だと知られたくない」という患者さんが多く、LPで明確に約束しています。
   </div>
+  <div class="todo"><b>※要記入</b>　入金の確認方法とタイミング／未入金時の督促／梱包資材と手順／配送業者と発送タイミング／追跡番号の連絡／ホテル宛の書き方／不在・返送時の対応</div>
+</div>
 
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>オンライン診察の途中で来院が必要と分かった場合、診察料はどうするか</li>
-      <li>来院予約の枠を代わりに取るか、患者さんに取ってもらうか</li>
-    </ul>
+<h2>困ったとき</h2>
+
+<details class="qa">
+  <summary>予約をキャンセル・変更したい</summary>
+  <div class="body">
+    <p>患者さんのCalendly確認メールの下に <b>Reschedule</b>（変更）と <b>Cancel</b>（キャンセル）のリンクがあります。基本はこちらを案内してください。</p>
+    <p style="margin-top:10px">スタッフが操作する場合：</p>
+    <ol>
+      <li>予約一覧を開く</li>
+      <li>該当の予約をクリックする</li>
+      <li>Cancel を押し、理由を入力して確定する</li>
+    </ol>
   </div>
-</section>
+</details>
 
-<!-- 11 -->
-<section id="s11">
-  <h2><span class="n">11</span> 問い合わせ対応（英語返信例）</h2>
-
-  <p>LPの問い合わせフォームから送信された内容は <code>staff@klcs.jp</code> に届きます。そのまま返信すれば患者さんに届きます。</p>
-
-  <h3>よくある質問と返信例</h3>
-
-  <div class="box">
-    <span class="t">Q. 日本の健康保険は使えますか？／いくらかかりますか？</span>
-    A. Our online consultations are self-pay (not covered by Japanese national health insurance). After your consultation we send an invoice by email — you will see the exact amount before you pay.
+<details class="qa">
+  <summary>Cancelを押しても何も出てこない</summary>
+  <div class="body">
+    <p>Calendly側の表示の不具合です。エラーではありません。</p>
+    <p><span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">R</span> でページを強制再読み込みしてから、もう一度Cancelを押してください。</p>
   </div>
+</details>
 
-  <div class="box">
-    <span class="t">Q. 日本の銀行口座がなくても大丈夫ですか？</span>
-    A. Yes. Payment is by credit card through Square, so you do not need a Japanese bank account.
+<details class="qa">
+  <summary>休診日にしたい</summary>
+  <div class="body">
+    <p><b>急な休み →</b> Googleカレンダー <b>staff@klcs.jp</b> に終日の予定を1件入れる。それだけで予約枠が自動で閉じます。こちらが簡単です。</p>
+    <p style="margin-top:10px"><b>お盆・年末年始など決まった休み →</b> Calendlyで登録します：</p>
+    <ol>
+      <li>Availability → Schedules を開く</li>
+      <li>ページ<b>いちばん下</b>の「+ Hours」を押す</li>
+      <li>休診にする日付を選ぶ（複数可）</li>
+      <li>Apply を押す</li>
+      <li>Unavailable を選んで保存</li>
+    </ol>
+    <p style="margin-top:10px"><b>診察時間そのものを変える →</b> Calendlyの「Working hours (Default)」を編集。全予約枠に影響するので、既存の予約がないか先に確認してください。</p>
   </div>
+</details>
 
-  <div class="box">
-    <span class="t">Q. ホテルに送ってもらえますか？</span>
-    A. Yes — we deliver anywhere in Japan, including hotels. The package is plain and there is no clinic name on the label. Please give us the hotel name, your room reservation name, and the dates you will be staying.
+<details class="qa">
+  <summary>検査・内診が必要と言われた</summary>
+  <div class="body">
+    <p>次の相談は<b>オンラインでは対応できません。</b></p>
+    <p>おりもの・かゆみ／性感染症検査／子宮頸がん検診／膀胱炎</p>
+    <p style="margin-top:10px">新宿院への<b>来院予約</b>を案内してください。<br /><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">来院予約ページを開く</a></p>
+    <div class="todo" style="margin-top:12px"><b>※要記入</b>　診察の途中で来院が必要と分かった場合の診察料／予約を代わりに取るかどうか</div>
   </div>
+</details>
 
-  <div class="box">
-    <span class="t">Q. 女性の医師はいますか？</span>
-    A. Our doctors are male, and an English-speaking female staff member is present on every call. Please let us know if you have any concerns — we will do our best to make you comfortable.
+<details class="qa">
+  <summary>今日すぐ診てほしいと言われた</summary>
+  <div class="body">
+    <p><b>開始30分前まで</b>予約できるので、当日対応はかなり柔軟にできます。</p>
+    <p>30分を切った枠は患者さん側から予約できません。その場合はCalendlyの管理画面から手動で予定を作るか、次の枠を案内してください。</p>
   </div>
+</details>
 
-  <div class="box">
-    <span class="t">Q. 検査を受けたいのですが（性感染症検査など）</span>
-    A. Tests and examinations need to be done in person. Please book a visit to our Shinjuku clinic here: https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services
+<h2>英語の返信テンプレ</h2>
+<p class="sub" style="margin:-6px 0 14px">問い合わせは staff@klcs.jp に届きます。そのまま返信すれば患者さんに届きます。</p>
 
-  </div>
+<details class="tpl">
+  <summary>保険は使える？ いくらかかる？</summary>
+  <div class="body"><div class="en">Our online consultations are self-pay (not covered by Japanese national health insurance). After your consultation we send an invoice by email — you will see the exact amount before you pay.</div></div>
+</details>
 
-  <div class="todo">
-    <span class="t">※要記入</span>
-    <ul>
-      <li>問い合わせに何時間以内に返信するか</li>
-      <li>診療時間外・休診日に届いた場合の扱い</li>
-      <li>医師の判断が必要な内容の見分け方と、誰に回すか</li>
-      <li>緊急性が高い相談（強い痛み・大量出血など）への案内文</li>
-    </ul>
-  </div>
-</section>
+<details class="tpl">
+  <summary>日本の銀行口座がなくても大丈夫？</summary>
+  <div class="body"><div class="en">Yes. Payment is by credit card through Square, so you do not need a Japanese bank account.</div></div>
+</details>
 
-<!-- 12 -->
-<section id="s12">
-  <h2><span class="n">12</span> 付録：URL・アカウント一覧</h2>
+<details class="tpl">
+  <summary>ホテルに送ってもらえる？</summary>
+  <div class="body"><div class="en">Yes — we deliver anywhere in Japan, including hotels. The package is plain and there is no clinic name on the label. Please give us the hotel name, your room reservation name, and the dates you will be staying.</div></div>
+</details>
 
-  <h3>患者さんが見るページ</h3>
-  <div class="tw"><table>
-    <tr><th>英語LP（広告の着地先）</th><td><code>https://kladiesclinic.github.io/</code></td></tr>
-    <tr><th>オンライン予約</th><td><code>https://kladiesclinic.github.io/book.html</code></td></tr>
-    <tr><th>問診票</th><td><code>https://kladiesclinic.github.io/intake.html</code></td></tr>
-    <tr><th>Zoomの使い方</th><td><code>https://kladiesclinic.github.io/zoom.html</code></td></tr>
-    <tr><th>来院予約（Square）</th><td><code>https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services</code></td></tr>
-  </table></div>
+<details class="tpl">
+  <summary>女性の医師はいる？</summary>
+  <div class="body"><div class="en">Our doctors are male, and an English-speaking female staff member is present on every call. Please let us know if you have any concerns — we will do our best to make you comfortable.</div></div>
+</details>
 
-  <h3>スタッフが使うページ</h3>
-  <div class="tw"><table>
-    <tr><th>スタッフメニュー</th><td><code>https://kladiesclinic.github.io/staff.html</code></td></tr>
-    <tr><th>このマニュアル</th><td><code>https://kladiesclinic.github.io/manual.html</code></td></tr>
-    <tr><th>予約一覧・Zoom入室</th><td><code>https://calendly.com/app/scheduled_events/user/me</code></td></tr>
-    <tr><th>診察枠の設定</th><td><code>https://calendly.com/app/scheduling/meeting_types/user/me</code></td></tr>
-    <tr><th>休診日の設定</th><td><code>https://calendly.com/app/availability/schedules</code></td></tr>
-  </table></div>
+<details class="tpl">
+  <summary>検査を受けたい</summary>
+  <div class="body"><div class="en">Tests and examinations need to be done in person. Please book a visit to our Shinjuku clinic here: https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services</div></div>
+</details>
 
-  <h3>使っているサービス</h3>
-  <div class="tw"><table>
-    <tr><th>予約・Zoom発行</th><td>Calendly（<code>calendly.com/staff-klcs/30min</code>）</td></tr>
-    <tr><th>ビデオ通話</th><td>Zoom（Calendlyが予約ごとに自動発行）</td></tr>
-    <tr><th>決済</th><td>Square（請求書メール）</td></tr>
-    <tr><th>来院予約</th><td>Square Appointments</td></tr>
-    <tr><th>問診票・問い合わせの送信先</th><td><code>staff@klcs.jp</code></td></tr>
-    <tr><th>サイトの公開</th><td>GitHub Pages</td></tr>
-  </table></div>
+<div class="todo"><b>※要記入</b>　返信までの目標時間／時間外・休診日に届いた場合／医師の判断が必要な内容の見分け方／緊急性が高い相談への案内文</div>
 
-  <div class="box warn">
-    <span class="t">スタッフメニューとこのマニュアルのURLについて</span>
-    どちらも検索避け（noindex）を設定しており、サイトのどこからもリンクしていません。URLを知っている人だけが開けます。<strong>患者さんや外部に共有しないでください。</strong>
-  </div>
-</section>
+<h2>リンク</h2>
+<ul class="links">
+  <li><a href="https://calendly.com/app/scheduled_events/user/me" target="_blank" rel="noopener">予約一覧・Zoom入室 <span>Calendly</span></a></li>
+  <li><a href="https://mail.google.com/mail/u/0/#search/%E5%95%8F%E8%A8%BA%E7%A5%A8" target="_blank" rel="noopener">問診票メール <span>Gmail</span></a></li>
+  <li><a href="https://calendly.com/app/scheduling/meeting_types/user/me" target="_blank" rel="noopener">診察枠の設定 <span>Calendly</span></a></li>
+  <li><a href="https://calendly.com/app/availability/schedules" target="_blank" rel="noopener">休診日の設定 <span>Calendly</span></a></li>
+  <li><a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">来院予約ページ <span>Square</span></a></li>
+  <li><a href="intake.html" target="_blank">問診票 <span>患者さん用</span></a></li>
+  <li><a href="zoom.html" target="_blank">Zoomの使い方 <span>患者さん用</span></a></li>
+  <li><a href="index.html" target="_blank">英語LP <span>患者さん用</span></a></li>
+</ul>
 
-<button class="print-btn" onclick="window.print()">
-  🖨 印刷 / PDFで保存
-</button>
+<button class="print-btn" onclick="window.print()">🖨 印刷 / PDFで保存</button>
+
+<p class="foot">
+  このページとスタッフメニューは検索避けを設定しており、どこからもリンクしていません。URLを知っている人だけが開けます。患者さんや外部に共有しないでください。<br />
+  2026年7月26日 作成
+</p>
 
 </div>
 </body>
