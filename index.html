@@ -158,52 +158,31 @@
 
   /* ---------- flow ---------- */
   .flow { padding-top: 80px; padding-bottom: 80px; }
-  .flow h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 560px; margin-bottom: 26px; }
-  /* mobile: compact single-screen list — number + title + small art on one row,
-     description spanning the full width underneath */
+  .flow h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 560px; margin-bottom: 56px; }
   .step {
-    display: grid; grid-template-columns: auto 1fr auto; gap: 4px 11px;
-    align-items: center; border-top: 1px solid var(--line);
-    padding: 13px 0;
+    display: grid; grid-template-columns: auto 1fr; gap: 8px 32px;
+    align-items: start; border-top: 1px solid var(--line);
+    padding: 40px 0;
   }
-  .step-body { display: contents; }
-  .step-art { grid-column: 3; grid-row: 1; }
-  .step-art svg { display: block; width: 58px; height: auto; color: var(--ink); }
-  /* fine detail turns to mush at thumbnail size */
-  .art-detail { display: none; }
+  .step-art { grid-column: 1 / -1; margin-top: 22px; justify-self: center; }
+  .step-art svg { display: block; width: 168px; height: auto; color: var(--ink); }
   .step-num {
-    grid-column: 1; grid-row: 1;
     font-family: var(--serif); font-weight: 300; font-style: italic;
-    font-size: 28px; line-height: 1;
-    color: var(--line); -webkit-text-stroke: 1px var(--faint);
+    font-size: clamp(52px, 10vw, 96px); line-height: 0.9;
+    color: var(--line); -webkit-text-stroke: 1px var(--faint); min-width: 1.6em;
   }
   .step-num.accent { color: var(--accent); -webkit-text-stroke: 0; }
-  .step-title {
-    grid-column: 2; grid-row: 1;
-    display: flex; align-items: center; gap: 9px;
-  }
-  .step-title svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; }
-  .step-title h3 { font-family: var(--serif); font-size: 17px; font-weight: 400; line-height: 1.25; }
-  .step-body p {
-    grid-column: 1 / -1; grid-row: 2;
-    font-size: 12.5px; line-height: 1.55; color: var(--soft);
-  }
+  .step-body { max-width: 520px; padding-top: 6px; }
+  .step-title { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-title svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+  .step-title h3 { font-family: var(--serif); font-size: clamp(22px, 4vw, 28px); font-weight: 400; }
+  .step-body p { font-size: 15px; line-height: 1.75; color: var(--soft); }
   .flow-end { border-top: 1px solid var(--line); }
-  @media (min-width: 768px) {
-    .flow h2 { margin-bottom: 56px; }
-    .step {
-      grid-template-columns: auto 1fr 200px; gap: 8px 32px;
-      align-items: center; padding: 44px 0;
-    }
-    .step-body { display: block; grid-column: 2; grid-row: 1; max-width: 520px; padding-top: 6px; }
-    .step-num { font-size: clamp(52px, 8vw, 96px); line-height: 0.9; min-width: 1.6em; }
-    .step-title { margin-bottom: 12px; gap: 12px; }
-    .step-title svg { width: 18px; height: 18px; }
-    .step-title h3 { font-size: clamp(22px, 3vw, 28px); line-height: 1.2; }
-    .step-body p { font-size: 15px; line-height: 1.75; }
-    .step-art { justify-self: end; }
+  @media (min-width: 768px) { .step { padding: 48px 0; } }
+  @media (min-width: 900px) {
+    .step { grid-template-columns: auto 1fr 200px; align-items: center; }
+    .step-art { grid-column: 3; grid-row: 1; margin-top: 0; justify-self: end; }
     .step-art svg { width: 180px; }
-    .art-detail { display: inline; }
   }
 
   /* ---------- about (dark) ---------- */
@@ -509,9 +488,9 @@
       <div class="step-art" aria-hidden="true">
         <svg viewBox="0 0 160 140" fill="none">
           <rect x="46" y="14" width="68" height="112" rx="11" stroke="currentColor" stroke-width="1.6"/>
-          <path class="art-detail" d="M70 21h20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
-          <rect class="art-detail" x="54" y="32" width="52" height="78" rx="4" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
-          <path class="art-detail" d="M54 46h52" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
+          <path d="M70 21h20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
+          <rect x="54" y="32" width="52" height="78" rx="4" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
+          <path d="M54 46h52" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
           <g fill="currentColor" opacity=".3">
             <rect x="60" y="54" width="11" height="9" rx="2"/>
             <rect x="75" y="54" width="11" height="9" rx="2"/>
@@ -546,11 +525,9 @@
           <circle cx="70" cy="53" r="11" stroke="currentColor" stroke-width="1.6"/>
           <path d="M52 88c0-10 8-18 18-18s18 8 18 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M70 78v10M65 83h10" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/>
-          <g class="art-detail">
-            <rect x="102" y="66" width="28" height="26" rx="4" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
-            <circle cx="116" cy="76" r="4.5" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
-            <path d="M108 90c0-4.5 3.6-7 8-7s8 2.5 8 7" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
-          </g>
+          <rect x="102" y="66" width="28" height="26" rx="4" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
+          <circle cx="116" cy="76" r="4.5" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
+          <path d="M108 90c0-4.5 3.6-7 8-7s8 2.5 8 7" stroke="currentColor" stroke-width="1.1" opacity=".45"/>
         </svg>
       </div>
     </div>
@@ -616,7 +593,7 @@
         <svg viewBox="0 0 160 140" fill="none">
           <rect x="42" y="38" width="94" height="78" rx="5" stroke="currentColor" stroke-width="1.6"/>
           <path d="M42 64h94" stroke="currentColor" stroke-width="1.6"/>
-          <path class="art-detail" d="M89 38v26" stroke="currentColor" stroke-width="1.4" opacity=".4"/>
+          <path d="M89 38v26" stroke="currentColor" stroke-width="1.4" opacity=".4"/>
           <rect x="72" y="78" width="34" height="24" rx="3" stroke="var(--accent)" stroke-width="1.6"/>
           <path d="M79 87h20M79 94h12" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M8 56h18M2 77h24M12 98h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".3"/>
