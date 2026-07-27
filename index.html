@@ -298,7 +298,8 @@
   .faq-item.open .faq-toggle .minus { display: block; }
   .faq-item.open .faq-toggle .plus { display: none; }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-  .faq-item.open .faq-a { max-height: 240px; }
+  /* headroom for the longest answer on a 320px screen, where it wraps to 254px */
+  .faq-item.open .faq-a { max-height: 340px; }
   .faq-a p { font-size: 15px; line-height: 1.7; color: var(--soft); padding-bottom: 24px; max-width: 560px; }
   @media (min-width: 768px) { .faq-grid { grid-template-columns: 1fr 1.6fr; } }
 
@@ -752,9 +753,10 @@
             <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
           </span>
         </button>
-        <div class="faq-a"><p>Your consultation starts within your 30-minute slot, but not always right
-        on the hour. The doctor joins the call between in-person appointments at the clinic, so there
-        may be a few minutes' wait. Stay in the Zoom room, you haven't been forgotten.</p></div>
+        <div class="faq-a"><p>Your consultation will begin within your scheduled 30 minute appointment
+        window, but not always exactly at the scheduled time. The doctor joins the Zoom call between
+        in-person appointments at the clinic, so there may occasionally be a short wait. Please stay
+        in the Zoom room, we will be with you shortly.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
