@@ -49,6 +49,19 @@
     <a class="inline-link" href="https://calendly.com/staff-klcs/30min" target="_blank" rel="noopener">Open the booking page in a new tab</a>.
   </p>
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <script>
+    // Send patients to our own confirmation page ourselves, instead of letting
+    // Calendly redirect. Calendly's free plan puts a "You are leaving Calendly"
+    // interstitial in front of anything that navigates away from it, which reads
+    // as a security warning right after booking. Navigating from this page is
+    // same-origin, so nothing sits in between.
+    window.addEventListener("message", function (e) {
+      if (e.origin !== "https://calendly.com") return;
+      var d = e.data;
+      if (!d || d.event !== "calendly.event_scheduled") return;
+      window.location.href = "booked.html";
+    });
+  </script>
 
   <div class="note-box">
     <strong>What happens next:</strong> your confirmation email contains your Zoom
