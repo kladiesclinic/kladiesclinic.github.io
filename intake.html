@@ -45,6 +45,17 @@
   .visit-note a { color: var(--accent); font-weight: 600; }
   .visit-note .ja { display: block; margin-top: 4px; font-size: 11.5px; color: var(--faint); }
 
+  /* metric / imperial pairs, each input carries its unit inside the box */
+  .unit-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .unit-cell { position: relative; flex: 1 1 0; min-width: 72px; display: block; }
+  .unit-cell input[type="text"] { width: 100%; padding-right: 38px; }
+  .unit-cell .unit {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 12.5px; color: var(--faint); pointer-events: none;
+  }
+  .unit-or { font-size: 12.5px; color: var(--faint); flex: 0 0 auto; }
+  form .hint .ja { display: block; margin-top: 2px; }
+
   .print-btn {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 14px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
@@ -84,6 +95,10 @@
     form textarea { min-height: 34px; }
     .field-row { grid-template-columns: 1fr 1fr; gap: 5px 8px; }
     .field-row + .field, .field-row + .field-row { margin-top: 6px; }
+    .unit-row { gap: 4px; flex-wrap: nowrap; }
+    .unit-cell input[type="text"] { padding-right: 22px; }
+    .unit-cell .unit { right: 5px; font-size: 8px; color: #444444; }
+    .unit-or { font-size: 8px; color: #444444; }
     .q-block { border-top: none; padding-top: 0; margin-top: 0; }
     .choice-group { gap: 2px; }
     .yn-row { gap: 5px; }
@@ -166,12 +181,37 @@
 
       <div class="field-row">
         <div class="field">
-          <label for="if-height">Height (cm)<span class="ja">身長</span></label>
-          <input id="if-height" type="text" inputmode="decimal" placeholder="e.g. 165" required />
+          <label for="if-height">Height<span class="ja">身長</span></label>
+          <div class="unit-row">
+            <span class="unit-cell">
+              <input id="if-height" type="text" inputmode="decimal" placeholder="165" required />
+              <span class="unit">cm</span>
+            </span>
+            <span class="unit-or">or</span>
+            <span class="unit-cell">
+              <input id="if-height-ft" type="text" inputmode="numeric" placeholder="5" aria-label="Height, feet" />
+              <span class="unit">ft</span>
+            </span>
+            <span class="unit-cell">
+              <input id="if-height-in" type="text" inputmode="decimal" placeholder="5" aria-label="Height, inches" />
+              <span class="unit">in</span>
+            </span>
+          </div>
+          <div class="hint">Fill in either one, the other fills itself.<span class="ja">どちらかを入力すると、もう一方は自動で入ります。</span></div>
         </div>
         <div class="field">
-          <label for="if-weight">Weight (kg)<span class="ja">体重</span></label>
-          <input id="if-weight" type="text" inputmode="decimal" placeholder="e.g. 55" required />
+          <label for="if-weight">Weight<span class="ja">体重</span></label>
+          <div class="unit-row">
+            <span class="unit-cell">
+              <input id="if-weight" type="text" inputmode="decimal" placeholder="55" required />
+              <span class="unit">kg</span>
+            </span>
+            <span class="unit-or">or</span>
+            <span class="unit-cell">
+              <input id="if-weight-lb" type="text" inputmode="decimal" placeholder="121" aria-label="Weight, pounds" />
+              <span class="unit">lb</span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -537,6 +577,78 @@
   }
   function val(id) { return document.getElementById(id).value.trim(); }
 
+  // Height and weight can be filled in either system. Typing in one side fills
+  // the other, so the doctor always gets metric and the patient always sees the
+  // units she thinks in. `syncing` stops the two sides updating each other
+  // in a loop.
+  (function () {
+    var cm = document.getElementById("if-height");
+    var ft = document.getElementById("if-height-ft");
+    var inch = document.getElementById("if-height-in");
+    var kg = document.getElementById("if-weight");
+    var lb = document.getElementById("if-weight-lb");
+    var syncing = false;
+
+    function num(el) {
+      var n = parseFloat(el.value.replace(/[^\d.]/g, ""));
+      return isFinite(n) ? n : NaN;
+    }
+    function set(el, v) { el.value = v; }
+    function tidy(n, dp) {
+      return String(parseFloat(n.toFixed(dp)));
+    }
+    function on(el, fn) {
+      el.addEventListener("input", function () {
+        if (syncing) return;
+        syncing = true;
+        fn();
+        syncing = false;
+      });
+    }
+
+    on(cm, function () {
+      var v = num(cm);
+      if (!(v > 0)) { set(ft, ""); set(inch, ""); return; }
+      var totalIn = Math.round(v / 2.54);
+      var f = Math.floor(totalIn / 12);
+      set(ft, String(f));
+      set(inch, String(totalIn - f * 12));
+    });
+
+    function imperialToCm() {
+      var f = num(ft), i = num(inch);
+      if (!isFinite(f) && !isFinite(i)) { set(cm, ""); return; }
+      var totalIn = (isFinite(f) ? f : 0) * 12 + (isFinite(i) ? i : 0);
+      if (!(totalIn > 0)) { set(cm, ""); return; }
+      set(cm, tidy(totalIn * 2.54, 1));
+    }
+    on(ft, imperialToCm);
+    on(inch, imperialToCm);
+
+    on(kg, function () {
+      var v = num(kg);
+      set(lb, v > 0 ? tidy(v * 2.2046226, 1) : "");
+    });
+    on(lb, function () {
+      var v = num(lb);
+      set(kg, v > 0 ? tidy(v / 2.2046226, 1) : "");
+    });
+  })();
+
+  // The email carries both systems so the doctor reads metric and staff can
+  // check it back against whatever the patient typed.
+  function heightForEmail() {
+    var cm = val("if-height"), f = val("if-height-ft"), i = val("if-height-in");
+    if (!cm) return "";
+    var imp = (f ? f + " ft " : "") + (i ? i + " in" : "");
+    return imp ? cm + " cm (" + imp.trim() + ")" : cm + " cm";
+  }
+  function weightForEmail() {
+    var kg = val("if-weight"), lb = val("if-weight-lb");
+    if (!kg) return "";
+    return lb ? kg + " kg (" + lb + " lb)" : kg + " kg";
+  }
+
   // [payload key, English label, Japanese label], the email shows both so the
   // doctor and the English speaking staff read the same sheet.
   var FIELDS = [
@@ -546,8 +658,8 @@
     ["phone", "Phone", "電話番号"],
     ["nationality", "Nationality", "国籍"],
     ["address", "Address in Japan", "日本国内の住所"],
-    ["height_cm", "Height (cm)", "身長"],
-    ["weight_kg", "Weight (kg)", "体重"],
+    ["height_cm", "Height", "身長"],
+    ["weight_kg", "Weight", "体重"],
     ["bmi", "BMI", "BMI"],
     ["blood_pressure", "Blood pressure", "血圧"],
     ["reason_for_visit", "Reason for visit", "受診理由"],
@@ -664,8 +776,8 @@
       phone: val("if-phone"),
       nationality: val("if-nationality"),
       address: val("if-address"),
-      height_cm: val("if-height"),
-      weight_kg: val("if-weight"),
+      height_cm: heightForEmail(),
+      weight_kg: weightForEmail(),
       bmi: bmi,
       blood_pressure: val("if-bp"),
       reason_for_visit: checkVals("reason") || "None checked",
