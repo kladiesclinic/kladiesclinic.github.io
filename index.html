@@ -298,8 +298,9 @@
   .faq-item.open .faq-toggle .minus { display: block; }
   .faq-item.open .faq-toggle .plus { display: none; }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-  /* headroom for the longest answer on a 320px screen, where it wraps to 254px */
-  .faq-item.open .faq-a { max-height: 340px; }
+  /* Well clear of the longest answer on a 320px screen (currently 354px), so
+     adding a sentence doesn't silently cut the last line off. */
+  .faq-item.open .faq-a { max-height: 520px; }
   .faq-a p { font-size: 15px; line-height: 1.7; color: var(--soft); padding-bottom: 24px; max-width: 560px; }
   @media (min-width: 768px) { .faq-grid { grid-template-columns: 1fr 1.6fr; } }
 
@@ -766,10 +767,15 @@
             <svg class="minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
           </span>
         </button>
-        <div class="faq-a"><p>Most concerns are handled entirely online, including first visits. Some things
-        do need an examination or a lab test, bleeding outside your period, discharge or
-        itching, STD testing, a Pap smear, a bladder infection, and for those you're welcome at
-        <a class="inline-link" href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">our own clinic in Shinjuku</a>.</p></div>
+        <div class="faq-a">
+          <p>Most concerns can be handled entirely online, including first time consultations.
+          However, some conditions require an in-person examination or laboratory testing such as:
+          bleeding outside your period, unusual discharge or itching, STD testing, a Pap smear,
+          or a bladder infection. For these, you're welcome to visit our clinic in Shinjuku.</p>
+          <p>Please
+          <a class="inline-link" href="https://www.klcs.jp/en/" target="_blank" rel="noopener">check our website</a>
+          for opening hours and doctor availability.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
