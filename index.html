@@ -192,6 +192,8 @@
   .about h2 { font-size: clamp(30px, 5.5vw, 48px); max-width: 640px; }
   .about h2 em { color: var(--accent-light); }
   .about-lede { font-size: 15.5px; line-height: 1.8; color: #C9BCB6; max-width: 540px; margin-top: 24px; }
+  /* second paragraph sits closer, so the two read as one block under the heading */
+  .about-lede + .about-lede { margin-top: 14px; }
   .about-site-link {
     display: inline-flex; align-items: center; gap: 8px; margin-top: 28px;
     font-size: 14px; font-weight: 600; color: var(--paper);
@@ -611,13 +613,15 @@
   <div class="wrap about-inner">
     <div class="reveal">
       <div class="eyebrow">The clinic behind the screen</div>
-      <h2 class="display">Our clinic is <em>in Shinjuku</em>, and you're welcome to visit anytime.</h2>
+      <h2 class="display">Our clinic is <em>in Shinjuku</em>, and you're always welcome to visit us.</h2>
       <p class="about-lede">
-        K Ladies Clinic Shinjuku is a women's health clinic in central Tokyo with
-        three English speaking staff on the team. We built our online service
-        so that being in Japan, with or without fluent Japanese, never gets between
-        you and the care you'd ask for back home, whether you live here or you're
-        just visiting.
+        K Ladies Clinic Shinjuku is a women's health clinic located in central Tokyo,
+        with a team that includes English speaking staff.
+      </p>
+      <p class="about-lede">
+        We built our online service so language is never a barrier to receiving quality
+        healthcare. Whether you're living in Japan or simply visiting, we're here to help
+        you access the care you need with confidence and ease.
       </p>
       <a class="about-site-link" href="https://www.klcs.jp/en/" target="_blank" rel="noopener">
         Visit our official clinic website
