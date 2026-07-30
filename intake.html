@@ -32,9 +32,10 @@
     max-height: 0; opacity: 0; overflow: hidden;
     transition: max-height 0.25s ease, opacity 0.2s ease;
   }
-  /* The cap only has to clear a label, one input and a hint, so it never
-     clips the way an open-ended block would. */
-  .reason-cell.open .reason-sub { max-height: 300px; opacity: 1; }
+  /* The cap only has to clear a label, one input and a hint. The tallest panel
+     measures 223px at 320px wide, so this leaves room for a bigger default
+     font without ever clipping the way an open-ended block would. */
+  .reason-cell.open .reason-sub { max-height: 420px; opacity: 1; }
   .reason-sub > div { padding: 10px 0 2px 24px; }
   .reason-sub .field { margin-bottom: 0; }
   .section-label {
