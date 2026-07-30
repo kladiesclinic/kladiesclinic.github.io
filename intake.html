@@ -90,6 +90,30 @@
   .unit-or { font-size: 12.5px; color: var(--faint); flex: 0 0 auto; }
   form .hint .ja { display: block; margin-top: 2px; }
 
+  /* Replaces the one-line green status once the form is in. The answers stay on
+     screen so the PDF button still has something to save. */
+  .done-panel {
+    display: none; background: #E8F5EC; border: 1px solid #BFE3CC;
+    border-radius: 16px; padding: 22px; margin-bottom: 28px;
+  }
+  .done-panel.show { display: block; }
+  .done-head { display: flex; align-items: center; gap: 12px; }
+  .done-tick {
+    width: 34px; height: 34px; border-radius: 50%; background: #2E7D4F; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .done-tick svg { width: 18px; height: 18px; color: #FFFFFF; }
+  .done-panel h2 { font-family: var(--serif); font-size: 22px; font-weight: 400; color: #1F5B37; }
+  .done-panel h2 .ja {
+    display: block; font-family: 'Noto Sans JP', var(--sans);
+    font-size: 12px; color: #4C7A5E; margin-top: 2px;
+  }
+  .done-panel p { font-size: 14px; line-height: 1.75; color: #2E5C41; margin-top: 14px; }
+  .done-panel p .ja { display: block; font-size: 12.5px; color: #4C7A5E; margin-top: 3px; }
+  /* Locked after submitting, but the PDF button has to stay clickable. */
+  .form-locked { pointer-events: none; }
+  .form-locked .print-btn { pointer-events: auto; }
+
   .print-btn {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 14px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
@@ -102,7 +126,8 @@
     @page { size: A4; margin: 12mm 10mm; }
     body { background: #FFFFFF; color: #000000; font-size: 10px; }
     header, footer, .page-head, .note-box, .submit-btn, .print-btn,
-    .form-status, .hp-field, .hint, .visit-note, .skip-tag { display: none !important; }
+    .form-status, .hp-field, .hint, .visit-note, .skip-tag,
+    .done-panel { display: none !important; }
     .wrap { max-width: none; padding: 0; }
     .print-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -180,6 +205,22 @@
   </div>
 
   <div class="card">
+
+    <div class="done-panel" id="if-done">
+      <div class="done-head">
+        <div class="done-tick">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>Questionnaire received<span class="ja">問診票を受け付けました</span></h2>
+      </div>
+      <p>Thank you. The doctor will read your answers before your consultation, so your
+      appointment time can go to your questions rather than paperwork.
+      <span class="ja">ありがとうございます。診察前に医師が内容を確認します。</span></p>
+      <p>Your answers are still shown below. If you'd like to keep a copy, use the
+      <strong>Print / save as PDF</strong> button at the bottom of the form.
+      <span class="ja">回答は下に表示されたままです。控えが必要な場合は、フォーム下部のボタンからPDFで保存できます。</span></p>
+    </div>
+
     <form id="intake-form" novalidate>
 
       <div class="section-label">About you<span class="ja">患者情報</span></div>
@@ -630,6 +671,22 @@
 <script>
   var CONTACT_EMAIL = "staff@klcs.jp";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+
+  // Sends the patient their own "we've got it" email, from staff@klcs.jp.
+  // Paste the Cloudflare Worker URL here once it's deployed, see worker/README.md.
+  // While this is empty nothing is sent and the form behaves exactly as before.
+  var CONFIRM_ENDPOINT = "";
+
+  // Best effort only. By the time this runs the questionnaire itself has already
+  // reached the clinic, so a failure here must never show the patient an error.
+  function sendPatientConfirmation(email, name) {
+    if (!CONFIRM_ENDPOINT || !email) return;
+    fetch(CONFIRM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, name: name }),
+    }).catch(function () {});
+  }
   var form = document.getElementById("intake-form");
   var statusEl = document.getElementById("if-status");
   var submitBtn = document.getElementById("if-submit");
@@ -964,9 +1021,15 @@
       .then(function (res) { return res.json(); })
       .then(function (d) {
         if (d.success === "true" || d.success === true) {
-          form.reset();
-          statusEl.textContent = "Thank you, your questionnaire has been sent. The doctor will review it before your consultation.";
-          statusEl.className = "form-status ok";
+          // The answers deliberately stay on screen rather than being reset: the
+          // PDF button needs them, and it's the only record the patient gets.
+          form.classList.add("form-locked");
+          submitBtn.style.display = "none";
+          statusEl.className = "form-status";
+          var done = document.getElementById("if-done");
+          done.classList.add("show");
+          done.scrollIntoView({ behavior: "smooth", block: "center" });
+          sendPatientConfirmation(data.email, data.name);
         } else { throw new Error(); }
       })
       .catch(function () {
