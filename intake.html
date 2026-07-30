@@ -254,28 +254,8 @@
       <div class="field">
         <label>What would you like to see us about? (check all that apply)<span class="ja">どのようなご相談ですか（複数選択可）</span></label>
         <div class="cond-grid">
-          <div class="reason-cell">
-            <label class="choice"><input type="checkbox" name="reason" value="Birth control pills" /> Birth control pills<span class="ja">低用量ピル</span></label>
-            <div class="reason-sub">
-              <div class="field">
-                <label for="if-ocp-name">Is there a specific medication you would like?<span class="ja">ご希望のお薬があればご記入ください</span></label>
-                <input id="if-ocp-name" type="text" placeholder="e.g. Marvelon 28" />
-                <div class="hint">If you're not sure, leave this blank, the doctor will talk
-                you through the options.<span class="ja">お決まりでなければ空欄で構いません。診察時に医師がご説明します。</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="reason-cell">
-            <label class="choice"><input type="checkbox" name="reason" value="Mini-pill (progestogen-only)" /> Mini-pill (progestogen-only)<span class="ja">ミニピル（プロゲステロン単体）</span></label>
-            <div class="reason-sub">
-              <div class="field">
-                <label for="if-minipill-name">Is there a specific medication you would like?<span class="ja">ご希望のお薬があればご記入ください</span></label>
-                <input id="if-minipill-name" type="text" placeholder="e.g. Cerazette" />
-                <div class="hint">If you're not sure, leave this blank, the doctor will talk
-                you through the options.<span class="ja">お決まりでなければ空欄で構いません。診察時に医師がご説明します。</span></div>
-              </div>
-            </div>
-          </div>
+          <label class="choice"><input type="checkbox" name="reason" value="Birth control pills" /> Birth control pills<span class="ja">低用量ピル</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Mini-pill (progestogen-only)" /> Mini-pill (progestogen-only)<span class="ja">ミニピル（プロゲステロン単体）</span></label>
           <div class="reason-cell">
             <label class="choice"><input type="checkbox" name="reason" value="Morning-after pill / Plan B" /> Morning-after pill<span class="ja">アフターピル</span></label>
             <div class="reason-sub">
@@ -748,8 +728,6 @@
     ["bmi", "BMI", "BMI"],
     ["blood_pressure", "Blood pressure", "血圧"],
     ["reason_for_visit", "Reason for visit", "受診理由"],
-    ["pill_requested", "Pill requested", "ご希望のお薬（低用量ピル）"],
-    ["minipill_requested", "Mini-pill requested", "ご希望のお薬（ミニピル）"],
     ["morning_after_timing", "Intercourse date / time", "性交渉の日時（アフターピル）"],
     ["refill_requested", "Refill requested", "ご希望のお薬（追加処方）"],
     ["reason_other_detail", "Other, details", "その他の内容"],
@@ -871,8 +849,6 @@
       bmi: bmi,
       blood_pressure: val("if-bp"),
       reason_for_visit: checkVals("reason") || "None checked",
-      pill_requested: val("if-ocp-name"),
-      minipill_requested: val("if-minipill-name"),
       morning_after_timing: val("if-ec-timing"),
       refill_requested: val("if-refill-name"),
       reason_other_detail: val("if-other-detail"),
