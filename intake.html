@@ -1016,6 +1016,10 @@
         _subject: "【問診票 / Questionnaire】" + data.name + "（" + data.date_of_birth + "）",
         _template: "table",
         _captcha: "false",
+        // Copies the patient in on their own questionnaire. FormSubmit's
+        // _autoresponse can't be used here: it is documented as not working with
+        // AJAX submissions or with the captcha disabled, and this form is both.
+        _cc: data.email,
       }, payload)),
     })
       .then(function (res) { return res.json(); })
