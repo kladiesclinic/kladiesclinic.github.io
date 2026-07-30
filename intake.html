@@ -233,6 +233,7 @@
           <label class="choice"><input type="checkbox" name="reason" value="Acne / skin" /> Acne / skin<span class="ja">ニキビ・肌荒れ</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="PMS / mood" /> PMS / mood<span class="ja">PMS・気分の不調</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Menopause" /> Menopause<span class="ja">更年期</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Refill of a medication prescribed here before" /> Refill of a medication prescribed here before<span class="ja">当院で処方されたことのある薬の追加</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Other" /> Other<span class="ja">その他</span></label>
         </div>
         <div class="visit-note">
@@ -242,6 +243,12 @@
           <a href="https://book.squareup.com/appointments/jci3hsdjp3srar/location/ZBJ8V0GVQFSA2/services" target="_blank" rel="noopener">book an in-person visit</a>
           at our Shinjuku clinic instead.
           <span class="ja">不正出血、おりもの・かゆみ、性感染症検査、子宮頸がん検診、膀胱炎などは内診・検査が必要なため、オンラインでは対応できません。来院予約をご利用ください。</span>
+        </div>
+        <div class="sub-field">
+          <label for="if-med-request">Is there a specific medication you would like?<span class="ja">ご希望のお薬があればご記入ください</span></label>
+          <input id="if-med-request" type="text" placeholder="e.g. Marvelon 28" />
+          <div class="hint">If you're not sure, leave this blank, the doctor will talk you
+          through the options.<span class="ja">お決まりでなければ空欄で構いません。診察時に医師がご説明します。</span></div>
         </div>
         <div class="sub-field">
           <label for="if-reason-other">If "Morning-after pill", when did the intercourse happen? / If "Other", please describe<span class="ja">アフターピルの場合は性交渉の日時／その他の場合は内容</span></label>
@@ -664,6 +671,7 @@
     ["bmi", "BMI", "BMI"],
     ["blood_pressure", "Blood pressure", "血圧"],
     ["reason_for_visit", "Reason for visit", "受診理由"],
+    ["medication_requested", "Medication requested", "ご希望のお薬"],
     ["reason_detail", "Reason details", "受診理由の詳細"],
     ["last_period_start", "Last period started", "最終月経の開始日"],
     ["last_period_days", "Period length (days)", "月経の日数"],
@@ -717,6 +725,7 @@
     "Acne / skin": "ニキビ・肌荒れ",
     "PMS / mood": "PMS・気分の不調",
     "Menopause": "更年期",
+    "Refill of a medication prescribed here before": "当院で処方されたことのある薬の追加",
     "Other": "その他",
     "Deep vein thrombosis": "深部静脈血栓",
     "Pulmonary embolism": "肺塞栓症",
@@ -782,6 +791,7 @@
       bmi: bmi,
       blood_pressure: val("if-bp"),
       reason_for_visit: checkVals("reason") || "None checked",
+      medication_requested: val("if-med-request"),
       reason_detail: val("if-reason-other"),
       last_period_start: val("if-lmp"),
       last_period_days: val("if-lmp-days"),
