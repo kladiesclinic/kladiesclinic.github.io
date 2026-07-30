@@ -15,6 +15,13 @@
   .q-block { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 20px; }
   .yn-row { display: flex; gap: 10px; }
   .yn-row .choice { flex: 1; justify-content: flex-start; }
+  /* Below ~369px the longest pair ("Regular / Irregular") is wider than its
+     row, and the spill pushed the whole page 2px sideways. Let those buttons
+     shrink and drop the Japanese onto a second line. Scoped to narrow screens
+     because unscoping it wraps every Yes/No row too, adding 14px to each. */
+  @media (max-width: 374px) {
+    .yn-row .choice { min-width: 0; flex-wrap: wrap; }
+  }
   .cond-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
   @media (min-width: 560px) { .cond-grid { grid-template-columns: 1fr 1fr; } }
   /* Long checklist labels: keep English on one line and Japanese on its own,
