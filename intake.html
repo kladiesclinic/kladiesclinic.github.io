@@ -650,9 +650,11 @@
 
   // The sections tagged data-skippable exist to screen for OC/LEP contraindications.
   // A patient topping up a medication we have already prescribed has been through
-  // that screening, and their answers are on file, so ticking the refill box makes
-  // those sections optional rather than blocking the form.
+  // that screening, and their answers are on file, so those sections become optional.
+  // Only when the refill is the *sole* reason, though: ticking anything else means
+  // there is something new to prescribe, which has to be screened.
   (function () {
+    var boxes = document.querySelectorAll('input[name="reason"]');
     var refill = document.querySelector(
       'input[name="reason"][value="Refill of a medication prescribed here before"]');
     var labels = document.querySelectorAll(".section-label[data-skippable]");
@@ -670,14 +672,16 @@
       }
     });
 
-    refill.addEventListener("change", function () {
-      var skip = refill.checked;
+    function apply() {
+      var ticked = [].filter.call(boxes, function (b) { return b.checked; });
+      var skip = ticked.length === 1 && ticked[0] === refill;
       fields.forEach(function (f) {
         if (skip) { f.removeAttribute("required"); } else { f.setAttribute("required", ""); }
       });
       [].forEach.call(labels, function (l) { l.classList.toggle("skippable", skip); });
       note.classList.toggle("show", skip);
-    });
+    }
+    [].forEach.call(boxes, function (b) { b.addEventListener("change", apply); });
   })();
 
   function radioVal(name) {
