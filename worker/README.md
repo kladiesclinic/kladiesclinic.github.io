@@ -14,10 +14,47 @@
 
 ---
 
+## 事前調査の結果（2026-07-30 時点、公開DNSより）
+
+作業前に klcs.jp の現状を確認しました。以下は実際の値です。
+
+| 項目 | 現状 |
+|---|---|
+| SPF (klcs.jp) | `v=spf1 include:_spf.google.com include:amazonses.com +ip4:153.123.7.44 ~all` |
+| MX (klcs.jp) | Google Workspace |
+| DMARC | `v=DMARC1; p=quarantine; adkim=s; aspf=s` |
+| send.klcs.jp | **未使用**（レコードなし。そのまま使えます） |
+| DNS管理元 | wadax-sv.jp（SOA の連絡先は postmaster@global-pharma.co.jp） |
+
+これで確定した注意点が2つあります。
+
+### ルートドメインには絶対に触らないこと
+
+klcs.jp には**すでにSPFレコードが存在します**（Google Workspace と Amazon SES を
+併用中）。SPFは1ドメインに1レコードしか置けないため、ここに Resend 用のSPFを
+追加すると**既存の staff@klcs.jp のメールが送信できなくなります。**
+`send.klcs.jp` を使えばこのレコードには一切触りません。
+
+### 差出人アドレスは `@send.klcs.jp` から変えられない
+
+DMARC が `adkim=s; aspf=s`（**strict アライメント**）で設定されています。
+これは「差出人アドレスのドメインと、署名したドメインが完全一致していなければ
+ならない」という厳しい設定です。しかも `p=quarantine` なので、
+不一致のメールは**迷惑メールフォルダに入ります**。
+
+`send.klcs.jp` を認証した状態で差出人を `staff@klcs.jp` にすると不一致になり、
+患者さんに届かなくなります。手順4の `FROM_ADDRESS` は
+**`noreply@send.klcs.jp` のまま**にしてください。
+
+受信箱には差出人名が `K Ladies Clinic Shinjuku` と表示され、返信は
+staff@klcs.jp に届くので、患者さんから見た体裁は問題ありません。
+
+---
+
 ## 手順
 
-アカウント作成とDNS設定は、私（Claude）が代行できない作業です。
-以下はご自身で操作していただく必要があります。
+アカウント作成、APIキーの入力、DNS設定の変更は、私（Claude）が実行しない作業です。
+以下はご自身で操作をお願いします。
 
 ### 1. Resend でドメインを認証する
 
@@ -51,7 +88,7 @@
 | 名前 | 種類 | 値 |
 |---|---|---|
 | `RESEND_API_KEY` | **Secret** | 手順2でコピーした `re_...` |
-| `FROM_ADDRESS` | Text | `K Ladies Clinic Shinjuku <noreply@send.klcs.jp>` |
+| `FROM_ADDRESS` | Text | `K Ladies Clinic Shinjuku <noreply@send.klcs.jp>` ← 変更不可、上記DMARCの項参照 |
 | `REPLY_TO` | Text | `staff@klcs.jp` |
 
 `RESEND_API_KEY` は必ず **Secret**（Encrypt）にしてください。Text にすると
