@@ -66,6 +66,16 @@
     font-size: 12.5px; line-height: 1.65; color: var(--soft);
   }
   .visit-note strong { color: var(--ink); font-weight: 600; }
+  /* Shown only once the refill box is ticked, so the form doesn't shift on load. */
+  .refill-note { display: none; }
+  .refill-note.show { display: block; }
+  /* Marks a whole section as skippable for a refill. */
+  .skip-tag {
+    display: none; font-family: 'Noto Sans JP', var(--sans);
+    font-size: 11px; font-weight: 500; color: var(--accent); background: #FCF1F0;
+    border-radius: 999px; padding: 3px 10px; margin-left: 8px; vertical-align: middle;
+  }
+  .section-label.skippable .skip-tag { display: inline-block; }
   .visit-note a { color: var(--accent); font-weight: 600; }
   .visit-note .ja { display: block; margin-top: 4px; font-size: 11.5px; color: var(--faint); }
 
@@ -92,7 +102,7 @@
     @page { size: A4; margin: 12mm 10mm; }
     body { background: #FFFFFF; color: #000000; font-size: 10px; }
     header, footer, .page-head, .note-box, .submit-btn, .print-btn,
-    .form-status, .hp-field, .hint, .visit-note { display: none !important; }
+    .form-status, .hp-field, .hint, .visit-note, .skip-tag { display: none !important; }
     .wrap { max-width: none; padding: 0; }
     .print-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -299,9 +309,15 @@
           at our Shinjuku clinic instead.
           <span class="ja">不正出血、おりもの・かゆみ、性感染症検査、子宮頸がん検診、膀胱炎などは内診・検査が必要なため、オンラインでは対応できません。来院予約をご利用ください。</span>
         </div>
+        <div class="visit-note refill-note" id="refill-skip-note">
+          <strong>Just topping up something we've prescribed before?</strong> Then you can
+          leave the marked sections below blank, we already have those answers on file.
+          Please still tell us about anything that has changed since your last visit.
+          <span class="ja">当院で処方したお薬の追加のみの場合、下の印がついたセクションは記入不要です。前回受診時から変わったことがあれば、最後の自由記入欄にご記入ください。</span>
+        </div>
       </div>
 
-      <div class="section-label">Your period<span class="ja">月経について</span></div>
+      <div class="section-label" data-skippable>Your period<span class="skip-tag">Skip for a refill ／ 追加処方のみの方は記入不要</span><span class="ja">月経について</span></div>
 
       <div class="field-row">
         <div class="field">
@@ -384,7 +400,7 @@
         </div>
       </div>
 
-      <div class="section-label">Lifestyle &amp; symptoms<span class="ja">生活習慣・症状</span></div>
+      <div class="section-label" data-skippable>Lifestyle &amp; symptoms<span class="skip-tag">Skip for a refill ／ 追加処方のみの方は記入不要</span><span class="ja">生活習慣・症状</span></div>
 
       <div class="field">
         <label>Do you smoke?<span class="ja">喫煙しますか</span></label>
@@ -421,7 +437,7 @@
         </div>
       </div>
 
-      <div class="section-label">Medical history<span class="ja">既往歴</span></div>
+      <div class="section-label" data-skippable>Medical history<span class="skip-tag">Skip for a refill ／ 追加処方のみの方は記入不要</span><span class="ja">既往歴</span></div>
 
       <div class="field">
         <label>Are you currently being treated by a doctor for anything?<span class="ja">現在治療中の疾患がありますか</span></label>
@@ -531,7 +547,7 @@
         </div>
       </div>
 
-      <div class="section-label">Surgery &amp; family history<span class="ja">手術予定・家族歴</span></div>
+      <div class="section-label" data-skippable>Surgery &amp; family history<span class="skip-tag">Skip for a refill ／ 追加処方のみの方は記入不要</span><span class="ja">手術予定・家族歴</span></div>
 
       <div class="field">
         <label>Have you had surgery in the past 2 weeks, or is surgery planned within 4 weeks?<span class="ja">過去2週間以内の手術、または4週間以内の手術予定がありますか</span></label>
@@ -631,6 +647,38 @@
       if (box.checked) { field.focus(); } else { field.value = ""; }
     });
   });
+
+  // The sections tagged data-skippable exist to screen for OC/LEP contraindications.
+  // A patient topping up a medication we have already prescribed has been through
+  // that screening, and their answers are on file, so ticking the refill box makes
+  // those sections optional rather than blocking the form.
+  (function () {
+    var refill = document.querySelector(
+      'input[name="reason"][value="Refill of a medication prescribed here before"]');
+    var labels = document.querySelectorAll(".section-label[data-skippable]");
+    var note = document.getElementById("refill-skip-note");
+    if (!refill || !labels.length) return;
+
+    // Collected before anything is toggled, while every field still carries
+    // `required`: walk each tagged heading's siblings up to the next heading.
+    var fields = [];
+    [].forEach.call(labels, function (lab) {
+      var n = lab.nextElementSibling;
+      while (n && !n.classList.contains("section-label")) {
+        [].forEach.call(n.querySelectorAll("[required]"), function (f) { fields.push(f); });
+        n = n.nextElementSibling;
+      }
+    });
+
+    refill.addEventListener("change", function () {
+      var skip = refill.checked;
+      fields.forEach(function (f) {
+        if (skip) { f.removeAttribute("required"); } else { f.setAttribute("required", ""); }
+      });
+      [].forEach.call(labels, function (l) { l.classList.toggle("skippable", skip); });
+      note.classList.toggle("show", skip);
+    });
+  })();
 
   function radioVal(name) {
     var el = document.querySelector('input[name="' + name + '"]:checked');
