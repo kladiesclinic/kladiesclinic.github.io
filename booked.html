@@ -68,6 +68,22 @@
 src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<script>
+  // Reports the booking itself. This page is only reached straight after Calendly
+  // confirms, and it carries no form fields, so nothing personal is attached even
+  // while Meta's automatic advanced matching is switched on.
+  //
+  // Fired once per browser session, so refreshing the confirmation page doesn't
+  // report a second booking and skew what the ads optimise towards.
+  (function () {
+    var first = true;
+    try {
+      first = !sessionStorage.getItem("klcs_booked");
+      sessionStorage.setItem("klcs_booked", "1");
+    } catch (e) { /* private browsing: fall back to reporting every load */ }
+    if (first && window.fbq) { fbq("track", "Schedule"); }
+  })();
+</script>
 </head>
 <body>
 
