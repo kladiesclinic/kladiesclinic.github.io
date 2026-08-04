@@ -51,6 +51,23 @@
   }
   .timing-note strong { color: var(--ink); font-weight: 600; }
 </style>
+<script>
+  // Calendly redirects here with the patient's name and appointment time in the
+  // query string. Read them, then wipe the address bar, so no third-party script
+  // below ever sees a URL with a real person's name in it.
+  window.__booking = (function () {
+    var q = new URLSearchParams(location.search);
+    var b = { name: q.get("invitee_full_name"), start: q.get("event_start_time") };
+    if (location.search) { history.replaceState(null, "", location.pathname); }
+    return b;
+  })();
+</script>
+<!-- Meta Pixel Code -->
+<script src="assets/pixel.js"></script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -120,10 +137,9 @@
 </footer>
 
 <script>
-  // Calendly can pass booking details as query params when redirecting here.
-  var q = new URLSearchParams(location.search);
-  var name = q.get("invitee_full_name");
-  var start = q.get("event_start_time");
+  // Captured in the <head> before the address bar was cleaned, see the note there.
+  var name = window.__booking.name;
+  var start = window.__booking.start;
   if (name || start) {
     document.getElementById("booking-meta").style.display = "block";
     document.getElementById("bm-name").textContent = name || "—";
