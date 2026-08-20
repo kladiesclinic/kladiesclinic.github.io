@@ -369,15 +369,22 @@
   }
   .hours-table td { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 600; }
   .hours-note { font-size: 13px; line-height: 1.7; color: var(--soft); margin-top: 12px; }
-  .closed-cal { display: flex; flex-wrap: wrap; gap: 20px; }
+  .closed-cal { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
   .cal-month { flex: 1 1 190px; max-width: 250px; }
   .cal-month-name { font-family: var(--serif); font-size: 16px; margin-bottom: 8px; color: var(--ink); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 12px; text-align: center; }
   .cal-grid .dow { color: var(--faint); font-weight: 600; font-size: 10px; padding: 4px 0; }
   .cal-grid .day { padding: 6px 0; border-radius: 8px; color: var(--ink); }
   .cal-grid .day.closed { background: var(--accent); color: #FFFFFF; font-weight: 600; }
-  .cal-legend { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--soft); margin-top: 12px; width: 100%; }
+  .cal-legend { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--soft); margin-top: 12px; width: 100%; }
   .cal-legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--accent); display: inline-block; }
+  .hours-fees-link {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+    font-size: 13.5px; font-weight: 600; color: var(--accent);
+    border: 1.5px solid var(--accent); border-radius: 999px; padding: 10px 18px;
+    transition: opacity .2s ease;
+  }
+  .hours-fees-link:hover { opacity: .75; }
   @media (min-width: 700px) { .hours-grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 768px) {
     .final-inner { flex-direction: row; align-items: flex-end; justify-content: space-between; }
@@ -588,7 +595,8 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
         </div>
         <p>After the consultation we send you an invoice by email through Square, our
         payment provider. It lists exactly what you're being charged for, nothing is
-        charged from your card before your confirmation.</p>
+        charged from your card before your confirmation. You can check all prices on our
+        <a class="inline-link" href="fees.html">fees page</a>.</p>
       </div>
       <div class="step-art" aria-hidden="true">
         <svg viewBox="0 0 160 140" fill="none">
@@ -971,6 +979,9 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
       On Sundays and national holidays we close at 17:30.</p>
       <p class="hours-note">No appointment necessary for in-person visits, just walk in
       during opening hours.</p>
+      <a class="hours-fees-link" href="fees.html">View our fees
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
     </div>
     <div class="hours-card reveal">
       <h3>Closed days</h3>
