@@ -1176,7 +1176,7 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
     var MONTHS = ["January","February","March","April","May","June",
                   "July","August","September","October","November","December"];
     var DOW = ["S","M","T","W","T","F","S"];
-    fetch("https://www.klcs.jp/?klcs_closed_days=1")
+    fetch("https://www.klcs.jp/?klcs_closed_days=1", { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (data) {
         var dates = (data && data.dates) || [];
