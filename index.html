@@ -8,18 +8,20 @@
 <meta property="og:title" content="K Ladies Clinic Shinjuku, Online Gynecology in English" />
 <meta property="og:description" content="Book online → video consultation → invoice by email → pay by card → medication by mail to your home or hotel. Women's healthcare in English for residents and travelers, anywhere in Japan." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.klcs.jp/en/" />
+<link rel="canonical" href="https://www.klcs.jp/en/" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6766'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23FFFFFF'%3EK%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --paper: #FBF7F4;
+    --paper: #FFFFFF;        /* white base, matching klcs.jp */
     --ink: #2B2124;
     --soft: #7A6A66;
     --faint: #A8968F;
-    --line: #E9DDD6;
-    --accent: #F25C5B;       /* deepened from logo coral #FF6766 for text contrast */
+    --line: #F3D7D7;         /* soft pink rule color used across klcs.jp */
+    --accent: #FF6766;       /* logo coral, the main accent on klcs.jp */
     --accent-light: #FFB1B0;
     --logo-coral: #FF6766;
     --serif: 'Newsreader', Georgia, serif;
@@ -48,7 +50,8 @@
     display: inline-flex; align-items: center; gap: 8px;
     font-family: var(--sans); font-size: 15px; font-weight: 600;
     padding: 16px 28px; border-radius: 999px;
-    background: var(--ink); color: var(--paper);
+    background: var(--accent); color: #FFFFFF;
+    box-shadow: 0 3px 0 #D84F4F;
     transition: opacity .2s ease;
   }
   .btn:hover { opacity: .85; }
@@ -57,7 +60,7 @@
   /* ---------- header ---------- */
   header {
     position: sticky; top: 0; z-index: 20;
-    background: rgba(251,247,244,0.92);
+    background: rgba(255,255,255,0.92);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
@@ -68,11 +71,18 @@
   .header-actions { display: none; align-items: center; gap: 10px; }
   .header-cta {
     font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 999px;
-    background: var(--ink); color: var(--paper); white-space: nowrap;
+    background: var(--accent); color: #FFFFFF; white-space: nowrap;
   }
   .header-cta.secondary {
-    background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+    background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
   }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-lang {
+    font-size: 13px; font-weight: 600; color: var(--soft); white-space: nowrap;
+    border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
+    transition: border-color .2s ease;
+  }
+  .header-lang:hover { border-color: var(--accent); color: var(--accent); }
   @media (min-width: 640px) { .header-actions { display: flex; } }
 
   /* ---------- mobile action bar (always visible) ---------- */
@@ -80,7 +90,7 @@
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
     display: flex; gap: 10px;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    background: rgba(251,247,244,0.94);
+    background: rgba(255,255,255,0.94);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     border-top: 1px solid var(--line);
   }
@@ -90,8 +100,8 @@
     white-space: nowrap;
   }
   .action-bar a svg { width: 15px; height: 15px; flex-shrink: 0; }
-  .action-bar .primary { background: var(--ink); color: var(--paper); }
-  .action-bar .secondary { background: #FFFFFF; color: var(--ink); border: 1.5px solid var(--ink); }
+  .action-bar .primary { background: var(--accent); color: #FFFFFF; box-shadow: 0 3px 0 #D84F4F; }
+  .action-bar .secondary { background: #FFFFFF; color: var(--accent); border: 1.5px solid var(--accent); }
   body { padding-bottom: 76px; }
   @media (min-width: 640px) {
     .action-bar { display: none; }
@@ -115,7 +125,7 @@
   }
   .hero-photo-badge {
     position: absolute; top: 14%; right: -10px;
-    background: rgba(251,247,244,0.94); backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.94); backdrop-filter: blur(6px);
     border: 1px solid var(--line); border-radius: 999px;
     padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--ink);
     white-space: nowrap; display: flex; align-items: center; gap: 6px;
@@ -225,7 +235,7 @@
     padding: 26px 24px;
   }
   .team-flag {
-    width: 52px; height: 52px; border-radius: 50%; background: #FDEEEA;
+    width: 52px; height: 52px; border-radius: 50%; background: #FBEBEB;
     display: flex; align-items: center; justify-content: center;
     font-size: 15px; font-weight: 600; letter-spacing: 0.06em;
     color: var(--accent); margin-bottom: 16px;
@@ -260,7 +270,7 @@
   .review-meta b { color: var(--soft); font-weight: 600; }
   .review-tag {
     display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--accent); background: #FDEEEA;
+    text-transform: uppercase; color: var(--accent); background: #FBEBEB;
     border-radius: 999px; padding: 4px 10px; width: fit-content;
   }
   @media (min-width: 700px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -309,7 +319,7 @@
   /* ---------- final cta ---------- */
   .final { padding-bottom: 96px; }
   .final-inner {
-    border-top: 1px solid var(--ink); padding-top: 48px;
+    border-top: 1px solid var(--accent); padding-top: 48px;
     display: flex; flex-direction: column; gap: 32px;
   }
   .final h2 { font-size: clamp(36px, 7vw, 64px); max-width: 520px; }
@@ -344,6 +354,31 @@
     .access-grid { grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: center; }
     .access-map { height: 380px; }
   }
+
+  /* ---------- hours & closed days ---------- */
+  .hours-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 32px; scroll-margin-top: 90px; }
+  .hours-card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 20px;
+    padding: 26px 24px;
+  }
+  .hours-card h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin-bottom: 14px; }
+  .hours-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .hours-table th {
+    text-align: left; font-weight: 600; color: var(--soft); padding: 10px 0; width: 42%;
+    border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .hours-table td { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+  .hours-note { font-size: 13px; line-height: 1.7; color: var(--soft); margin-top: 12px; }
+  .closed-cal { display: flex; flex-wrap: wrap; gap: 20px; }
+  .cal-month { flex: 1 1 190px; max-width: 250px; }
+  .cal-month-name { font-family: var(--serif); font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 12px; text-align: center; }
+  .cal-grid .dow { color: var(--faint); font-weight: 600; font-size: 10px; padding: 4px 0; }
+  .cal-grid .day { padding: 6px 0; border-radius: 8px; color: var(--ink); }
+  .cal-grid .day.closed { background: var(--accent); color: #FFFFFF; font-weight: 600; }
+  .cal-legend { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--soft); margin-top: 12px; width: 100%; }
+  .cal-legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--accent); display: inline-block; }
+  @media (min-width: 700px) { .hours-grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 768px) {
     .final-inner { flex-direction: row; align-items: flex-end; justify-content: space-between; }
   }
@@ -387,7 +422,7 @@
   .contact-form button {
     font-family: var(--sans); font-size: 15px; font-weight: 600;
     padding: 16px 28px; border-radius: 999px; border: none; cursor: pointer;
-    background: var(--ink); color: var(--paper); width: fit-content;
+    background: var(--accent); color: #FFFFFF; box-shadow: 0 3px 0 #D84F4F; width: fit-content;
     display: inline-flex; align-items: center; gap: 8px;
   }
   .contact-form button:disabled { opacity: .6; cursor: default; }
@@ -422,9 +457,12 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
     <a class="brand" href="#" aria-label="K Ladies Clinic Shinjuku">
       <img src="assets/logo_en.png" alt="K Ladies Clinic Shinjuku, Gynecology Clinic" class="brand-logo" />
     </a>
-    <div class="header-actions">
-      <a class="header-cta secondary" data-visit href="#" target="_blank" rel="noopener">In-person visit</a>
-      <a class="header-cta" data-cta href="#">Online consultation</a>
+    <div class="header-right">
+      <a class="header-lang" href="https://www.klcs.jp/" title="Japanese site">日本語</a>
+      <div class="header-actions">
+        <a class="header-cta secondary" data-visit href="#" target="_blank" rel="noopener">In-person visit</a>
+        <a class="header-cta" data-cta href="#">Online consultation</a>
+      </div>
     </div>
   </div>
 </header>
@@ -629,9 +667,9 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
         healthcare. Whether you're living in Japan or simply visiting, we're here to help
         you access the care you need with confidence and ease.
       </p>
-      <a class="about-site-link" href="https://www.klcs.jp/en/" target="_blank" rel="noopener">
-        Visit our official clinic website
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      <a class="about-site-link" href="#hours">
+        See opening hours &amp; closed days
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
       </a>
     </div>
     <div class="about-grid">
@@ -784,8 +822,8 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
           bleeding outside your period, unusual discharge or itching, STD testing, a Pap smear,
           or a bladder infection. For these, you're welcome to visit our clinic in Shinjuku.</p>
           <p>Please
-          <a class="inline-link" href="https://www.klcs.jp/en/" target="_blank" rel="noopener">check our website</a>
-          for opening hours and doctor availability.</p>
+          <a class="inline-link" href="#hours">check our opening hours and closed days</a>
+          before you visit.</p>
           <p>You can
           <a class="inline-link" href="https://keicuri-booking.vercel.app/en" target="_blank" rel="noopener">book an in-person visit</a>
           online.</p>
@@ -885,9 +923,7 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
       <div class="access-address">
         <strong>K Ladies Clinic Shinjuku</strong><br />
         Shinjuku Center Building 5F<br />
-        1-25-1 Nishi-Shinjuku, Shinjuku-ku, Tokyo<br />
-        <a class="inline-link" href="https://www.klcs.jp/en/" target="_blank" rel="noopener"
-           style="font-size: 13px;">Opening hours &amp; details on our official website</a>
+        1-25-1 Nishi-Shinjuku, Shinjuku-ku, Tokyo
       </div>
       <a class="btn" data-visit href="#" target="_blank" rel="noopener">
         Book an in-person visit
@@ -903,6 +939,26 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
         referrerpolicy="no-referrer-when-downgrade"
         allowfullscreen
       ></iframe>
+    </div>
+  </div>
+
+  <div class="wrap hours-grid" id="hours">
+    <div class="hours-card reveal">
+      <h3>Opening hours</h3>
+      <table class="hours-table">
+        <tr><th>Morning</th><td>11:00 &ndash; 12:30</td></tr>
+        <tr><th>Afternoon</th><td>14:30 &ndash; 18:30</td></tr>
+      </table>
+      <p class="hours-note">Open 7 days a week, weekends and holidays included.
+      On Sundays and national holidays we close at 17:30.</p>
+      <p class="hours-note">No appointment necessary for in-person visits, just walk in
+      during opening hours.</p>
+    </div>
+    <div class="hours-card reveal">
+      <h3>Closed days</h3>
+      <div class="closed-cal" id="closed-cal" aria-live="polite">
+        <p class="hours-note">Loading this month's calendar&hellip;</p>
+      </div>
     </div>
   </div>
 </section>
@@ -976,7 +1032,8 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
       Shinjuku-ku, Tokyo &middot; Online gynecology for English speaking patients across Japan.</p>
     </div>
     <div class="footer-links">
-      <a href="https://www.klcs.jp/en/" target="_blank" rel="noopener">Official clinic website</a>
+      <a href="#hours">Opening hours &amp; closed days</a>
+      <a href="https://www.klcs.jp/" target="_blank" rel="noopener">日本語 (Japanese site)</a>
       <a data-visit href="#" target="_blank" rel="noopener">Book an in-person visit</a>
       <a data-maps href="#" target="_blank" rel="noopener">Google Maps</a>
       <a href="#contact">Contact us</a>
@@ -1109,6 +1166,60 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
         submitBtn.firstChild.textContent = "Send message ";
       });
   });
+
+  // Closed-days calendar. The date list lives on the clinic website (an
+  // announcement post the staff already update every month), served as JSON,
+  // so there is nothing to maintain here.
+  (function () {
+    var box = document.getElementById("closed-cal");
+    if (!box) return;
+    var MONTHS = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+    var DOW = ["S","M","T","W","T","F","S"];
+    fetch("https://www.klcs.jp/?klcs_closed_days=1")
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        var dates = (data && data.dates) || [];
+        if (!dates.length) {
+          box.innerHTML = '<p class="hours-note">No closed days are announced at the moment.</p>';
+          return;
+        }
+        var now = new Date();
+        var byMonth = {};
+        dates.forEach(function (d) {
+          var y = now.getFullYear();
+          // The list has no year, anything more than 2 months in the past is next year
+          if (d.m < now.getMonth() + 1 - 2) y += 1;
+          var key = y * 100 + d.m;
+          (byMonth[key] = byMonth[key] || { y: y, m: d.m, days: {} }).days[d.d] = true;
+        });
+        var html = "";
+        Object.keys(byMonth).sort().forEach(function (k) {
+          var mo = byMonth[k];
+          var first = new Date(mo.y, mo.m - 1, 1).getDay();
+          var count = new Date(mo.y, mo.m, 0).getDate();
+          var cells = "";
+          DOW.forEach(function (d) { cells += '<span class="dow">' + d + "</span>"; });
+          for (var i = 0; i < first; i++) cells += "<span></span>";
+          for (var day = 1; day <= count; day++) {
+            cells += '<span class="day' + (mo.days[day] ? " closed" : "") + '">' + day + "</span>";
+          }
+          html += '<div class="cal-month"><div class="cal-month-name">' +
+                  MONTHS[mo.m - 1] + " " + mo.y +
+                  '</div><div class="cal-grid">' + cells + "</div></div>";
+        });
+        html += '<div class="cal-legend"><i></i>Closed</div>';
+        box.innerHTML = html;
+      })
+      .catch(function () {
+        box.innerHTML = '<p class="hours-note">Closed days vary each month. Please check ' +
+          '<a class="inline-link" data-maps href="#" target="_blank" rel="noopener">Google Maps</a> ' +
+          'or ask us through the contact form.</p>';
+        var maps = box.querySelector("[data-maps]");
+        var src = document.querySelector("footer [data-maps]");
+        if (maps && src) maps.href = src.href;
+      });
+  })();
 
   // Scroll reveal
   var obs = new IntersectionObserver(function (entries) {

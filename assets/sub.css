@@ -1,11 +1,11 @@
 /* Shared styles for subpages (book / intake / zoom), matches index.html tokens */
 :root {
-  --paper: #FBF7F4;
+  --paper: #FFFFFF;        /* white base, matching klcs.jp */
   --ink: #2B2124;
   --soft: #7A6A66;
   --faint: #A8968F;
-  --line: #E9DDD6;
-  --accent: #F25C5B;
+  --line: #F3D7D7;         /* soft pink rule color used across klcs.jp */
+  --accent: #FF6766;       /* logo coral, the main accent on klcs.jp */
   --accent-light: #FFB1B0;
   --serif: 'Newsreader', Georgia, serif;
   --sans: 'Inter', 'Helvetica Neue', sans-serif;
@@ -20,7 +20,7 @@ a { text-decoration: none; color: inherit; }
 
 header {
   position: sticky; top: 0; z-index: 20;
-  background: rgba(251,247,244,0.92);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
@@ -88,7 +88,7 @@ form textarea { min-height: 110px; resize: vertical; }
 .submit-btn {
   font-family: var(--sans); font-size: 15px; font-weight: 600;
   padding: 16px 30px; border-radius: 999px; border: none; cursor: pointer;
-  background: var(--ink); color: var(--paper);
+  background: var(--accent); color: #FFFFFF; box-shadow: 0 3px 0 #D84F4F;
   display: inline-flex; align-items: center; gap: 8px; margin-top: 8px;
 }
 .submit-btn:disabled { opacity: .6; cursor: default; }
@@ -122,9 +122,9 @@ form textarea { min-height: 110px; resize: vertical; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 15px; font-weight: 600; padding: 16px 28px; border-radius: 999px;
-  background: var(--ink); color: var(--paper);
+  background: var(--accent); color: #FFFFFF; box-shadow: 0 3px 0 #D84F4F;
 }
-.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); box-shadow: none; }
 
 footer { border-top: 1px solid var(--line); margin-top: 72px; }
 .footer-inner {
