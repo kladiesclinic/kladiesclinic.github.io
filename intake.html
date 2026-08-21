@@ -329,6 +329,12 @@
       </div>
 
       <div class="field">
+        <label for="if-appt">Your Zoom appointment, Japan time<span class="ja">Zoom診察の予約日時（日本時間）</span></label>
+        <div class="hint">If you have already booked your online consultation, select the date and time so the doctor has your questionnaire ready. Leave blank if you haven't booked yet.<span class="ja">予約済みの場合は選択してください（未予約なら空欄で構いません）</span></div>
+        <input id="if-appt" type="datetime-local" />
+      </div>
+
+      <div class="field">
         <label for="if-nationality">Nationality<span class="ja">国籍</span></label>
         <input id="if-nationality" type="text" required />
       </div>
@@ -1087,6 +1093,7 @@
     ["date_of_birth", "Date of birth", "生年月日"],
     ["email", "Email", "メールアドレス"],
     ["phone", "Phone", "電話番号"],
+    ["zoom_appointment", "Zoom appointment (JST)", "Zoom予約日時"],
     ["nationality", "Nationality", "国籍"],
     ["postal_code", "Postal code", "郵便番号"],
     ["address", "Address in Japan", "日本国内の住所"],
@@ -1199,6 +1206,113 @@
     return v; // free text stays as written
   }
 
+  // ---- 受付管理画面（booking-app / Supabase）への保存 -------------------
+  // メール(FormSubmit)とは独立にクリニックの受付管理画面「問診票（Zoom英語）」
+  // にも保存する。anonキーは公開クライアントキー（全フロントに同梱される前提の
+  // もの）で、書き込みは security definer RPC 経由・読み出しはRLSでスタッフのみ。
+  var SB_URL = "https://dfkylexozstecjpgvnxg.supabase.co";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRma3lsZXhvenN0ZWNqcGd2bnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzAxODAsImV4cCI6MjA5ODkwNjE4MH0.7gtNcTLeiISvEJRCxIaHpOwafbLyTAVnYFE2wvqi8Wc";
+
+  // 受付画面のシートで使うセクション見出し（key -> [ja, en]）
+  var SEC_OF = {
+    nationality: ["基本情報", "Basic info"], postal_code: ["基本情報", "Basic info"],
+    address: ["基本情報", "Basic info"], height_cm: ["基本情報", "Basic info"],
+    weight_kg: ["基本情報", "Basic info"], bmi: ["基本情報", "Basic info"],
+    blood_pressure: ["基本情報", "Basic info"],
+    reason_for_visit: ["受診理由", "Reason for visit"], morning_after_timing: ["受診理由", "Reason for visit"],
+    period_shift_date: ["受診理由", "Reason for visit"], refill_requested: ["受診理由", "Reason for visit"],
+    reason_other_detail: ["受診理由", "Reason for visit"],
+    last_period_start: ["月経について", "Period"], last_period_days: ["月経について", "Period"],
+    cycle: ["月経について", "Period"], cycle_detail: ["月経について", "Period"],
+    abnormal_bleeding: ["月経について", "Period"], bleeding_since: ["月経について", "Period"],
+    pregnant_or_possibly: ["妊娠・授乳", "Pregnancy"], breastfeeding: ["妊娠・授乳", "Pregnancy"],
+    ever_pregnant: ["妊娠・授乳", "Pregnancy"], pregnancy_times: ["妊娠・授乳", "Pregnancy"],
+    birth_times: ["妊娠・授乳", "Pregnancy"], intercourse: ["妊娠・授乳", "Pregnancy"],
+    smoking: ["生活・症状", "Lifestyle & symptoms"], cigarettes_per_day: ["生活・症状", "Lifestyle & symptoms"],
+    smoking_years: ["生活・症状", "Lifestyle & symptoms"],
+    migraine_or_blurred_vision: ["生活・症状", "Lifestyle & symptoms"],
+    current_acute_symptoms: ["生活・症状", "Lifestyle & symptoms"],
+    currently_in_treatment: ["既往歴・服薬", "Medical history"], treatment_detail: ["既往歴・服薬", "Medical history"],
+    past_surgery_or_hospitalization: ["既往歴・服薬", "Medical history"],
+    hospitalization_detail: ["既往歴・服薬", "Medical history"],
+    diagnosed_conditions: ["既往歴・服薬", "Medical history"],
+    repeated_miscarriage_stillbirth: ["既往歴・服薬", "Medical history"],
+    hypertensive_disorder_of_pregnancy: ["既往歴・服薬", "Medical history"],
+    taking_medications: ["既往歴・服薬", "Medical history"], medications_detail: ["既往歴・服薬", "Medical history"],
+    previous_oc_lep_use: ["既往歴・服薬", "Medical history"], previous_pill_detail: ["既往歴・服薬", "Medical history"],
+    allergy: ["既往歴・服薬", "Medical history"], allergy_detail: ["既往歴・服薬", "Medical history"],
+    recent_or_planned_surgery: ["既往歴・服薬", "Medical history"],
+    family_history_thrombosis: ["家族歴", "Family history"],
+    family_history_breast_cancer: ["家族歴", "Family history"],
+    found_us: ["その他", "Other"], found_us_detail: ["その他", "Other"],
+  };
+  // 受付シートの上部に赤字で出す「要注意」判定（ピル処方時の禁忌・慎重投与の当たり）
+  function isFlagged(key, raw) {
+    switch (key) {
+      case "pregnant_or_possibly":
+      case "breastfeeding":
+      case "abnormal_bleeding":
+      case "smoking":
+      case "current_acute_symptoms":
+      case "repeated_miscarriage_stillbirth":
+      case "hypertensive_disorder_of_pregnancy":
+      case "recent_or_planned_surgery":
+      case "family_history_thrombosis":
+      case "allergy":
+        return raw === "Yes";
+      case "migraine_or_blurred_vision":
+        return raw === "Yes, with aura";
+      case "bmi":
+        return parseFloat(raw) >= 30;
+      case "diagnosed_conditions":
+        return !!raw && raw !== "None checked" && raw.indexOf("None of the above") === -1;
+      default:
+        return false;
+    }
+  }
+  // シートのヘッダーに出る項目・メール専用項目は回答一覧から除く
+  var ZOOM_SKIP = { name: 1, date_of_birth: 1, email: 1, phone: 1, zoom_appointment: 1, notes: 1 };
+
+  function submitToClinic(data) {
+    var answers = [];
+    FIELDS.forEach(function (f) {
+      var key = f[0];
+      if (ZOOM_SKIP[key]) return;
+      var raw = String(data[key] || "");
+      if (!raw || raw === "None checked") return;
+      var ja = toJa(raw);
+      var sec = SEC_OF[key] || ["その他", "Other"];
+      answers.push({
+        qid: key,
+        sec_ja: sec[0], sec_en: sec[1],
+        q_ja: f[2], q_en: f[1],
+        a_en: raw,
+        a_ja: ja && ja !== raw ? ja + "（" + raw + "）" : raw,
+        flag: isFlagged(key, raw),
+      });
+    });
+    var appt = val("if-appt");
+    return fetch(SB_URL + "/rest/v1/rpc/submit_monshin_zoom", {
+      method: "POST",
+      headers: {
+        apikey: SB_KEY,
+        Authorization: "Bearer " + SB_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        p_name: data.name,
+        p_dob: data.date_of_birth,
+        p_phone: data.phone,
+        p_email: data.email || null,
+        p_answers: answers,
+        p_free_text: data.notes || null,
+        p_reserve_at: appt ? appt + ":00+09:00" : null,
+      }),
+    }).then(function (res) {
+      if (!res.ok) throw new Error("clinic save failed");
+    });
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.className = "form-status";
@@ -1214,6 +1328,7 @@
       date_of_birth: val("if-dob"),
       email: val("if-email"),
       phone: val("if-phone"),
+      zoom_appointment: (val("if-appt") || "").replace("T", " "),
       nationality: val("if-nationality"),
       postal_code: val("if-postal"),
       // 分割入力した住所は、これまでどおり1行で読める形につなげて送る
@@ -1279,7 +1394,10 @@
     });
 
     submitBtn.disabled = true;
-    fetch(FORM_ENDPOINT, {
+
+    // 2経路に同時送信: ①スタッフ宛メール(FormSubmit) ②受付管理画面(Supabase)。
+    // どちらか一方でも届けば送信成功として扱う（片方の障害でも問診票は失われない）。
+    var emailReq = fetch(FORM_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(Object.assign({
@@ -1294,7 +1412,16 @@
     })
       .then(function (res) { return res.json(); })
       .then(function (d) {
-        if (d.success === "true" || d.success === true) {
+        if (!(d.success === "true" || d.success === true)) throw new Error("email failed");
+      });
+
+    var clinicReq = submitToClinic(data);
+
+    Promise.allSettled([emailReq, clinicReq])
+      .then(function (results) {
+        var emailOk = results[0].status === "fulfilled";
+        var clinicOk = results[1].status === "fulfilled";
+        if (emailOk || clinicOk) {
           // The answers deliberately stay on screen rather than being reset: the
           // PDF button needs them, and it's the only record the patient gets.
           form.classList.add("form-locked");
@@ -1303,16 +1430,15 @@
           var done = document.getElementById("if-done");
           done.classList.add("show");
           done.scrollIntoView({ behavior: "smooth", block: "center" });
-          sendPatientConfirmation(data.email, data.name);
-        } else { throw new Error(); }
-      })
-      .catch(function () {
-        var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
-        window.location.href = "mailto:" + CONTACT_EMAIL +
-          "?subject=" + encodeURIComponent("【問診票 / Questionnaire】" + data.name) +
-          "&body=" + encodeURIComponent(body);
-        statusEl.textContent = "We couldn't send the form directly, your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
-        statusEl.className = "form-status err";
+          if (emailOk) sendPatientConfirmation(data.email, data.name);
+        } else {
+          var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
+          window.location.href = "mailto:" + CONTACT_EMAIL +
+            "?subject=" + encodeURIComponent("【問診票 / Questionnaire】" + data.name) +
+            "&body=" + encodeURIComponent(body);
+          statusEl.textContent = "We couldn't send the form directly, your mail app should open instead, or email us at " + CONTACT_EMAIL + ".";
+          statusEl.className = "form-status err";
+        }
       })
       .finally(function () { submitBtn.disabled = false; });
   });
