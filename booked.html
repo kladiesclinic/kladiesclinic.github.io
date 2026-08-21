@@ -156,6 +156,18 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
   // Captured in the <head> before the address bar was cleaned, see the note there.
   var name = window.__booking.name;
   var start = window.__booking.start;
+  if (start && !isNaN(new Date(start))) {
+    // Carry the appointment time into the intake form so the patient doesn't
+    // have to type it. The #fragment never leaves the browser, and intake.html
+    // deliberately has no Meta pixel, so nothing here reaches any third party.
+    var apptHash = "#appt=" + encodeURIComponent(start);
+    document.querySelectorAll('a[href="intake.html"]').forEach(function (a) {
+      a.href = "intake.html" + apptHash;
+    });
+    // Same-browser fallback for patients who instead open the intake link from
+    // the Calendly confirmation email later (that URL is fixed, no fragment).
+    try { localStorage.setItem("klcs_zoom_appt", start); } catch (e) {}
+  }
   if (name || start) {
     document.getElementById("booking-meta").style.display = "block";
     document.getElementById("bm-name").textContent = name || "—";

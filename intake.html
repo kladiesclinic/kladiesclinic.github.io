@@ -1313,6 +1313,32 @@
     });
   }
 
+  // Prefill the Zoom appointment. booked.html hands it over in the #appt=
+  // fragment right after a Calendly booking, and also leaves a same-browser
+  // copy in localStorage for patients who come back later through the fixed
+  // link in the confirmation email. The field stays editable either way.
+  (function () {
+    var iso = null;
+    var m = location.hash.match(/appt=([^&]+)/);
+    if (m) {
+      try { iso = decodeURIComponent(m[1]); } catch (e) {}
+      // 予約日時をアドレスバーに残さない（共有・履歴に写り込ませない）
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+    if (iso) {
+      try { localStorage.setItem("klcs_zoom_appt", iso); } catch (e) {}
+    } else {
+      try { iso = localStorage.getItem("klcs_zoom_appt"); } catch (e) {}
+    }
+    if (!iso) return;
+    var d = new Date(iso);
+    // 過去の予約の控えは使わない（当日中は1時間前まで許容）
+    if (isNaN(d) || d.getTime() < Date.now() - 3600000) return;
+    // datetime-local にはJSTの "YYYY-MM-DDTHH:mm" を入れる（送信側がJST前提）
+    var jst = d.toLocaleString("sv-SE", { timeZone: "Asia/Tokyo" });
+    document.getElementById("if-appt").value = jst.slice(0, 16).replace(" ", "T");
+  })();
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.className = "form-status";
@@ -1430,6 +1456,9 @@
           var done = document.getElementById("if-done");
           done.classList.add("show");
           done.scrollIntoView({ behavior: "smooth", block: "center" });
+          // 送信できたら予約日時の控えは役目を終える（別の患者が同じ端末で
+          // 開いたときに前の人の日時が入らないように消す）
+          try { localStorage.removeItem("klcs_zoom_appt"); } catch (e) {}
           if (emailOk) sendPatientConfirmation(data.email, data.name);
         } else {
           var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
