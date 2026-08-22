@@ -1472,6 +1472,8 @@
           // 送信できたら予約日時の控えは役目を終える（別の患者が同じ端末で
           // 開いたときに前の人の日時が入らないように消す）
           try { localStorage.removeItem("klcs_zoom_appt"); } catch (e) {}
+          // 受付画面の進捗を「記入済」にする（問診票本体が届くので進捗行は役目を終える）
+          if (window.__zoomProgress) window.__zoomProgress.done();
           if (emailOk) sendPatientConfirmation(data.email, data.name);
         } else {
           var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
@@ -1566,10 +1568,62 @@
     var pos = 0; // visibleIndexes() 上の位置。== length なら送信ステップ
     var rendered = false;
 
+    // 記入中の進捗を受付管理画面へ（Supabase monshin_progress）。開いた時点と、
+    // 質問を進めるたびに1秒まとめて送る。受付は Calendly の予約と氏名・メールで突き合わせて
+    // 「問診票を開いた／記入中 12/40問（2分前）」を出す。session は同じ端末で開き直しても
+    // 同じ行を更新するよう localStorage に持ち、送信完了で消す。
+    var PROGRESS_KEY = "klcs_intake_session";
+    var progressSession = null;
+    try { progressSession = localStorage.getItem(PROGRESS_KEY); } catch (e) {}
+    if (!progressSession) {
+      progressSession = (window.crypto && window.crypto.randomUUID)
+        ? window.crypto.randomUUID().replace(/-/g, "")
+        : Math.random().toString(36).slice(2) + Date.now().toString(36);
+      try { localStorage.setItem(PROGRESS_KEY, progressSession); } catch (e) {}
+    }
+    var progressTimer = null;
+    function sendProgress(step, total, section, submitted) {
+      var dobRaw = val("if-dob");
+      var body = {
+        p_session: progressSession,
+        p_source: "zoom",
+        p_name: val("if-name") || null,
+        p_dob: /^\d{4}-\d{2}-\d{2}$/.test(dobRaw) ? dobRaw : null,
+        p_email: val("if-email") || null,
+        p_phone: val("if-phone") || null,
+        p_step: step,
+        p_total: total,
+        p_section: section || null,
+        p_submitted: !!submitted,
+      };
+      fetch(SB_URL + "/rest/v1/rpc/upsert_monshin_progress", {
+        method: "POST",
+        headers: { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        keepalive: true,
+      }).catch(function () {});
+    }
+    window.__zoomProgress = {
+      done: function () {
+        clearTimeout(progressTimer);
+        var vis = visibleIndexes();
+        sendProgress(vis.length, vis.length, "Sent", true);
+        try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
+      },
+    };
+
     function render() {
       var vis = visibleIndexes();
       if (pos > vis.length) pos = vis.length;
       var onFinal = pos >= vis.length;
+
+      // 進捗送信（1秒まとめて）。送信ステップは「最後まで到達」として総数を入れる
+      clearTimeout(progressTimer);
+      (function (p, n, sec) {
+        progressTimer = setTimeout(function () { sendProgress(p, n, sec, false); }, 1000);
+      })(Math.min(pos, vis.length), vis.length,
+         onFinal ? "Ready to send" :
+         (steps[vis[pos]].section ? (steps[vis[pos]].section.childNodes[0].textContent || "").trim() : ""));
 
       steps.forEach(function (s) {
         s.el.classList.add("wz-hide");
