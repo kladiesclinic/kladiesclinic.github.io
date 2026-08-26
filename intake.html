@@ -279,9 +279,9 @@
       <p>Thank you. The doctor will read your answers before your consultation, so your
       appointment time can go to your questions rather than paperwork.
       <span class="ja">ありがとうございます。診察前に医師が内容を確認します。</span></p>
-      <p>A copy of your answers has been emailed to you. Please check your inbox, and
-      your spam folder just in case.
-      <span class="ja">回答内容の控えをメールでお送りしました。迷惑メールフォルダもあわせてご確認ください。</span></p>
+      <p>We've sent a confirmation to your email so you know it arrived. There is nothing
+      more you need to do before your consultation. Please check your spam folder just in case.
+      <span class="ja">確認のメールをお送りしました。診察前に必要なご準備はこれで完了です。念のため迷惑メールフォルダもご確認ください。</span></p>
       <p>Your answers are also still shown below. If you'd prefer a PDF, use the
       <strong>Print / save as PDF</strong> button at the bottom of the form.
       <span class="ja">回答は下に表示されたままです。PDFで保存したい場合は、フォーム下部のボタンからどうぞ。</span></p>
@@ -833,10 +833,11 @@
   var CONTACT_EMAIL = "staff@klcs.jp";
   var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
 
-  // Sends the patient their own "we've got it" email, from staff@klcs.jp.
-  // Paste the Cloudflare Worker URL here once it's deployed, see worker/README.md.
-  // While this is empty nothing is sent and the form behaves exactly as before.
-  var CONFIRM_ENDPOINT = "";
+  // Sends the patient their own "we've received your intake form" confirmation,
+  // from staff@klcs.jp, via the Supabase Edge Function zoom-intake-confirm
+  // (same Gmail SMTP as the Zoom reminder). The function only actually sends when
+  // this email has just submitted a Zoom questionnaire, so it is safe to call anon.
+  var CONFIRM_ENDPOINT = "https://dfkylexozstecjpgvnxg.supabase.co/functions/v1/zoom-intake-confirm";
 
   // Best effort only. By the time this runs the questionnaire itself has already
   // reached the clinic, so a failure here must never show the patient an error.
@@ -844,7 +845,11 @@
     if (!CONFIRM_ENDPOINT || !email) return;
     fetch(CONFIRM_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SB_KEY,
+        Authorization: "Bearer " + SB_KEY,
+      },
       body: JSON.stringify({ email: email, name: name }),
     }).catch(function () {});
   }
@@ -1434,33 +1439,16 @@
 
     submitBtn.disabled = true;
 
-    // 2経路に同時送信: ①スタッフ宛メール(FormSubmit) ②受付管理画面(Supabase)。
-    // どちらか一方でも届けば送信成功として扱う（片方の障害でも問診票は失われない）。
-    var emailReq = fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(Object.assign({
-        _subject: "【問診票 / Questionnaire】" + data.name + "（" + data.date_of_birth + "）",
-        _template: "table",
-        _captcha: "false",
-        // Copies the patient in on their own questionnaire. FormSubmit's
-        // _autoresponse can't be used here: it is documented as not working with
-        // AJAX submissions or with the captcha disabled, and this form is both.
-        _cc: data.email,
-      }, payload)),
-    })
-      .then(function (res) { return res.json(); })
-      .then(function (d) {
-        if (!(d.success === "true" || d.success === true)) throw new Error("email failed");
-      });
-
+    // 問診票は受付管理画面（Supabase「問診票（Zoom英語）」タブ）に保存する。
+    // 保存できたら、患者本人に「記入完了」の確認メールを送る（best effort）。
+    // ※以前はスタッフ宛にも FormSubmit でメールを送っていたが、受付ダッシュボードで
+    //   見られるようになったので廃止した（患者へ届いていたコピーもここで止まる）。
     var clinicReq = submitToClinic(data);
 
-    Promise.allSettled([emailReq, clinicReq])
+    Promise.allSettled([clinicReq])
       .then(function (results) {
-        var emailOk = results[0].status === "fulfilled";
-        var clinicOk = results[1].status === "fulfilled";
-        if (emailOk || clinicOk) {
+        var clinicOk = results[0].status === "fulfilled";
+        if (clinicOk) {
           // The answers deliberately stay on screen rather than being reset: the
           // PDF button needs them, and it's the only record the patient gets.
           form.classList.add("form-locked");
@@ -1474,7 +1462,8 @@
           try { localStorage.removeItem("klcs_zoom_appt"); } catch (e) {}
           // 受付画面の進捗を「記入済」にする（問診票本体が届くので進捗行は役目を終える）
           if (window.__zoomProgress) window.__zoomProgress.done();
-          if (emailOk) sendPatientConfirmation(data.email, data.name);
+          // 患者本人に「問診票の記入が完了しました」確認メール
+          sendPatientConfirmation(data.email, data.name);
         } else {
           var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
           window.location.href = "mailto:" + CONTACT_EMAIL +
