@@ -143,9 +143,11 @@
      and the patient reads it before the consultation. */
   #if-guide { margin-bottom: 28px; }
   #if-guide p { font-size: 14px; line-height: 1.75; color: var(--ink); }
+  /* ガイド側(&embed=1)がヘッダーを隠して高さを postMessage で知らせてくるので、
+     iframe をその高さに合わせる。枠線・内側スクロール無しでページの続きに見える */
   .done-guide-frame {
-    display: block; width: 100%; height: 78vh; margin-top: 12px;
-    border: 1px solid var(--line); border-radius: 14px; background: #FFFFFF;
+    display: block; width: 100%; height: 900px; margin-top: 12px;
+    border: none; border-radius: 14px; background: #FFF8F7; overflow: hidden;
   }
   /* Locked after submitting, but the PDF button has to stay clickable. */
   .form-locked { pointer-events: none; }
@@ -300,7 +302,7 @@
       <p><strong>Please read this guide now, before your consultation.</strong> It explains
       how to take your pill, matched to the reasons you picked above. Tap
       &ldquo;I've read this&rdquo; on each card as you finish it.</p>
-      <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" src="about:blank"></iframe>
+      <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" scrolling="no" src="about:blank"></iframe>
     </div>
 
     <form id="intake-form" novalidate>
@@ -1499,8 +1501,14 @@
           var guideEl = document.getElementById("if-guide");
           var guideFrame = document.getElementById("if-guide-frame");
           if (guideKeys.length && guideEl && guideFrame) {
-            guideFrame.src = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&r=" + guideKeys.join(",");
+            guideFrame.src = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&embed=1&r=" + guideKeys.join(",");
             guideEl.style.display = "";
+            // ガイド側が知らせてくる内容の高さに iframe を合わせる
+            window.addEventListener("message", function (ev) {
+              if (ev.origin !== "https://kladiesclinic.github.io") return;
+              var h = ev.data && ev.data.klcsGuideHeight;
+              if (typeof h === "number" && h > 200) guideFrame.style.height = (h + 24) + "px";
+            });
           }
         } else {
           var body = Object.keys(payload).map(function (k) { return k + ": " + payload[k]; }).join("\n");
