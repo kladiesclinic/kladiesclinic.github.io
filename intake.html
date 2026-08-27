@@ -143,6 +143,10 @@
      and the patient reads it before the consultation. */
   /* 問診票を白いカード枠に入れず、受付機の問診票と同じくページに平置きする */
   .card { background: transparent; border: none; border-radius: 0; padding: 0; }
+  /* 見出しは小さくシンプルに（このページだけ他ページの大見出しを上書き） */
+  .page-head { padding: 26px 0 0; }
+  .page-head .eyebrow { margin-bottom: 4px; }
+  .page-head h1.display { font-size: 22px; }
   /* 完了画面は受付機に合わせて「送信できた」＋ガイドだけにする。印刷ボタンは出さない */
   .print-btn { display: none !important; }
 
