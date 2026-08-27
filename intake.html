@@ -141,13 +141,16 @@
      picked. Sits below the green panel as its own section (same guide the
      in-clinic questionnaire shows), so no extra button: it simply appears
      and the patient reads it before the consultation. */
+  /* 問診票を白いカード枠に入れず、受付機の問診票と同じくページに平置きする */
+  .card { background: transparent; border: none; border-radius: 0; padding: 0; }
+
   #if-guide { margin-bottom: 28px; }
   #if-guide p { font-size: 14px; line-height: 1.75; color: var(--ink); }
   /* ガイド側(&embed=1)がヘッダーを隠して高さを postMessage で知らせてくるので、
      iframe をその高さに合わせる。枠線・内側スクロール無しでページの続きに見える */
   .done-guide-frame {
     display: block; width: 100%; height: 900px; margin-top: 12px;
-    border: none; border-radius: 14px; background: #FFF8F7; overflow: hidden;
+    border: none; background: transparent; overflow: hidden;
   }
   /* Locked after submitting, but the PDF button has to stay clickable. */
   .form-locked { pointer-events: none; }
