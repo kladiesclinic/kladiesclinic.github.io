@@ -137,13 +137,13 @@
   }
   .done-panel p { font-size: 14px; line-height: 1.75; color: #2E5C41; margin-top: 14px; }
   .done-panel p .ja { display: block; font-size: 12.5px; color: #4C7A5E; margin-top: 3px; }
-  /* Pill guide link shown after submitting, when a pill-related reason was picked */
-  .done-guide-btn {
-    display: block; text-align: center; margin-top: 14px; text-decoration: none;
-    font-family: var(--sans); font-size: 15px; font-weight: 600;
-    padding: 14px 24px; border-radius: 14px; background: #2E7D4F; color: #FFFFFF;
+  /* Pill guide embedded right after submitting, when a pill-related reason was
+     picked. Same guide the in-clinic questionnaire shows, so no extra button:
+     it simply appears and the patient reads it before the consultation. */
+  .done-guide-frame {
+    display: block; width: 100%; height: 78vh; margin-top: 12px;
+    border: 1px solid #BFE3CC; border-radius: 14px; background: #FFFFFF;
   }
-  .done-guide-btn .ja { font-weight: 400; font-size: 12.5px; opacity: 0.9; }
   /* Locked after submitting, but the PDF button has to stay clickable. */
   .form-locked { pointer-events: none; }
   .form-locked .print-btn { pointer-events: auto; }
@@ -292,14 +292,13 @@
       <p>Your answers are also still shown below. If you'd prefer a PDF, use the
       <strong>Print / save as PDF</strong> button at the bottom of the form.
       <span class="ja">回答は下に表示されたままです。PDFで保存したい場合は、フォーム下部のボタンからどうぞ。</span></p>
-      <!-- ピル系の受診理由を選んだ方だけ、送信成功時にJSでリンク先を組み立てて表示する -->
+      <!-- ピル系の受診理由を選んだ方だけ、送信成功時にJSでガイド（kiosk側の英語版）を
+           そのまま埋め込む。ボタンは置かず、来院用の問診票と同じく送信直後に表示する -->
       <div id="if-guide" style="display:none">
-        <p>While you wait for your consultation, you can read our guide to taking the pill,
-        matched to the reasons you picked above.
-        <span class="ja">診察までの間に、ご回答に合わせた「ピルの飲み方ガイド」をご覧いただけます。</span></p>
-        <a id="if-guide-link" class="done-guide-btn" href="#" target="_blank" rel="noopener">
-          Read the pill guide <span class="ja">／ ピルの飲み方ガイドを見る</span>
-        </a>
+        <p><strong>Please read this guide now, before your consultation.</strong> It explains
+        how to take your pill, matched to the reasons you picked above. Tap
+        &ldquo;I've read this&rdquo; on each card as you finish it.</p>
+        <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" src="about:blank"></iframe>
       </div>
     </div>
 
@@ -1497,9 +1496,9 @@
             function (b) { return GUIDE_REASON_KEYS[b.value]; }
           ).filter(Boolean);
           var guideEl = document.getElementById("if-guide");
-          var guideLink = document.getElementById("if-guide-link");
-          if (guideKeys.length && guideEl && guideLink) {
-            guideLink.href = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&r=" + guideKeys.join(",");
+          var guideFrame = document.getElementById("if-guide-frame");
+          if (guideKeys.length && guideEl && guideFrame) {
+            guideFrame.src = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&r=" + guideKeys.join(",");
             guideEl.style.display = "";
           }
         } else {
