@@ -138,11 +138,14 @@
   .done-panel p { font-size: 14px; line-height: 1.75; color: #2E5C41; margin-top: 14px; }
   .done-panel p .ja { display: block; font-size: 12.5px; color: #4C7A5E; margin-top: 3px; }
   /* Pill guide embedded right after submitting, when a pill-related reason was
-     picked. Same guide the in-clinic questionnaire shows, so no extra button:
-     it simply appears and the patient reads it before the consultation. */
+     picked. Sits below the green panel as its own section (same guide the
+     in-clinic questionnaire shows), so no extra button: it simply appears
+     and the patient reads it before the consultation. */
+  #if-guide { margin-bottom: 28px; }
+  #if-guide p { font-size: 14px; line-height: 1.75; color: var(--ink); }
   .done-guide-frame {
     display: block; width: 100%; height: 78vh; margin-top: 12px;
-    border: 1px solid #BFE3CC; border-radius: 14px; background: #FFFFFF;
+    border: 1px solid var(--line); border-radius: 14px; background: #FFFFFF;
   }
   /* Locked after submitting, but the PDF button has to stay clickable. */
   .form-locked { pointer-events: none; }
@@ -288,14 +291,16 @@
       <p>We've sent a confirmation to your email so you know it arrived. Please check your
       spam folder just in case. If you'd prefer a PDF of your answers, use the
       <strong>Print / save as PDF</strong> button at the bottom of the form.</p>
-      <!-- ピル系の受診理由を選んだ方だけ、送信成功時にJSでガイド（kiosk側の英語版）を
-           そのまま埋め込む。ボタンは置かず、来院用の問診票と同じく送信直後に表示する -->
-      <div id="if-guide" style="display:none">
-        <p><strong>Please read this guide now, before your consultation.</strong> It explains
-        how to take your pill, matched to the reasons you picked above. Tap
-        &ldquo;I've read this&rdquo; on each card as you finish it.</p>
-        <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" src="about:blank"></iframe>
-      </div>
+    </div>
+
+    <!-- ピル系の受診理由を選んだ方だけ、送信成功時にJSでガイド（kiosk側の英語版）を
+         そのまま埋め込む。緑の完了パネルの外・下に、来院用の問診票と同じく
+         送信直後に独立したセクションとして表示する -->
+    <div id="if-guide" style="display:none">
+      <p><strong>Please read this guide now, before your consultation.</strong> It explains
+      how to take your pill, matched to the reasons you picked above. Tap
+      &ldquo;I've read this&rdquo; on each card as you finish it.</p>
+      <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" src="about:blank"></iframe>
     </div>
 
     <form id="intake-form" novalidate>
