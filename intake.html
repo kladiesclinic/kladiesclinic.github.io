@@ -143,6 +143,8 @@
      and the patient reads it before the consultation. */
   /* 問診票を白いカード枠に入れず、受付機の問診票と同じくページに平置きする */
   .card { background: transparent; border: none; border-radius: 0; padding: 0; }
+  /* 完了画面は受付機に合わせて「送信できた」＋ガイドだけにする。印刷ボタンは出さない */
+  .print-btn { display: none !important; }
 
   #if-guide { margin-bottom: 28px; }
   #if-guide p { font-size: 14px; line-height: 1.75; color: var(--ink); }
@@ -291,20 +293,13 @@
         </div>
         <h2>Questionnaire received</h2>
       </div>
-      <p>Thank you. The doctor will read your answers before your consultation, so your
-      appointment time can go to your questions rather than paperwork.</p>
-      <p>We've sent a confirmation to your email so you know it arrived. Please check your
-      spam folder just in case. If you'd prefer a PDF of your answers, use the
-      <strong>Print / save as PDF</strong> button at the bottom of the form.</p>
     </div>
 
     <!-- ピル系の受診理由を選んだ方だけ、送信成功時にJSでガイド（kiosk側の英語版）を
          そのまま埋め込む。緑の完了パネルの外・下に、来院用の問診票と同じく
-         送信直後に独立したセクションとして表示する -->
+         送信直後に独立したセクションとして表示する。説明文は置かない
+         （ガイド自身の冒頭カードが読み方を案内する） -->
     <div id="if-guide" style="display:none">
-      <p><strong>Please read this guide now, before your consultation.</strong> It explains
-      how to take your pill, matched to the reasons you picked above. Tap
-      &ldquo;I've read this&rdquo; on each card as you finish it.</p>
       <iframe id="if-guide-frame" class="done-guide-frame" title="Pill guide" scrolling="no" src="about:blank"></iframe>
     </div>
 
@@ -1475,6 +1470,10 @@
           form.classList.add("form-locked");
           submitBtn.style.display = "none";
           statusEl.className = "form-status";
+          // 完了画面は受付機の問診票に合わせる: ページ上部の説明文は消して、
+          // 「送信できた」の緑バナー＋ガイドだけにする
+          var pageHead = document.querySelector(".page-head");
+          if (pageHead) pageHead.style.display = "none";
           var done = document.getElementById("if-done");
           done.classList.add("show");
           done.scrollIntoView({ behavior: "smooth", block: "center" });
