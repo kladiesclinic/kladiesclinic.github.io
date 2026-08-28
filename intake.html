@@ -1325,6 +1325,8 @@
       });
     });
     var appt = val("if-appt");
+    // 返ってくる行ID(uuid)はガイドの読了トラッキング（?track=）に使う。
+    // HTTPエラーは reject にして、失敗時は従来どおり mailto にフォールバックさせる
     return fetch(SB_URL + "/rest/v1/rpc/submit_monshin_zoom", {
       method: "POST",
       headers: {
@@ -1343,6 +1345,7 @@
       }),
     }).then(function (res) {
       if (!res.ok) throw new Error("clinic save failed");
+      return res.json(); // 作成した monshin_online の行ID (uuid)
     });
   }
 
@@ -1501,7 +1504,10 @@
           var guideEl = document.getElementById("if-guide");
           var guideFrame = document.getElementById("if-guide-frame");
           if (guideKeys.length && guideEl && guideFrame) {
-            guideFrame.src = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&embed=1&r=" + guideKeys.join(",");
+            // 行IDを渡すと、ガイドの「I've read this」の数が受付ダッシュボードに届く
+            var monshinId = typeof results[0].value === "string" ? results[0].value : "";
+            guideFrame.src = "https://kladiesclinic.github.io/kiosk/intake.html?guide=1&lang=en&embed=1&r=" + guideKeys.join(",") +
+              (monshinId ? "&track=" + encodeURIComponent(monshinId) : "");
             guideEl.style.display = "";
             // ガイド側が知らせてくる内容の高さに iframe を合わせる
             window.addEventListener("message", function (ev) {
