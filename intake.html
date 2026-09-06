@@ -1301,7 +1301,8 @@
   // シートのヘッダーに出る項目・メール専用項目は回答一覧から除く
   var ZOOM_SKIP = { name: 1, date_of_birth: 1, email: 1, phone: 1, zoom_appointment: 1, notes: 1 };
 
-  function submitToClinic(data) {
+  // 回答オブジェクト→受付管理画面が読む answers 配列（送信と途中保存で共用）
+  function buildAnswers(data) {
     var answers = [];
     FIELDS.forEach(function (f) {
       var key = f[0];
@@ -1319,6 +1320,11 @@
         flag: isFlagged(key, raw),
       });
     });
+    return answers;
+  }
+
+  function submitToClinic(data) {
+    var answers = buildAnswers(data);
     var appt = val("if-appt");
     // 返ってくる行ID(uuid)はガイドの読了トラッキング（?track=）に使う。
     // HTTPエラーは reject にして、失敗時は従来どおり mailto にフォールバックさせる
@@ -1370,28 +1376,12 @@
     document.getElementById("if-appt").value = jst.slice(0, 16).replace(" ", "T");
   })();
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    statusEl.className = "form-status";
-    statusEl.textContent = "";
-    if (!form.checkValidity()) {
-      // ウィザードでは無効な項目が隠れたステップにあると、ブラウザの吹き出しが
-      // 出せず「Sendを押しても何も起きない」ように見える（2026-09-06 実害）。
-      // 該当ステップへ戻してから吹き出しを出し、ボタン近くにも文言を出す
-      statusEl.textContent = "Some answers still need attention — please check the highlighted question.";
-      statusEl.className = "form-status err";
-      if (window.__wzShowInvalid) window.__wzShowInvalid(); else form.reportValidity();
-      return;
-    }
-    // 旧honeypot（隠しCompany欄）は撤去: ChromeがautofillでCompany欄まで埋めてしまい、
-    // 実在の患者の送信を黙って止めていた（2026-09-06 Mac Chromeで実害）。
-    // 送信先RPCは元々直接叩ける公開エンドポイントなので、防御効果もほぼ無かった
-
+  // フォームの現在値を1つのオブジェクトに集める。送信と「途中の回答の自動保存」で共用する
+  function collectData() {
     var h = parseFloat(val("if-height"));
     var w = parseFloat(val("if-weight"));
     var bmi = h > 0 && w > 0 ? (w / Math.pow(h / 100, 2)).toFixed(1) : "";
-
-    var data = {
+    return {
       name: val("if-name"),
       date_of_birth: val("if-dob"),
       email: val("if-email"),
@@ -1450,6 +1440,26 @@
         .map(val).filter(Boolean).join(" / "),
       notes: val("if-notes"),
     };
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.className = "form-status";
+    statusEl.textContent = "";
+    if (!form.checkValidity()) {
+      // ウィザードでは無効な項目が隠れたステップにあると、ブラウザの吹き出しが
+      // 出せず「Sendを押しても何も起きない」ように見える（2026-09-06 実害）。
+      // 該当ステップへ戻してから吹き出しを出し、ボタン近くにも文言を出す
+      statusEl.textContent = "Some answers still need attention — please check the highlighted question.";
+      statusEl.className = "form-status err";
+      if (window.__wzShowInvalid) window.__wzShowInvalid(); else form.reportValidity();
+      return;
+    }
+    // 旧honeypot（隠しCompany欄）は撤去: ChromeがautofillでCompany欄まで埋めてしまい、
+    // 実在の患者の送信を黙って止めていた（2026-09-06 Mac Chromeで実害）。
+    // 送信先RPCは元々直接叩ける公開エンドポイントなので、防御効果もほぼ無かった
+
+    var data = collectData();
 
     // Bilingual email body: "English label ／ 日本語ラベル" -> "English answer ／ 日本語"
     var payload = {};
@@ -1489,6 +1499,8 @@
           try { localStorage.removeItem("klcs_zoom_appt"); } catch (e) {}
           // 受付画面の進捗を「記入済」にする（問診票本体が届くので進捗行は役目を終える）
           if (window.__zoomProgress) window.__zoomProgress.done();
+          // 端末に控えた下書きも役目を終える
+          try { localStorage.removeItem("klcs_intake_draft"); } catch (e) {}
           // 患者本人に「問診票の記入が完了しました」確認メール
           sendPatientConfirmation(data.email, data.name);
           // ピル系の受診理由を選んだ方に、診察までの間に読む飲み方ガイド
@@ -1533,6 +1545,58 @@
       })
       .finally(function () { submitBtn.disabled = false; });
   });
+
+  // ---- 入力内容の自動保存（端末側）----
+  // 入力のたびに localStorage へ控え、開き直したら復元する。誤リロード・
+  // ブラウザ落ち・送信失敗からの「全部書き直し」を防ぐ。送信成功で消す。
+  (function () {
+    var DRAFT_KEY = "klcs_intake_draft";
+    function snapshot() {
+      var out = { v: 1, fields: {}, checks: [] };
+      [].forEach.call(form.querySelectorAll("input, select, textarea"), function (el) {
+        if (el.type === "checkbox" || el.type === "radio") {
+          if (el.checked) out.checks.push((el.name || el.id) + " " + el.value);
+        } else if (el.id && el.value) {
+          out.fields[el.id] = el.value;
+        }
+      });
+      return out;
+    }
+    var t = null;
+    function save() {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot())); } catch (e) {}
+      }, 600);
+    }
+    form.addEventListener("input", save);
+    form.addEventListener("change", save);
+
+    // 復元。値を入れたら input/change を発火して、生年月日の組み立て・
+    // 追記欄の開閉・required切替など既存の同期処理に追従させる
+    try {
+      var raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      Object.keys(d.fields || {}).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && !el.value) {
+          el.value = d.fields[id];
+          el.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+      });
+      (d.checks || []).forEach(function (pair) {
+        var idx = pair.indexOf(" ");
+        var name = pair.slice(0, idx), value = pair.slice(idx + 1);
+        var el = form.querySelector('input[name="' + name + '"][value="' + value.replace(/"/g, '\\"') + '"]') ||
+                 document.getElementById(name);
+        if (el && !el.checked) {
+          el.checked = true;
+          el.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    } catch (e) {}
+  })();
 </script>
 
 <script>
@@ -1643,6 +1707,14 @@
         p_section: section || null,
         p_submitted: !!submitted,
       };
+      // 途中の回答も一緒に保存する（055）。送信ボタンまで辿り着けなくても
+      // 受付・医師が中身を見られる。collectData/buildAnswers は上のscriptのグローバル
+      if (step > 0 || submitted) {
+        try {
+          var draft = buildAnswers(collectData());
+          if (draft.length) body.p_answers = draft;
+        } catch (err) {}
+      }
       fetch(SB_URL + "/rest/v1/rpc/upsert_monshin_progress", {
         method: "POST",
         headers: { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" },
