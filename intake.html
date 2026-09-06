@@ -812,11 +812,6 @@
         <textarea id="if-notes"></textarea>
       </div>
 
-      <div class="hp-field" aria-hidden="true">
-        <label for="if-company">Company</label>
-        <input id="if-company" type="text" tabindex="-1" autocomplete="off" />
-      </div>
-
       <button type="submit" class="submit-btn" id="if-submit">
         Submit my questionnaire
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -1378,8 +1373,19 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.className = "form-status";
-    if (!form.reportValidity()) return;
-    if (document.getElementById("if-company").value) return; // honeypot
+    statusEl.textContent = "";
+    if (!form.checkValidity()) {
+      // ウィザードでは無効な項目が隠れたステップにあると、ブラウザの吹き出しが
+      // 出せず「Sendを押しても何も起きない」ように見える（2026-09-06 実害）。
+      // 該当ステップへ戻してから吹き出しを出し、ボタン近くにも文言を出す
+      statusEl.textContent = "Some answers still need attention — please check the highlighted question.";
+      statusEl.className = "form-status err";
+      if (window.__wzShowInvalid) window.__wzShowInvalid(); else form.reportValidity();
+      return;
+    }
+    // 旧honeypot（隠しCompany欄）は撤去: ChromeがautofillでCompany欄まで埋めてしまい、
+    // 実在の患者の送信を黙って止めていた（2026-09-06 Mac Chromeで実害）。
+    // 送信先RPCは元々直接叩ける公開エンドポイントなので、防御効果もほぼ無かった
 
     var h = parseFloat(val("if-height"));
     var w = parseFloat(val("if-weight"));
@@ -1701,6 +1707,42 @@
       }
       return true;
     }
+
+    // 送信時に無効な項目が隠れたステップに残っていたら、その質問へ戻して
+    // ブラウザの吹き出しを出す（隠れたままだと吹き出しが出ず沈黙する）
+    window.__wzShowInvalid = function () {
+      var bad = form.querySelector(":invalid");
+      if (!bad) return;
+      for (var i = 0; i < steps.length; i++) {
+        if (steps[i].el.contains(bad)) {
+          var vis = visibleIndexes();
+          var vp = vis.indexOf(i);
+          if (vp >= 0) { pos = vp; render(); }
+          break;
+        }
+      }
+      try { bad.reportValidity(); } catch (err) {}
+    };
+
+    // 「追加処方のみ」で飛ばすセクションの required は外しておく。
+    // 残したままだと送信時の全体検証が隠れた必須項目で false になり、
+    // エラーも見えないまま送信できなくなる
+    function syncSkipRequired() {
+      var skip = skipActive();
+      steps.forEach(function (s) {
+        if (!s.section || !s.section.hasAttribute("data-skippable")) return;
+        [].forEach.call(s.el.querySelectorAll("input, select, textarea"), function (el) {
+          if (skip) {
+            if (el.required) { el.dataset.wasRequired = "1"; el.required = false; }
+          } else if (el.dataset.wasRequired) {
+            el.required = true;
+            delete el.dataset.wasRequired;
+          }
+        });
+      });
+    }
+    [].forEach.call(reasonBoxes, function (b) { b.addEventListener("change", syncSkipRequired); });
+    syncSkipRequired();
 
     backBtn.addEventListener("click", function () {
       if (pos > 0) { pos--; render(); }
