@@ -456,6 +456,7 @@
           <label class="choice"><input type="checkbox" name="reason" value="Acne / skin" /> Acne / skin<span class="ja">ニキビ・肌荒れ</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="PMS / mood" /> PMS / mood<span class="ja">PMS・気分の不調</span></label>
           <label class="choice"><input type="checkbox" name="reason" value="Menopause" /> Menopause<span class="ja">更年期</span></label>
+          <label class="choice"><input type="checkbox" name="reason" value="Flu prevention medicine" /> Flu prevention medicine<span class="ja">インフルエンザの予防内服</span></label>
           <div class="reason-cell">
             <label class="choice"><input type="checkbox" name="reason" value="Refill of a medication prescribed here before" /> Refill of a medication prescribed here before<span class="ja">当院で処方されたことのある薬の追加</span></label>
             <div class="reason-sub">
@@ -532,7 +533,8 @@
         </div>
       </div>
 
-      <div class="section-label">Pregnancy &amp; sexual health<span class="ja">妊娠・性交渉について</span></div>
+      <!-- data-skip-flu: インフルの予防内服だけの方は飛ばす（妊娠・授乳はインフルの章で1問だけ聞く） -->
+      <div class="section-label" data-skip-flu>Pregnancy &amp; sexual health<span class="ja">妊娠・性交渉について</span></div>
 
       <div class="field">
         <label>Are you pregnant, or possibly pregnant?<span class="ja">妊娠中または妊娠の可能性がありますか</span></label>
@@ -699,7 +701,7 @@
         </div>
       </div>
 
-      <div class="field">
+      <div class="field" data-skip-flu>
         <label>Do you, or have you ever, taken birth control pills?<span class="ja">OC・LEP（ピル）の服用歴がありますか</span></label>
         <div class="yn-row">
           <label class="choice"><input type="radio" name="oc_history" value="Yes" required /> Yes<span class="ja">はい</span></label>
@@ -746,6 +748,80 @@
         <div class="yn-row">
           <label class="choice"><input type="radio" name="family_breast_cancer" value="Yes" required /> Yes<span class="ja">はい</span></label>
           <label class="choice"><input type="radio" name="family_breast_cancer" value="No" /> No<span class="ja">いいえ</span></label>
+        </div>
+      </div>
+
+      <!-- data-flu: 受診理由で「Flu prevention medicine」を選んだ方だけに出す。
+           日本語の問診票（pillorder.info/monshin）のインフル分岐と同じ最小限の設問（2026-11-10） -->
+      <div class="section-label" data-flu>Flu prevention<span class="ja">インフルエンザ予防内服</span></div>
+
+      <div class="field">
+        <label>Do you have a fever (37.5°C or higher), cough, sore throat, severe tiredness or other flu-like symptoms right now?<span class="ja">今、37.5℃以上の熱・せき・のどの痛み・強いだるさなど、かぜやインフルエンザのような症状はありますか</span></label>
+        <div class="yn-row">
+          <label class="choice"><input type="radio" name="flu_symptoms" value="No" required /> No<span class="ja">ない</span></label>
+          <label class="choice"><input type="radio" name="flu_symptoms" value="Yes" /> Yes<span class="ja">ある</span></label>
+        </div>
+        <div class="hint">If you already have symptoms, preventive medicine is not suitable. You need treatment, so please see a nearby clinic.<span class="ja">症状がある場合は予防内服の対象になりません。治療が必要ですので、お近くの医療機関を受診してください。</span></div>
+      </div>
+
+      <div class="field">
+        <label>Why would you like preventive medicine? (check all that apply)<span class="ja">予防内服を希望する理由（複数選択可）</span></label>
+        <div class="choice-group">
+          <label class="choice"><input type="checkbox" name="flu_purpose" value="Someone in my household has the flu" required /> Someone in my household has the flu<span class="ja">家族・同居の人がインフルエンザにかかった</span></label>
+          <label class="choice"><input type="checkbox" name="flu_purpose" value="It's spreading at work or school" /> It's spreading at work or school<span class="ja">職場や学校で流行している</span></label>
+          <label class="choice"><input type="checkbox" name="flu_purpose" value="Exam or important event" /> An exam or important event<span class="ja">受験や大事な予定がある</span></label>
+          <label class="choice"><input type="checkbox" name="flu_purpose" value="Other" /> Other<span class="ja">その他</span></label>
+        </div>
+        <div class="sub-field">
+          <label for="if-flu-detail">Details<span class="ja">詳しく</span></label>
+          <input id="if-flu-detail" type="text" required placeholder="e.g. husband, diagnosed 9 Nov, last contact the night of 9 Nov / exam on 17-18 Jan" />
+          <div class="hint">If someone at home has the flu: who, when they were diagnosed, and when you last spent time with them. Otherwise: the dates you want to be protected.<span class="ja">家族がかかった場合は、かかった人・診断された日・最後に接した日時。予定に備える場合は、予防したい期間をご記入ください。</span></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you have any of these conditions or treatments? (check all that apply)<span class="ja">次の病気や治療はありますか（複数選択可）</span></label>
+        <div class="choice-group">
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Asthma, COPD or other lung disease" required /> Asthma, COPD or other lung disease<span class="ja">ぜんそく・COPDなど肺の病気</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Heart disease" /> Heart disease<span class="ja">心臓の病気</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Diabetes or other metabolic disease" /> Diabetes or other metabolic disease<span class="ja">糖尿病など代謝の病気</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Kidney disease (incl. dialysis)" /> Kidney disease (incl. dialysis)<span class="ja">腎臓の病気（透析を含む）</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Liver disease" /> Liver disease<span class="ja">肝臓の病気</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="Weakened immunity or treatment (steroids, chemotherapy)" /> Weakened immunity or treatment (steroids, chemotherapy, etc.)<span class="ja">免疫が下がる病気や治療（ステロイド・抗がん剤など）</span></label>
+          <label class="choice"><input type="checkbox" name="flu_risk" value="None of these" /> None of these<span class="ja">どれもない</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Are you pregnant, possibly pregnant, or breastfeeding?<span class="ja">妊娠中・妊娠の可能性がある、または授乳中ですか</span></label>
+        <div class="choice-group">
+          <label class="choice"><input type="radio" name="flu_pregnancy" value="No / not applicable" required /> No / not applicable<span class="ja">当てはまらない</span></label>
+          <label class="choice"><input type="radio" name="flu_pregnancy" value="Pregnant or possibly pregnant" /> Pregnant or possibly pregnant<span class="ja">妊娠中・妊娠の可能性がある</span></label>
+          <label class="choice"><input type="radio" name="flu_pregnancy" value="Breastfeeding" /> Breastfeeding<span class="ja">授乳中</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="if-flu-guardian">If you are under 18: name of the parent or guardian who will join the video call<span class="ja">18歳未満の方：診察に同席する保護者の方のお名前・続柄</span></label>
+        <input id="if-flu-guardian" type="text" placeholder="e.g. Jane Smith (mother)" />
+        <div class="hint">Patients aged 12 to 17 must be seen with a parent or guardian. We cannot prescribe preventive medicine to children under 12.<span class="ja">12〜17歳の方は保護者の同席が必要です。12歳未満の方には処方できません。</span></div>
+      </div>
+
+      <div class="field">
+        <label>Which medicine would you prefer? (the doctor will decide)<span class="ja">ご希望のお薬（最終的には医師が判断します）</span></label>
+        <div class="choice-group">
+          <label class="choice"><input type="radio" name="flu_drug" value="Oseltamivir (once daily for 7 days)" required /> Oseltamivir (once daily for 7 days)<span class="ja">オセルタミビル（1日1回を7日間）</span></label>
+          <label class="choice"><input type="radio" name="flu_drug" value="Xofluza (single dose)" /> Xofluza (single dose)<span class="ja">ゾフルーザ（1回飲むだけ）</span></label>
+          <label class="choice"><input type="radio" name="flu_drug" value="I'd like to discuss with the doctor" /> I'd like to discuss with the doctor<span class="ja">医師に相談して決めたい</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Please read and check all of the following<span class="ja">次の内容をご確認のうえ、すべてにチェックしてください</span></label>
+        <div class="choice-group">
+          <label class="choice"><input type="checkbox" name="flu_consent" value="basics" required /> This is not covered by insurance, it may not fully prevent the flu, and I will see a doctor if I get a fever or other symptoms.<span class="ja">自由診療のため保険は使えないこと、予防内服でも100％防げるわけではないこと、熱などが出たら医療機関を受診することを理解しました。</span></label>
+          <label class="choice"><input type="checkbox" name="flu_consent" value="off_label" required /> For people under 65 without high-risk conditions, this use is outside the approved indication in the package insert, so a serious side effect may not be covered by Japan's relief system for adverse drug reactions.<span class="ja">重症化しやすい持病がなく65歳未満の方への処方は添付文書の予防投与の対象外で、万一重い副作用が起きたときに医薬品副作用被害救済制度の対象にならないことがあると理解しました。</span></label>
+          <label class="choice"><input type="checkbox" name="flu_consent" value="doctor_decides" required /> The doctor may decide not to prescribe, or may recommend an in-person visit.<span class="ja">医師の判断で処方しないことや、来院・お近くの医療機関での受診をおすすめすることがあると理解しました。</span></label>
         </div>
       </div>
 
@@ -927,16 +1003,19 @@
   // 「当院を知ったきっかけ」は複数選択だが最低1つは選んでもらう。ブラウザの
   // required はチェックボックスのグループを見ないので、先頭の1つに代表させて
   // どれかが選ばれたら外す
-  (function () {
-    var boxes = document.querySelectorAll('input[name="found_us"]');
+  // インフルの「理由」「病気」の複数選択も同じく最低1つ
+  ["found_us", "flu_purpose", "flu_risk"].forEach(function (name) {
+    var boxes = document.querySelectorAll('input[name="' + name + '"]');
     if (!boxes.length) return;
     function sync() {
       var any = [].some.call(boxes, function (b) { return b.checked; });
+      // インフルの章を飛ばしている間（data-was-required 付き）は必須にしない
+      if (boxes[0].dataset.wasRequired) return;
       boxes[0].required = !any;
     }
     [].forEach.call(boxes, function (b) { b.addEventListener("change", sync); });
     sync();
-  })();
+  });
 
   // The sections tagged data-skippable exist to screen for OC/LEP contraindications.
   // A patient topping up a medication we have already prescribed has been through
@@ -1134,6 +1213,14 @@
     ["period_shift_date", "Date to move the period around", "ずらしたいご予定（月経移動）"],
     ["refill_requested", "Refill requested", "ご希望のお薬（追加処方）"],
     ["reason_other_detail", "Other, details", "その他の内容"],
+    ["flu_symptoms", "Flu-like symptoms now", "今の症状（熱・せき等）"],
+    ["flu_purpose", "Why preventive medicine", "予防内服を希望する理由"],
+    ["flu_detail", "Details (contact / dates)", "詳しく（接触・予定の日付）"],
+    ["flu_risk", "High-risk conditions / treatment", "持病・治療"],
+    ["flu_pregnancy", "Pregnant / breastfeeding", "妊娠・授乳"],
+    ["flu_guardian", "Guardian (under 18)", "同席する保護者（18歳未満）"],
+    ["flu_drug", "Preferred medicine", "希望のお薬"],
+    ["flu_consent", "Consent", "同意"],
     ["last_period_start", "Last period started", "最終月経の開始日"],
     ["last_period_days", "Period length (days)", "月経の日数"],
     ["cycle", "Menstrual cycle", "月経周期"],
@@ -1188,6 +1275,24 @@
     "PMS / mood": "PMS・気分の不調",
     "Menopause": "更年期",
     "Refill of a medication prescribed here before": "当院で処方されたことのある薬の追加",
+    "Flu prevention medicine": "インフルエンザの予防内服",
+    "Someone in my household has the flu": "家族・同居の人がインフルエンザにかかった",
+    "It's spreading at work or school": "職場や学校で流行している",
+    "Exam or important event": "受験や大事な予定がある",
+    "Asthma, COPD or other lung disease": "ぜんそく・COPDなど肺の病気",
+    "Heart disease": "心臓の病気",
+    "Diabetes or other metabolic disease": "糖尿病など代謝の病気",
+    "Kidney disease (incl. dialysis)": "腎臓の病気（透析を含む）",
+    "Liver disease": "肝臓の病気",
+    "Weakened immunity or treatment (steroids, chemotherapy)": "免疫が下がる病気や治療（ステロイド・抗がん剤など）",
+    "None of these": "どれもない",
+    "No / not applicable": "当てはまらない",
+    "Pregnant or possibly pregnant": "妊娠中・妊娠の可能性がある",
+    "Breastfeeding": "授乳中",
+    "Oseltamivir (once daily for 7 days)": "オセルタミビル（1日1回を7日間）",
+    "Xofluza (single dose)": "ゾフルーザ（1回）",
+    "I'd like to discuss with the doctor": "医師に相談して決めたい",
+    "Agreed to all (3 items)": "すべて同意（3項目）",
     "Other": "その他",
     "Deep vein thrombosis": "深部静脈血栓",
     "Pulmonary embolism": "肺塞栓症",
@@ -1250,6 +1355,10 @@
     reason_for_visit: ["受診理由", "Reason for visit"], morning_after_timing: ["受診理由", "Reason for visit"],
     period_shift_date: ["受診理由", "Reason for visit"], refill_requested: ["受診理由", "Reason for visit"],
     reason_other_detail: ["受診理由", "Reason for visit"],
+    flu_symptoms: ["インフルエンザ予防", "Flu prevention"], flu_purpose: ["インフルエンザ予防", "Flu prevention"],
+    flu_detail: ["インフルエンザ予防", "Flu prevention"], flu_risk: ["インフルエンザ予防", "Flu prevention"],
+    flu_pregnancy: ["インフルエンザ予防", "Flu prevention"], flu_guardian: ["インフルエンザ予防", "Flu prevention"],
+    flu_drug: ["インフルエンザ予防", "Flu prevention"], flu_consent: ["インフルエンザ予防", "Flu prevention"],
     last_period_start: ["月経について", "Period"], last_period_days: ["月経について", "Period"],
     cycle: ["月経について", "Period"], cycle_detail: ["月経について", "Period"],
     abnormal_bleeding: ["月経について", "Period"], bleeding_since: ["月経について", "Period"],
@@ -1294,6 +1403,17 @@
         return parseFloat(raw) >= 30;
       case "diagnosed_conditions":
         return !!raw && raw !== "None checked" && raw.indexOf("None of the above") === -1;
+      // インフルの予防内服: 症状あり・腎臓/肝臓/免疫・妊娠授乳は医師へ。体重はお薬と量が変わる境目
+      case "flu_symptoms":
+        return raw === "Yes";
+      case "flu_risk":
+        return /Kidney|Liver|immunity/.test(raw);
+      case "flu_pregnancy":
+        return !!raw && raw !== "No / not applicable";
+      case "weight_kg":
+        if (!document.querySelector('input[name="reason"][value="Flu prevention medicine"]:checked')) return false;
+        var kg = parseFloat(raw);
+        return kg > 0 && (kg < 37.5 || kg >= 80);
       default:
         return false;
     }
@@ -1401,6 +1521,15 @@
       period_shift_date: val("if-period-shift-date"),
       refill_requested: val("if-refill-name"),
       reason_other_detail: val("if-other-detail"),
+      flu_symptoms: radioVal("flu_symptoms"),
+      flu_purpose: checkVals("flu_purpose"),
+      flu_detail: val("if-flu-detail"),
+      flu_risk: checkVals("flu_risk"),
+      flu_pregnancy: radioVal("flu_pregnancy"),
+      flu_guardian: val("if-flu-guardian"),
+      flu_drug: radioVal("flu_drug"),
+      // 同意は3項目すべて必須。全文を並べると長いので件数だけ送る
+      flu_consent: document.querySelectorAll('input[name="flu_consent"]:checked').length === 3 ? "Agreed to all (3 items)" : "",
       last_period_start: val("if-lmp"),
       last_period_days: val("if-lmp-days"),
       cycle: radioVal("cycle"),
@@ -1661,17 +1790,33 @@
     nav.appendChild(nextBtn);
     form.appendChild(nav);
 
-    // 「追加処方のみ」選択中は、記入不要セクション（data-skippable）の質問を飛ばす
-    function skipActive() {
-      var ticked = [].filter.call(reasonBoxes, function (b) { return b.checked; });
-      return !!refillBox && ticked.length === 1 && ticked[0] === refillBox;
+    // 受診理由で飛ばす質問を決める。
+    //   ・「追加処方のみ」→ 記入不要セクション（data-skippable）を飛ばす
+    //   ・「インフルの予防内服」だけ（追加処方と一緒も含む）→ data-skippable に加えて
+    //     data-skip-flu（妊娠・性交渉の章、ピルの服用歴）も飛ばす。ピル向けの禁忌確認だから
+    //   ・インフルを選んでいない → インフルの章（data-flu）を飛ばす
+    var FLU = "Flu prevention medicine";
+    function reasonState() {
+      var ticked = [].filter.call(reasonBoxes, function (b) { return b.checked; }).map(function (b) { return b.value; });
+      var flu = ticked.indexOf(FLU) !== -1;
+      return {
+        flu: flu,
+        fluOnly: flu && ticked.every(function (v) { return v === FLU || (refillBox && v === refillBox.value); }),
+        refillOnly: !!refillBox && ticked.length === 1 && ticked[0] === refillBox.value,
+      };
+    }
+    function stepSkipped(s, st) {
+      var sec = s.section;
+      if (sec && sec.hasAttribute("data-flu") && !st.flu) return true;
+      if (sec && sec.hasAttribute("data-skippable") && (st.refillOnly || st.fluOnly)) return true;
+      if (st.fluOnly && ((sec && sec.hasAttribute("data-skip-flu")) || s.el.hasAttribute("data-skip-flu"))) return true;
+      return false;
     }
     function visibleIndexes() {
-      var skip = skipActive();
+      var st = reasonState();
       var out = [];
       steps.forEach(function (s, i) {
-        if (skip && s.section && s.section.hasAttribute("data-skippable")) return;
-        out.push(i);
+        if (!stepSkipped(s, st)) out.push(i);
       });
       return out;
     }
@@ -1800,15 +1945,18 @@
     // 残したままだと送信時の全体検証が隠れた必須項目で false になり、
     // エラーも見えないまま送信できなくなる
     function syncSkipRequired() {
-      var skip = skipActive();
+      var st = reasonState();
       steps.forEach(function (s) {
-        if (!s.section || !s.section.hasAttribute("data-skippable")) return;
+        var skip = stepSkipped(s, st);
         [].forEach.call(s.el.querySelectorAll("input, select, textarea"), function (el) {
           if (skip) {
             if (el.required) { el.dataset.wasRequired = "1"; el.required = false; }
           } else if (el.dataset.wasRequired) {
-            el.required = true;
             delete el.dataset.wasRequired;
+            // 「どれか1つ」の複数選択は、もう選ばれていれば必須に戻さない
+            var groupDone = el.type === "checkbox" && el.name !== "flu_consent" &&
+              form.querySelector('input[name="' + el.name + '"]:checked');
+            el.required = !groupDone;
           }
         });
       });
