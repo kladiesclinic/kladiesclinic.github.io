@@ -57,6 +57,11 @@
   .way ul { font-size: 13.5px; margin-top: 8px; }
   .way .btn { margin-top: 14px; font-size: 14px; padding: 13px 22px; }
   .urgent { border-left: 3px solid var(--accent); background: #FFF8F8; border-radius: 0 12px 12px 0; padding: 14px 18px; font-size: 14px; line-height: 1.7; color: var(--ink); margin-top: 22px; }
+  .drug-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #FFF1EE; }
+  .pill-item .drug-photo { margin-bottom: 12px; }
+  figure.drug { margin: 16px 0 14px; }
+  figure.drug figcaption { font-size: 12px; color: var(--faint); margin-top: 6px; }
+  @media (min-width: 640px) { figure.drug { max-width: 420px; } }
 </style>
 <!-- Google Analytics (GA4): same measurement ID as klcs.jp -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-334KEX8DJB"></script>
@@ -206,6 +211,10 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
       mainly works by delaying ovulation. It is not an abortion pill, and it will not
       end a pregnancy that has already started.
     </p>
+    <figure class="drug">
+      <img class="drug-photo" src="https://cdn.pillorder.info/drugs/drug5.jpg" alt="NorLevo 1.5 mg morning-after pill, front and back" width="800" height="600" loading="lazy" />
+      <figcaption>NorLevo 1.5 mg (levonorgestrel), a single tablet</figcaption>
+    </figure>
     <p>
       You may want it if a condom broke or slipped off, you missed birth control pills,
       you had sex without protection, or you were forced to have sex.
