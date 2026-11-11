@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Birth Control Pills in Japan, Online in English | K Ladies Clinic Shinjuku</title>
-<meta name="description" content="Get birth control pills in Japan through a video visit in English. ¥3,300 per sheet, ¥660 shipping anywhere in Japan, no Japanese health insurance needed. Combined pills and the estrogen-free mini-pill." />
+<meta name="description" content="Birth control pills in Japan through a video visit in English. ¥3,300 per sheet, ¥660 shipping anywhere in Japan. No Japanese health insurance needed." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://www.klcs.jp/en/birthcontrolpills/" />
 <meta property="og:type" content="website" />
@@ -52,6 +52,23 @@
   figure.drug { margin: 16px 0 14px; }
   figure.drug figcaption { font-size: 12px; color: var(--faint); margin-top: 6px; }
   @media (min-width: 640px) { figure.drug { max-width: 420px; } }
+  .action-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    display: flex; gap: 10px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid var(--line);
+  }
+  .action-bar a {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; padding: 11px 8px; border-radius: 999px;
+    text-align: center; line-height: 1.2; min-height: 48px;
+  }
+  .action-bar .primary { background: var(--accent); color: #FFFFFF; box-shadow: 0 3px 0 #D84F4F; }
+  .action-bar .secondary { background: #FFFFFF; color: var(--accent); border: 1.5px solid var(--accent); }
+  body { padding-bottom: 76px; }
+  @media (min-width: 640px) { .action-bar { display: none; } body { padding-bottom: 0; } }
 </style>
 <!-- Google Analytics (GA4): same measurement ID as klcs.jp -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-334KEX8DJB"></script>
@@ -146,6 +163,7 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
     <table class="facts">
       <tr><td>Birth control pill<small>1 sheet, 28 days</small></td><td>&yen;3,300</td></tr>
       <tr><td>Shipping<small>anywhere in Japan, home or hotel</small></td><td>&yen;660</td></tr>
+      <tr><td>Same-day delivery<small>central Tokyo (the 23 wards), optional</small></td><td>+&yen;5,500</td></tr>
       <tr><td>Online consultation fee<small>first online visit only</small></td><td>&yen;1,100</td></tr>
       <tr><td>Repeat prescriptions online<small>no consultation fee</small></td><td>&yen;0</td></tr>
       <tr><td>Japanese health insurance</td><td>Not needed</td></tr>
@@ -169,21 +187,21 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
         <img class="drug-photo" src="https://cdn.pillorder.info/drugs/drug2.jpg" alt="Marvelon 28 birth control pill sheet, front and back" width="800" height="600" loading="lazy" />
         <div class="kind">Combined pill</div>
         <h3>Marvelon 28</h3>
-        <p>Desogestrel and ethinylestradiol. The same dose in every active pill.</p>
+        <p>Desogestrel and ethinylestradiol. 21 active and 7 inactive pills, with the same dose in every active pill.</p>
         <div class="price">&yen;3,300 / sheet</div>
       </div>
       <div class="pill-item">
         <img class="drug-photo" src="https://cdn.pillorder.info/drugs/drug1.jpg" alt="Triquilar 28 birth control pill sheet, front and back" width="800" height="600" loading="lazy" />
         <div class="kind">Combined pill</div>
         <h3>Triquilar 28</h3>
-        <p>Levonorgestrel and ethinylestradiol. A three-phase pill with doses that change through the pack.</p>
+        <p>Levonorgestrel and ethinylestradiol. 21 active and 7 inactive pills, in three phases with doses that change through the pack.</p>
         <div class="price">&yen;3,300 / sheet</div>
       </div>
       <div class="pill-item">
         <img class="drug-photo" src="https://cdn.pillorder.info/drugs/drug4.jpg" alt="Slinda 28 mini-pill sheet, front and back" width="800" height="600" loading="lazy" />
         <div class="kind">Mini-pill</div>
         <h3>Slinda 28</h3>
-        <p>Drospirenone only, no estrogen. An option if you can't take estrogen. <a class="inline-link" href="../minipill/">About the mini-pill</a></p>
+        <p>Drospirenone only, no estrogen. 24 active and 4 inactive pills. An option if you can't take estrogen. <a class="inline-link" href="../minipill/">About the mini-pill</a></p>
         <div class="price">&yen;3,300 / sheet</div>
       </div>
     </div>
@@ -299,6 +317,11 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
     <span><a href="../">Home</a> &middot; <a href="../minipill/">Mini-pill</a> &middot; <a href="../morningafterpill/">Morning-after pill</a> &middot; <a href="../book.html">Book online</a> &middot; <a href="../fees.html">Fees</a> &middot; <a href="https://www.klcs.jp/pill/birthcontrolpills/" lang="ja">日本語</a></span>
   </div>
 </footer>
+
+<div class="action-bar">
+  <a class="secondary" href="../fees.html">See all fees</a>
+  <a class="primary js-book" data-pos="bar" href="../book.html">Book online visit</a>
+</div>
 
 <script>
   document.querySelectorAll(".js-book").forEach(function (a) {
