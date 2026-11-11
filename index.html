@@ -148,6 +148,26 @@
     .hero-photo { aspect-ratio: 4 / 3; }
   }
 
+  /* ---------- winter band: link to the flu LP (remove after the season) ---------- */
+  .flu-band { background: #EAF4FB; border-bottom: 1px solid #CFE3F1; }
+  .flu-band a {
+    display: flex; align-items: center; gap: 12px; padding-top: 16px; padding-bottom: 16px;
+    color: var(--ink); text-decoration: none; font-size: 15px; line-height: 1.5;
+  }
+  .flu-band .tag {
+    flex-shrink: 0; font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: #1F6FA8; background: #FFFFFF; border: 1px solid #B9D7EC; border-radius: 999px; padding: 3px 10px;
+  }
+  .flu-band .txt { flex: 1; }
+  .flu-band .txt b { font-weight: 600; }
+  .flu-band .more { flex-shrink: 0; color: #1F6FA8; font-weight: 600; white-space: nowrap; }
+  .flu-band a:hover .more { text-decoration: underline; }
+  @media (max-width: 519px) {
+    .flu-band a { flex-wrap: wrap; gap: 6px 10px; font-size: 14px; }
+    .flu-band .txt { flex-basis: 100%; order: 2; }
+    .flu-band .more { order: 3; }
+  }
+
   /* ---------- why (three reasons) ---------- */
   .why { padding-top: 72px; padding-bottom: 72px; }
   .why h2 { font-size: clamp(28px, 5vw, 40px); max-width: 620px; margin-bottom: 36px; }
@@ -410,6 +430,11 @@
   function gtag() { dataLayer.push(arguments); }
   gtag("js", new Date());
   gtag("config", "G-334KEX8DJB");
+  // Clicks on the winter flu band (see .flu-band). Remove with the band.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("#flu-band-link");
+    if (a) gtag("event", "flu_band_click", { link_url: a.href, transport_type: "beacon" });
+  });
 </script>
 <!-- Meta Pixel Code -->
 <script src="assets/pixel.js"></script>
@@ -474,6 +499,17 @@ src="https://www.facebook.com/tr?id=27415714044798059&amp;ev=PageView&amp;noscri
     </figure>
   </div>
 </section>
+
+<!-- ================= Winter only: flu prevention (remove after the season) ================= -->
+<div class="flu-band">
+  <div class="wrap">
+    <a href="https://www.klcs.jp/lp/flu/en/" id="flu-band-link">
+      <span class="tag">Winter only</span>
+      <span class="txt"><b>Flu prevention medication</b>, prescribed online in English and delivered anywhere in Japan.</span>
+      <span class="more">Learn more &rarr;</span>
+    </a>
+  </div>
+</div>
 
 <!-- ================= Why us (three reasons) ================= -->
 <section class="why">
